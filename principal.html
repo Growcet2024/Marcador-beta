@@ -373,6 +373,9 @@ doc.text(additionalMessage, 10, 115, { maxWidth: 180 });
 
 
 
+
+
+
    // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
               
    // Função para carregar a localização
@@ -416,7 +419,9 @@ const userName = localStorage.getItem("userName") || "Usuário";
 
 // Adiciona o marcador e a popup com o nome do usuário
 L.marker([currentLatitude, currentLongitude]).addTo(map)
-    .bindPopup(`${userName}, você está aqui!`)  // Inclui o nome do usuário na mensagem
+ 
+    .bindPopup(`Eu estou aqui 😊<br>${userName}`) // Inclui o nome do usuário na mensagem
+
     .openPopup();
 
 
@@ -441,6 +446,8 @@ L.marker([currentLatitude, currentLongitude]).addTo(map)
         hideLoading(); // Garante que o GIF seja escondido em caso de erro
     }
 }
+
+
 
 // Função para exibir o GIF de carregamento
 function showLoading() {
@@ -534,6 +541,15 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 // Bloco mapa na tela fim
 
 
+
+
+
+
+
+
+
+
+
     // Função para tocar um som
     function playSound(soundFile) {
         const audio = new Audio(soundFile);
@@ -575,7 +591,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <div id="map" style="width: 100%; height: 300px;"></div>
 
         
-            <a href="principal.html" class="btn-voltar">Atualizar mapa 🔄</a>
+            <a href="principal.html" class="btn-voltar">Recarregar 🔄</a>
 
         <div id="alerta-gps" style="display: none; background-color: #ffffff; color: #000; padding: 10px; text-align: center; font-weight: bold;">
             ⚠️ Ative a localização
