@@ -157,23 +157,20 @@
         }
 
 
-
-
-/* 2 - Transparência escura elegante */
+/* 1 - Popup transparente com efeito vidro (recomendado) */
 /* Fundo da caixa da popup */
-
 .leaflet-popup-content-wrapper {
-    background: #0000004D !important;  /* fundo preto 60% */
-    color: #ffffff !important;         /* texto branco */
-    border-radius: 10px;
+    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    backdrop-filter: blur(6px);
+    color: #000000;
+    border-radius: 12px;
 }
 
+/* Triângulo apontando para o marcador */
 .leaflet-popup-tip {
-    background: #0000004D !important;  /* fundo preto 60% */
+    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    backdrop-filter: blur(6px);
 }
-
-
-
 
 
 
@@ -327,6 +324,7 @@ const record = {
     }, 2000);
 }
 
+
     // Função para compartilhar a localização via WhatsApp
 function shareLocation() {
     const coordinates = document.getElementById("coordinates").innerText;
@@ -338,12 +336,21 @@ function shareLocation() {
 
     // Verificando se o nome e o ID estão corretos e preparando a mensagem
 
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `*Marcador de Presença*\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}`;
+
+
+
+// Mensagem 1 zap ajustada
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
+const message = `*Checkin+*\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+
+
+
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
+
+
 
    // Função para gerar o PDF
 async function generatePDF() {
@@ -358,9 +365,13 @@ async function generatePDF() {
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
 
-    const title = "Marcador de Presença";
+// Mensagem 2 PDF ajustada
+const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `Declaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}`;
+const message = `Declaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude},\n\nAplicativo disponível no Google Play`;
+
+
+
 
 // Ajusta o tamanho da fonte para a frase
 doc.setFontSize(12);  // Tamanho normal para o corpo do texto
@@ -574,11 +585,8 @@ function verificarLocalizacaoAtiva() {
     }
 }
 
-
 // Chama a função ao carregar a página
 window.addEventListener('load', verificarLocalizacaoAtiva);
-
-
 
  // Bloco= 1 fim
 // Bloco mapa na tela fim
@@ -813,8 +821,11 @@ function shareLocationHistory(index) {
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
     const userID = localStorage.getItem("userID");  // ID fixo
 
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `*Marcador de Presença*\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}`;
+
+// Declaração zap ajustada com Checkin+ no início
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+const message = `*Checkin+*\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -838,9 +849,16 @@ const message = `*Marcador de Presença*\n\nDeclaração de comparecimento: \n\n
          const userID = localStorage.getItem("userID");  // ID fixo
 
 
-         const title = "Marcador de Presença";
-         const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `Declaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}`;
+
+        // Declaração PDF ajustada
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+const message = `\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+
+
+
+
+
 
 // Ajusta o tamanho da fonte para o corpo do texto
 doc.setFontSize(12);  // Tamanho normal para o corpo do texto
