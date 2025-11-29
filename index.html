@@ -600,13 +600,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-
-
-
-
-
-
-
     // Função para tocar um som
     function playSound(soundFile) {
         const audio = new Audio(soundFile);
@@ -623,6 +616,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 </head>
 
 <body>
+
+
     <!-- Cabeçalho Tela principal-->
     <header>
 
@@ -685,21 +680,20 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
             ✅ Para garantir a melhor precisão na sua localização, acesse a aba 'Informações Importantes' e confira as dicas essenciais! 📍
             </p>  
 
+        <!-- Alteração: Botão para abrir o local no Google Maps -->
+        <button class="button" onclick="openGoogleMaps()">Google Maps</button>
+
         <!-- Compartilhar via WhatsApp -->
-        <button class="button" onclick="shareLocation()">Compartilhar pelo WhatsApp</button>
+        <button class="button" onclick="shareLocation()">Enviar texto WhatsApp</button>
 
         <!-- Gerar PDF -->
-        <button class="button" onclick="generatePDF()">Gerar PDF</button>
+        <button class="button" onclick="generatePDF()">Enviar, baixar PDF</button>
 
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
 
-        <!-- Alteração: Botão para abrir o local no Google Maps -->
-        <button class="button" onclick="openGoogleMaps()">Google Maps</button>
-
-        <!-- Frase de Copyright -->
-        <p class="copyright">Growcet © Desenvolvedor</p>
     </div>
+
 
     <!-- Rodapé -->
     <!-- Não é mais necessário, já que movemos a frase para dentro do container -->
@@ -796,10 +790,10 @@ records.forEach((record, index) => {
 
                         <div class="history-buttons">
     <button class="share-btn" onclick="shareLocationHistory(${index})">
-        <i class="fas fa-share"></i> Compartilhar
+        <i class="fas fa-share"></i> Enviar texto WhatsApp
     </button>
     <button class="pdf-btn" onclick="generatePDFHistory(${index})">
-        <i class="fas fa-file-pdf"></i> Gerar PDF
+        <i class="fas fa-file-pdf"></i> Enviar, baixar PDF
     </button>
     <button class="delete-btn" onclick="deleteRecord(${index})">
         <i class="fas fa-trash"></i> Apagar
@@ -1103,7 +1097,9 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     <span class="menu-hamburguer">☰</span>
     <div class="menu-lateral">
         <ul>
-            
+           
+           
+
             <li><a href="sobre.html">Sobre</a></li>
             <li><a href="informações.html">Informações importates</a></li>
         </ul>
@@ -1126,7 +1122,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     
 </body>
 </html>
-
-
-
-
