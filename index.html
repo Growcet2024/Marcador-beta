@@ -337,13 +337,10 @@ function shareLocation() {
     // Verificando se o nome e o ID estão corretos e preparando a mensagem
 
 
+    // Mensagem=1 zap ajustada com Checkin+ 
 
-
-// Mensagem 1 zap ajustada
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
 const message = `*Checkin+*\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
-
-
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -351,50 +348,62 @@ const message = `*Checkin+*\nMarcador de Presença\n\nDeclaração de comparecim
 }
 
 
-
-   // Função para gerar o PDF
+  // Função para gerar o PDF
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    // Definir as margens
+    const margin = 20;  // 20mm = 2cm
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+
+    // Ajustando a área útil do documento (sem contar as margens)
+    const contentWidth = pageWidth - 2 * margin;
+    const contentHeight = pageHeight - 2 * margin;
+
+    // Dados para o PDF
     const coordinates = document.getElementById("coordinates").innerText;
     const address = document.getElementById("address").innerText;
     const timestamp = document.getElementById("timestamp").innerText;
-    const userName = localStorage.getItem("userName") || "Usuário";  // Usando o nome salvo no localStorage
+    const userName = localStorage.getItem("userName") || "Usuário";  // Nome salvo no localStorage
     const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
 
-// Mensagem 2 PDF ajustada
-const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `Declaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude},\n\nAplicativo disponível no Google Play`;
 
+    // Declaração- 1 PDF Checkin+
+    const title = "Checkin+";
+    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+    const message = `Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
 
+    // Desenhando as margens
+    doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
 
+    // Afastamento da margem esquerda (5mm de distância)
+    const textX = margin + 5;  // Ajuste do afastamento da margem esquerda (5mm)
 
-// Ajusta o tamanho da fonte para a frase
-doc.setFontSize(12);  // Tamanho normal para o corpo do texto
-doc.text(message, 10, 30, { maxWidth: 180 });
-
-// Agora, coloca a frase adicional com um tamanho menor
-doc.setFontSize(8);  // Tamanho pequeno para a frase
-doc.setFont("helvetica", "normal");  // Fonte normal (pode ser em itálico também)
-doc.text(additionalMessage, 10, 115, { maxWidth: 180 });
-
-
+    // Título do PDF
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
-    doc.text(title, 10, 20);
+    doc.text(title, textX, margin + 10);  // Usando textX para o afastamento
 
+    // Corpo do texto (mensagem principal)
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    const textStartY = 30;
-    const textWidth = 180;
-    doc.text(message, 10, textStartY, { maxWidth: textWidth });
+    doc.text(message, textX, margin + 20, { maxWidth: contentWidth });
 
+
+// Mensagem adicional (em tamanho menor)
+doc.setFontSize(8);  // Tamanho pequeno para a frase
+doc.setFont("helvetica", "normal");
+doc.text(additionalMessage, textX, margin + 105, { maxWidth: contentWidth }); // Ajuste o valor de Y para afastar mais
+
+
+    // Salvar o PDF gerado
     doc.save("Marcador_de_Presença.pdf");
 }
+
 
 
        // Bloco= 3 =
@@ -404,9 +413,6 @@ doc.text(additionalMessage, 10, 115, { maxWidth: 180 });
     window.open(googleMapsUrl, '_blank');
 }
      // Bloco= 3 = fim
-
-
-
 
 
 
@@ -822,65 +828,79 @@ function shareLocationHistory(index) {
     const userID = localStorage.getItem("userID");  // ID fixo
 
 
-// Declaração zap ajustada com Checkin+ no início
+   // Mensagem=2 zap ajustada com Checkin+ 
+
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `*Checkin+*\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+const message = `*Checkin+*\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
 
- 
-           // Função para gerar PDF a partir do histórico
-         async function generatePDFHistory(index) {
-         const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
 
-         // Ordenar os registros de forma decrescente (mais recente primeiro)
-         records.reverse();
+// Função para gerar PDF a partir do histórico (2ª parte)
+async function generatePDFHistory(index) {
+    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
 
-         const record = records[index];
+    // Ordenar os registros de forma decrescente (mais recente primeiro)
+    records.reverse();
 
-         const { jsPDF } = window.jspdf;
-         const doc = new jsPDF();
+    const record = records[index];
 
-         // Obtenção do nome e ID fixos
-         const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
-         const userID = localStorage.getItem("userID");  // ID fixo
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Definir as margens
+    const margin = 20;  // 20mm = 2cm
+    const textX = margin + 5;  // Afastamento de 5mm da margem esquerda
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+
+    // Ajustando a área útil do documento (sem contar as margens)
+    const contentWidth = pageWidth - 2 * margin;
+    const contentHeight = pageHeight - 2 * margin;
+
+    // Desenhando a margem (borda de 2cm ao redor)
+    doc.rect(margin, margin, contentWidth, contentHeight); 
+
+    // Obtenção do nome e ID fixos
+    const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
+    const userID = localStorage.getItem("userID");  // ID fixo
+
+    // Declaração- 2 pdf Checkin+
+    const title = "Checkin+";
+    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
+    const message = `Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+
+    // Título do PDF
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(title, textX, margin + 10);  // Afastamento de 5mm da margem esquerda
+
+    // Corpo do texto (mensagem principal)
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.text(message, textX, margin + 20, { maxWidth: contentWidth });
 
 
 
-        // Declaração PDF ajustada
-const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estive aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+  // Mensagem adicional (em menor tamanho)
+// Calculando a posição vertical do link
+const linkYPosition = margin + 100;  // Aqui é onde o link do Google Maps está sendo colocado
 
-
-
-
-
-
-// Ajusta o tamanho da fonte para o corpo do texto
-doc.setFontSize(12);  // Tamanho normal para o corpo do texto
-doc.text(message, 10, 30, { maxWidth: 180 });
-
-// Ajuste do espaçamento vertical para a frase adicional
+// Mensagem adicional (em menor tamanho)
 doc.setFontSize(8);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");  // Fonte normal
-doc.text(additionalMessage, 10, 115, { maxWidth: 180 });  // Ajuste o valor de Y (130)
+
+// Ajuste da posição Y para a frase ficar abaixo do link
+const additionalMessageY = linkYPosition + 5;  // Adicionando 10mm de espaçamento entre o link e a frase
+
+doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth });
 
 
-         doc.setFont("helvetica", "bold");
-         doc.setFontSize(16);
-         doc.text(title, 10, 20);
-
-         doc.setFont("helvetica", "normal");
-         doc.setFontSize(12);
-         const textStartY = 30;
-         const textWidth = 180;
-         doc.text(message, 10, textStartY, { maxWidth: textWidth });
-
-         doc.save(`${userName}_Marcador_de_Presença.pdf`);
+    // Salvar o PDF gerado
+    doc.save(`${userName}_Marcador_de_Presença.pdf`);
 }
 
 
