@@ -650,32 +650,43 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 <!-- Local do mapa OpenStreetMap -->
         <div id="map" style="width: 100%; height: 300px;"></div>
 
+
+
         
-            <a href="index.html" class="btn-voltar">Atualizar mapa 🔄</a>
+          <div class="info-container" style="border: 1px solid #000; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+    <a href="index.html" class="btn-voltar">Atualizar mapa 🔄</a>
 
-        <div id="alerta-gps" style="display: none; background-color: #ffffff; color: #000; padding: 10px; text-align: center; font-weight: bold;">
-            ⚠️ Ative a localização
-        </div>
+    <div id="alerta-gps" style="display: none; background-color: #ffffff; color: #000; padding: 10px; text-align: center; font-weight: bold;">
+        ⚠️ Ative a localização
+    </div>
+
+    <!-- Coordenadas -->
+    <div class="field">
+        <h2>Coordenadas</h2>
+        <p id="coordinates">Latitude: -, Longitude: -</p>
+    </div>
+
+    <!-- Data e Hora -->
+    <div class="field">
+        <h2>Data e Hora</h2>
+        <p id="timestamp">Local</p>
+    </div>
+
+    <!-- Endereço -->
+    <div class="field">
+        <h2>Endereço</h2>
+        <p id="address">Local</p>
+    </div>
+</div>
+
         
 
-        <!-- Coordenadas -->
-        <div class="field">
-            <h2>Coordenadas</h2>
-            <p id="coordinates">Latitude: -, Longitude: -</p>
-        </div>
 
-        <!-- Data e Hora -->
-        <div class="field">
-            <h2>Data e Hora</h2>
-            <p id="timestamp">Local</p>
-        </div>
+        
 
-        <!-- Endereço -->
-        <div class="field">
-            <h2>Endereço</h2>
-            <p id="address">Local</p>
-        </div>
 
+
+        
         <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
         <div class="description-container">
             <textarea id="description" placeholder="Adicione uma descrição (opcional)"></textarea>
@@ -1130,6 +1141,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     
 </body>
 </html>
+
 
 
 
