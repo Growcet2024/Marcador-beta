@@ -4,7 +4,7 @@
     <!-- Cabeçalho da Página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcador de Presença</title>
+    <title>Registro de Presença</title>
 
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
-    <title>Marcador de Presença</title>
+    <title>Registro de Presença</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -340,7 +340,7 @@ function shareLocation() {
     // Mensagem=1 zap ajustada com Checkin+ 
 
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `*Checkin+*\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+const message = `*Checkin+*\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -375,7 +375,10 @@ async function generatePDF() {
     // Declaração- 1 PDF Checkin+
     const title = "Checkin+";
     const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-    const message = `Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+
+
+
 
     // Desenhando as margens
     doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
@@ -397,7 +400,7 @@ async function generatePDF() {
 // Mensagem adicional (em tamanho menor)
 doc.setFontSize(8);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");
-doc.text(additionalMessage, textX, margin + 105, { maxWidth: contentWidth }); // Ajuste o valor de Y para afastar mais
+doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); // Ajuste afastar a frase: Aprecisão da localização...
 
 
     // Salvar o PDF gerado
@@ -621,16 +624,17 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <!-- Cabeçalho Tela principal-->
     <header>
 
-        <h1 style="text-align: left; font-size: 20px;">Checkin+</h1>
-<h2 style="text-align: left; font-size: 15px;">Marcador de Presença</h2>
+        <h1 style="text-align: center; font-size: 22px;">Checkin+</h1>
+
 
     </header>
 
     <!-- Container Principal -->
     <div class="container">
+
+        <h2 style="text-align: left; font-size: 15px;">Registro de Presença</h2>
         <!-- Nome da Rua -->
         <h2 id="road-name">Rua: Local Carregando!</h2>
-        
         
 
         <!-- Boco Mapa tipo iFrame -->
@@ -828,7 +832,7 @@ function shareLocationHistory(index) {
    // Mensagem=2 zap ajustada com Checkin+ 
 
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `*Checkin+*\n\nMarcador de Presença\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+const message = `*Checkin+*\n\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -868,7 +872,7 @@ async function generatePDFHistory(index) {
     // Declaração- 2 pdf Checkin+
     const title = "Checkin+";
     const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-    const message = `Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
 
     // Título do PDF
     doc.setFont("helvetica", "bold");
@@ -891,7 +895,7 @@ doc.setFontSize(8);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");  // Fonte normal
 
 // Ajuste da posição Y para a frase ficar abaixo do link
-const additionalMessageY = linkYPosition + 5;  // Adicionando 10mm de espaçamento entre o link e a frase
+const additionalMessageY = linkYPosition + 10;  // Adicionando 10mm de espaçamento entre o link e a frase: Aprecisão da localização....
 
 doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth });
 
