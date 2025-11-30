@@ -71,65 +71,67 @@
             box-sizing: border-box;
         }
 
-        /* Estilos dos Botões */
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            box-sizing: border-box;
-        }
 
-        button:hover {
-            background-color: #95acee;
-            transform: scale(1.02);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        button:nth-child(1) {
-            background: linear-gradient(to right, #4CAF50, #81C784);
-            color: white;
-        }
-
-        button:nth-child(2) {
-            background: linear-gradient(to right, #0357cd, #2196f3); /* Gradiente de cor Salvar */
-            color: white;
-        }
-
-        button:nth-child(3) {
-            background: linear-gradient(to right, #FFC107, #FFD54F);
-            color: #ffffff;
-        }
-
-        button:nth-child(4) {
-            background: linear-gradient(to right, #e52633, #0357cd);
-            color: white;
+/* =========================
+   Botões padronizados com efeito glossy e centralizados
+   ========================= */
+button {
+    width: 90%;                   /* Largura menor que 100% */
+    display: block;               /* Garante que margin auto funcione */
+    margin: 10px auto;            /* Centraliza horizontalmente + espaçamento vertical */
+    padding: 10px;                /* Mantém altura do botão */
+    border: 2px solid #5fa5b4;   /* Borda fina moderna */
+    border-radius: 25px;          /* Arredondado */
+    font-size: 16px;              /* Tamanho da fonte */
+    font-weight: bold;            /* Peso da fonte */
+    cursor: pointer;
+    position: relative;           /* Necessário para o efeito glossy */
+    overflow: hidden;             /* Brilho não vaza */
+    color: white;                 /* Cor do texto */
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Gradiente base */
+    transition: background 0.3s, transform 0.2s;
+    box-sizing: border-box;
+}
 
 
-        }
+/* Brilho plástico no topo */
+button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00); /* Transparência para efeito glossy */
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    pointer-events: none;
+}
 
-        .history-buttons button:nth-child(1) {
-    background: linear-gradient(to right, #25D366, #66E592); /* Verde do WhatsApp */
-    color: white;
+/* Hover */
+button:hover {
+    background: linear-gradient(to bottom, #0393bb, #02779e); /* Gradiente mais claro ao passar o mouse */
+    transform: scale(1.02);
+}
+
+/* Clique */
+button:active {
+    transform: scale(0.98);
+}
+
+/* Histórico de botões (separados por cores para identificar ação) */
+.history-buttons button:nth-child(1) {
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Verde WhatsApp */
 }
 
 .history-buttons button:nth-child(2) {
-    background: linear-gradient(to right, #ff9800, #ffb74d); /* Laranja do PDF */
-    color: white;
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Laranja PDF */
 }
 
 .history-buttons button:nth-child(3) {
-    background: linear-gradient(to right, #d32f2f, #d32f2f); /* Vermelho para Apagar */
-    color: white;
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Vermelho Apagar */
 }
+
 
         /* Estilos dos Campos de Coordenadas, Data/Hora e Endereço */
         .field {
@@ -171,8 +173,6 @@
     background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
     backdrop-filter: blur(6px);
 }
-
-
 
 
     </style>
@@ -621,14 +621,15 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 <body>
 
 
+
+
+
     <!-- Cabeçalho Tela principal-->
     <header>
 
-     
-    <h1 style="text-align: center; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
+  <h1 style="text-align: center; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
     Checkin+
 </h1>
-
 
     </header>
 
@@ -636,6 +637,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <div class="container">
 
         <h2 style="text-align: left; font-size: 15px;">Registro de Presença 📍</h2>
+
         <!-- Nome da Rua -->
         <h2 id="road-name">Rua: Local Carregando!</h2>
         
@@ -650,8 +652,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <div id="map" style="width: 100%; height: 300px;"></div>
 
 
-
-        <div class="info-container" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
+           <div class="info-container" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
 
     <a href="index.html" class="btn-voltar">Atualizar mapa 🔄</a>
 
@@ -678,19 +679,16 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     </div>
 </div>
 
-        
-
-
-        
 
 
 
-        
+
         <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
         <div class="description-container">
             <textarea id="description" placeholder="Adicione uma descrição (opcional)"></textarea>
             <button class="button" onclick="saveRecord()">Salvar Registro</button>
         </div>
+
 
         <!-- Declaração de comparecimento na tela -->
 
@@ -726,6 +724,12 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         }
     </style>
 </body>
+
+
+
+
+
+
 
 
 
@@ -941,6 +945,8 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 <body>
 
 
+
+
   <!-- Campo para o Nome do Usuário -->
  
   <!-- Carregando o Font Awesome -->
@@ -959,17 +965,17 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     <div class="container" style="margin-bottom: 2px;"> <!-- Linha adicionada para o espaçamento -->
     <div style="padding: 10px; max-width: 600px; margin: auto;">
         <!-- Input do Nome -->
-        <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none; width: 100%; padding: 8px; margin-bottom: 10px;">
+        <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none; width: 95%; padding: 8px; margin: 10px;">
         
         <!-- Nome do Usuário exibido e Ícone de Lápis para Editar -->
         <div style="display: flex; align-items: center; justify-content: space-between;">
             <span id="user-name-display" style="font-weight: bold; display: none;"></span>
             <!-- Ícone de Lápis (apenas o ícone, sem botão) -->
-            <i id="edit-name-button" onclick="editUserName()" class="fas fa-pencil-alt" style="font-size: 24px; color: #fdfefe; cursor: pointer; background: none; border: none;"></i>
+            <i id="edit-name-button" onclick="editUserName()" class="fas fa-pencil-alt" style="font-size: 24px; color: #02779e; cursor: pointer; background: none; border: none;"></i>
         </div>
 
         <!-- Botão Salvar -->
-        <button id="save-name-button" onclick="saveUserName()" class="button" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 15px; background-color: #28a745;">
+        <button id="save-name-button" onclick="saveUserName()" class="button" style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a745;">
             Salvar
         </button>
     </div>
@@ -990,25 +996,18 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     }
 
 
-      /* Cores botões principais*/
-    .button {
-        background: linear-gradient(to right, #0357cd, #2196f3);  /* Gradiente de cor de fundo */
-        color: white;
-        border: none;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 15px; /* Bordas arredondadas para outros botões */
-    }
-    .button:hover {
-        background-color: #2196f3;
-    }
+      /* Cores botões principais* CSS inicio controla/
+
     
-    /* Estilos para os botões específicos Salvar e Editar */
+/* Estilos para os botões específicos Salvar e Editar */
     #save-name-button, #edit-name-button {
         border-radius: 15px; /* Botões arredondados */
         font-weight: bold;
         text-transform: uppercase;
-    }
+
+    }-sizing: border-box;
+}
+
 
     #save-name-button {
         background-color: #28a745; /* Verde para Salvar */
@@ -1026,6 +1025,10 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
         background-color: #e0a800;
     }
 
+
+
+
+
 /* Estilos para os botões do histórico */
 .history-buttons {
     display: flex;
@@ -1038,7 +1041,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 90%;
     padding: 10px;
     border: none;
     border-radius: 15px;
@@ -1046,12 +1049,17 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
+
+    margin-left: auto;   /* Centraliza à esquerda */
+    margin-right: auto;  /* Centraliza à direita */
 }
+
 
 .history-buttons button i {
     margin-right: 8px;  /* Espaço entre o ícone e o texto */
     font-size: 18px;
 }
+
 
 
 /* Ícone do Menu Hambúrguer */
@@ -1140,11 +1148,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     
 </body>
 </html>
-
-
-
-
-
-
-
-
