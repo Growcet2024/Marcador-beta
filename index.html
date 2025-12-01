@@ -692,10 +692,11 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
         <!-- Declaração de comparecimento na tela -->
 
- <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
+     <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
        Já precisou provar que esteve em um lugar, como uma consulta ou compromisso importante? Com o Checkin+, você registra sua presença com um clique! O app gera um comprovante com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
      </p>
-        
+ 
+
         <!-- Alteração: Botão para abrir o local no Google Maps -->
         <button class="button" onclick="openGoogleMaps()">Google Maps</button>
 
@@ -703,7 +704,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <button class="button" onclick="shareLocation()">Enviar texto WhatsApp</button>
 
         <!-- Gerar PDF -->
-        <button class="button" onclick="generatePDF()">Enviar, baixar PDF</button>
+        <button class="button" onclick="generatePDF()">PDF - Enviar / baixar</button>
 
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
@@ -724,11 +725,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         }
     </style>
 </body>
-
-
-
-
-
 
 
 
@@ -780,6 +776,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 <script>
+
     // Função para alternar a visibilidade do histórico
 
     function toggleHistory() {
@@ -815,7 +812,7 @@ records.forEach((record, index) => {
         <i class="fas fa-share"></i> Enviar texto WhatsApp
     </button>
     <button class="pdf-btn" onclick="generatePDFHistory(${index})">
-        <i class="fas fa-file-pdf"></i> Enviar, baixar PDF
+        <i class="fas fa-file-pdf"></i> PDF - Enviar / baixar
     </button>
     <button class="delete-btn" onclick="deleteRecord(${index})">
         <i class="fas fa-trash"></i> Apagar
@@ -1148,6 +1145,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     
 </body>
 </html>
-
-
-
