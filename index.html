@@ -178,6 +178,8 @@ button:active {
 }
 
 
+
+
     </style>
 
 <script>
@@ -619,6 +621,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     };
 </script>
 
+
 </head>
 
 <body>
@@ -629,13 +632,12 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
     <!-- Cabeçalho Tela principal-->
     <header>
-
   <h1 style="text-align: center; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
     Checkin+
-</h1>
-
+  </h1>
     </header>
 
+    <!-- Inicio conteiner=1 principal -->
     <!-- Container Principal -->
     <div class="container">
 
@@ -683,18 +685,18 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 </div>
 
 
-
-        <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
+  <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
         <div class="description-container">
             <textarea id="description" placeholder="Adicione uma descrição (opcional)"></textarea>
             <button class="button" onclick="saveRecord()">Salvar Registro</button>
         </div>
+        
 
 
         <!-- Declaração de comparecimento na tela -->
 
      <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
-       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera uma declaração comparecimento com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
+       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera uma declaração de comparecimento com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
      </p>
  
 
@@ -710,10 +712,43 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
 
+
+      
+
+  <!-- BLOCO EDITAR NOME DE USUARIO -->
+<div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
+
+    <!-- Input do Nome -->
+    <input type="text" id="user-name" placeholder="Digite seu nome" 
+           style="display: none; width: 95%; padding: 10px; margin: 10px;">
+
+    <!-- Nome exibido + ícone -->
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span id="user-name-display" style="font-weight: bold; display: none;"></span>
+        <i id="edit-name-button" onclick="editUserName()" 
+           class="fas fa-pencil-alt" 
+           style="font-size: 24px; color: #02779e; cursor: pointer;"></i>
     </div>
 
+    <!-- Botão Salvar -->
+    <button id="save-name-button" onclick="saveUserName()" class="button" 
+            style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
+        Salvar
+    </button>
 
-    <!-- Rodapé -->
+</div>
+
+ 
+
+
+
+  
+
+
+      <!-- Fim conteúdo conteiner principal -->
+
+
+    <!-- abaixo dos botões-->
     <!-- Não é mais necessário, já que movemos a frase para dentro do container -->
 
     <!-- CSS para estilizar a frase de copyright -->
@@ -722,7 +757,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
             font-size: 13px; /* Ajuste o tamanho da fonte aqui */
             color: #000000; /* Cor do texto */
             text-align: left; /* Centralizar o texto */
-            margin-top: 20px; /* Distância do conteúdo acima */
+            margin-top: 90px; /* Distância do conteúdo acima */
         }
     </style>
 </body>
@@ -730,8 +765,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-  <!-- PARTE DO HISTÓRICO -->
-
+<!-- PARTE DO HISTÓRICO -->
+<!-- Inicio conteine=2 histórico -->
 <!-- Container para Exibir o Histórico de Presença -->
 <div id="history-container" style="display: none;">
     <h2><center>Histórico de Presença</h2>
@@ -739,11 +774,12 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <!-- Lista de registros será carregada aqui -->
     </div>
 </div>
+<!-- Fim conteine=2 histórico -->
+
+
 
 <!-- Estilos CSS -->
 <style>
-
-
 
 /* Estilos do Container do Histórico */
 
@@ -776,9 +812,11 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 </style>
 
 
+
+
+
 <script>
-
-
+    <!-- Inicio conteúdo histórico -->
     // Função para alternar a visibilidade do histórico
 
     function toggleHistory() {
@@ -956,11 +994,13 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             // Recarregar o histórico com a lista atualizada
             toggleHistory();
 }
+
+    <!-- Fim conteúdo histórico -->
     </script>
+
+
 </head>
 <body>
-
-
 
 
   <!-- Campo para o Nome do Usuário -->
@@ -976,34 +1016,24 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 </head>
 
 
-<!-- Campo para o Nome do Usuário -->
-<div class="container">
-    <div class="container" style="margin-bottom: 2px;"> <!-- Linha adicionada para o espaçamento -->
-    <div style="padding: 10px; max-width: 600px; margin: auto;">
-        <!-- Input do Nome -->
-        <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none; width: 95%; padding: 10px; margin: 10px;">
-        
-        <!-- Nome do Usuário exibido e Ícone de Lápis para Editar -->
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <span id="user-name-display" style="font-weight: bold; display: none;"></span>
-            <!-- Ícone de Lápis (apenas o ícone, sem botão) -->
-            <i id="edit-name-button" onclick="editUserName()" class="fas fa-pencil-alt" style="font-size: 24px; color: #02779e; cursor: pointer; background: none; border: none;"></i>
-        </div>
 
-        <!-- Botão Salvar -->
-        <button id="save-name-button" onclick="saveUserName()" class="button" style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
-            Salvar
-        </button>
-    </div>
-</div>
+
+<!-- Inicio conteiner=3 usuário -->
+<!-- Campo para o Nome do Usuário -->
+
+
+<!-- Inicio conteiner=3 usuário -->
+
+
+
 
 
 
 <!-- Estilos CSS -->
 <style>
 
-     /* Cor container principal */
 
+     /* CSS container Usuário */
     /* Estilos para os campos de nome de usuário e botões dentro do container */
     .container {
         padding: 10px;
@@ -1015,7 +1045,6 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 15px; /* Bordas arredondadas */
     }
-
 
       /* Cores botões principais* CSS inicio controla/
 
@@ -1146,9 +1175,6 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     <span class="menu-hamburguer">☰</span>
     <div class="menu-lateral">
         <ul>
-           
-           
-
             <li><a href="sobre.html">Sobre</a></li>
             <li><a href="informações.html">Informações importates</a></li>
         </ul>
