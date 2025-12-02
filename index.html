@@ -59,6 +59,8 @@
             border-radius: 8px;
         }
 
+
+
         /* Estilos da Área de Texto (Descrição) */
         textarea, input[type="text"] {
             width: 100%;
@@ -681,8 +683,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-
-
         <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
         <div class="description-container">
             <textarea id="description" placeholder="Adicione uma descrição (opcional)"></textarea>
@@ -690,10 +690,10 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         </div>
 
 
-          <!-- Declaração de comparecimento na tela -->
+        <!-- Declaração de comparecimento na tela -->
 
      <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
-       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera uma declaração de comparecemento com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
+       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera uma declaração comparecimento com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
      </p>
  
 
@@ -847,7 +847,7 @@ function shareLocationHistory(index) {
    // Mensagem=2 zap ajustada com Checkin+ 
 
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `*Checkin+*\n\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+const message = `*Checkin+*\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -1145,7 +1145,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     
 </body>
 </html>
-
-
-
-
