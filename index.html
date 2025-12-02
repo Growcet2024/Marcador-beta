@@ -37,7 +37,8 @@
         header h1 {
             margin: 0;
             font-size: 20px;
-        }
+        } 
+
 
         /* Estilos do Container Principal */
         .container {
@@ -48,6 +49,16 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
         }
+
+
+        /* CSS CONTEINE PRINCIPAL*/
+    .container {
+        background-color: #F0F4F8; /* Cor fundo conteúdo geral conteiner *conteudo da tela /
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px; /* Bordas arredondadas */
+    }  
+
+
 
         .container h2 {
             font-size: 18px;
@@ -64,8 +75,7 @@
         /* Estilos da Área de Texto (Descrição) */
         textarea, input[type="text"] {
             width: 100%;
-            
-            padding: 4px;
+            padding: 2px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -176,6 +186,59 @@ button:active {
     background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
     backdrop-filter: blur(6px);
 }
+
+
+
+<!-- CSS HISTORICO-->
+
+#/* Estilos do Container do Histórico */
+#history-container {
+    padding: 10px;
+    margin: 10px auto 0 auto; /* topo, auto, baixo, auto */
+    max-width: 600px;
+    background-color: #f0f4f8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+/* Cada registro da lista */
+.record {
+    background-color: #f0f4f8;
+    border: 2px solid #ddd;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões dentro do histórico */
+.history-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.history-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin: 0 auto;
+}
+
+.history-buttons button i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
 
 
 
@@ -715,7 +778,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
       
 
-  <!-- BLOCO EDITAR NOME DE USUARIO -->
+  <!-- BLOCO DO ANTIGO CONTAINER 3 (agora dentro do container 1) -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
     <!-- Input do Nome -->
@@ -778,38 +841,13 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-<!-- Estilos CSS -->
-<style>
 
-/* Estilos do Container do Histórico */
 
-#history-container {
-    padding: 10px;
-    max-width: 600px; /* Tamanho igual ao do container principal */
-    margin-left: auto; /* Centraliza o conteúdo horizontalmente */
-    margin-right: auto; /* Centraliza o conteúdo horizontalmente */
-    background-color: #f0f4f8;  fundo
-    box-shadow: 0 4px 8px  rgba(0, 0, 0, 0.1)
-    border-radius: 15px; /* Bordas arredondadas */
-}
 
-.record {
-        background-color: #f0f4f8; /* Cor conteúdo historico */
-        border: 2px solid #ddd; /* Borda do contorno do registro */
-        padding: 5px;
-        margin-bottom: 10px; /* Espaçamento entre os registros */
-        border-radius: 8px;  /* Arredondamento nas bordas */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra leve para destacar o registro */
-    }
 
-   
 
-/* Estilos para o histórico */
-#history-container {
-    margin-top: 10px; /* Adiciona um espaço acima do histórico */
-    padding: 0 1px; /* Ajuste para garantir que o conteúdo não fique colado nas laterais */
 
-</style>
+
 
 
 
@@ -1029,88 +1067,12 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 
 
 
+
+
+
+
 <!-- Estilos CSS -->
 <style>
-
-
-     /* CSS container Usuário */
-    /* Estilos para os campos de nome de usuário e botões dentro do container */
-    .container {
-        padding: 10px;
-        max-width: 600px; /* Limite de largura */
-        margin-top: 5px; /* Margem superior de 30px */
-
-        background-color: #f0f4f8; /* Cor fundo conteúdo geral conteiner *conteudo da tela /
-
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 15px; /* Bordas arredondadas */
-    }
-
-      /* Cores botões principais* CSS inicio controla/
-
-    
-/* Estilos para os botões específicos Salvar e Editar */
-    #save-name-button, #edit-name-button {
-        border-radius: 15px; /* Botões arredondados */
-        font-weight: bold;
-        text-transform: uppercase;
-
-    }-sizing: border-box;
-}
-
-
-    #save-name-button {
-        background-color: #28a745; /* Verde para Salvar */
-    }
-
-    #save-name-button:hover {
-        background-color: #218838;
-    }
-
-    #edit-name-button {
-        background-color: #ffc107; /* Amarelo para Editar */
-    }
-
-    #edit-name-button:hover {
-        background-color: #e0a800;
-    }
-
-
-
-
-
-/* Estilos para os botões do histórico */
-.history-buttons {
-    display: flex;
-    flex-direction: column;  /* Mantém os botões um abaixo do outro */
-    gap: 8px;  /* Espaçamento entre os botões */
-    margin-top: 10px;
-}
-
-.history-buttons button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-
-    margin-left: auto;   /* Centraliza à esquerda */
-    margin-right: auto;  /* Centraliza à direita */
-}
-
-
-.history-buttons button i {
-    margin-right: 8px;  /* Espaço entre o ícone e o texto */
-    font-size: 18px;
-}
-
-
 
 /* CSS menu */
 /* Ícone do Menu Hambúrguer */
@@ -1169,6 +1131,8 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     z-index: 1; /* Mantém o mapa abaixo do menu */
 
 </style>
+
+
 
 
 <body>
