@@ -64,7 +64,8 @@
         /* Estilos da Área de Texto (Descrição) */
         textarea, input[type="text"] {
             width: 100%;
-            padding: 5px;
+            
+            padding: 4px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -777,6 +778,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 <script>
 
+
     // Função para alternar a visibilidade do histórico
 
     function toggleHistory() {
@@ -807,15 +809,17 @@ records.forEach((record, index) => {
                     <p><strong>Data/Hora:</strong> ${record.timestamp}</p>
                     <div class="history-buttons">
 
+
+
                         <div class="history-buttons">
     <button class="share-btn" onclick="shareLocationHistory(${index})">
-        <i class="fas fa-share"></i> Enviar texto WhatsApp
+      Enviar texto WhatsApp
     </button>
     <button class="pdf-btn" onclick="generatePDFHistory(${index})">
-        <i class="fas fa-file-pdf"></i> PDF - Enviar / baixar
+       PDF - Enviar / baixar
     </button>
     <button class="delete-btn" onclick="deleteRecord(${index})">
-        <i class="fas fa-trash"></i> Apagar
+        Apagar
     </button>
 </div>
 
@@ -828,6 +832,21 @@ records.forEach((record, index) => {
             }
         }
     
+
+
+// Função delelar registros com confirmação
+window.deleteRecord = function(index) {
+    const confirmar = confirm("Tem certeza que deseja apagar este registro?");
+    if (!confirmar) return;
+
+    let records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+    records.splice(index, 1);
+    localStorage.setItem("presenceRecords", JSON.stringify(records));
+    alert("Registro apagado com sucesso!");
+    location.reload();
+};
+
+
 
        
 // Função para compartilhar no WhatsApp a partir do histórico
@@ -962,7 +981,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     <div class="container" style="margin-bottom: 2px;"> <!-- Linha adicionada para o espaçamento -->
     <div style="padding: 10px; max-width: 600px; margin: auto;">
         <!-- Input do Nome -->
-        <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none; width: 95%; padding: 8px; margin: 10px;">
+        <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none; width: 95%; padding: 10px; margin: 10px;">
         
         <!-- Nome do Usuário exibido e Ícone de Lápis para Editar -->
         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -972,22 +991,27 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
         </div>
 
         <!-- Botão Salvar -->
-        <button id="save-name-button" onclick="saveUserName()" class="button" style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a745;">
+        <button id="save-name-button" onclick="saveUserName()" class="button" style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
             Salvar
         </button>
     </div>
 </div>
 
 
+
 <!-- Estilos CSS -->
 <style>
+
+     /* Cor container principal */
 
     /* Estilos para os campos de nome de usuário e botões dentro do container */
     .container {
         padding: 10px;
         max-width: 600px; /* Limite de largura */
         margin-top: 5px; /* Margem superior de 30px */
-        background-color: #f0f4f8; /* Cor fundo conteúdo geral conteiner */
+
+        background-color: #f0f4f8; /* Cor fundo conteúdo geral conteiner *conteudo da tela /
+
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 15px; /* Bordas arredondadas */
     }
@@ -1059,6 +1083,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 
 
 
+/* CSS menu */
 /* Ícone do Menu Hambúrguer */
 .menu-hamburguer {
     font-size: 30px;
@@ -1115,6 +1140,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     z-index: 1; /* Mantém o mapa abaixo do menu */
 
 </style>
+
 
 <body>
     <span class="menu-hamburguer">☰</span>
