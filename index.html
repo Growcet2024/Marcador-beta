@@ -72,17 +72,18 @@
 
 
 
-        /* Estilos da Área de Texto (Descrição) */
+        /* IMPUT - Área de Texto (Descrição) */
         textarea, input[type="text"] {
             width: 100%;
             padding: 10px !important;  /* afastar o texto das bordas */
             height: 40px;              /* ajuste a altura para manter o tamanho original */
             margin: 10px 0;
             border: 1px solid #ccc;
-            border-radius: 8px;
+            border-radius: 10px;
             resize: none;
             font-size: 14px;
             box-sizing: border-box;
+            background-color: #fdfefe; /* 👈 Fundo secundário */
         }
 
 
@@ -241,19 +242,23 @@ button:active {
 }
 
 
+
 /* Input do Nome (caixa de digitação) */
 
 #user-name {
-    display: none;          /* Mantém oculto até ser ativado */
+    display: none;
     width: 90%;
     padding: 10px;
     margin: 10px auto;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 14px;
-    background-color: #f4faff; /* <<< COR DENTRO DA CAIXA */
+    background-color: #fcfcfc; !important;  /* COR levemente mais escura */
     box-sizing: border-box;
+    display: block !important;
 }
+
+
 
 
 
@@ -795,18 +800,12 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
       
 
-  <!-- BLOCO DO ANTIGO CONTAINER 3 (agora dentro do container 1) -->
+  <!-- BLOCO Imput NOME USUÁRIO -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
     <!-- Input do Nome -->
-  <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none;">
 
-
-
-
-
-
-
+    <input type="text" id="user-name" placeholder="Digite seu nome">
 
 
     <!-- Nome exibido + ícone -->
@@ -816,6 +815,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
            class="fas fa-pencil-alt" 
            style="font-size: 24px; color: #02779e; cursor: pointer;"></i>
     </div>
+
+
 
     <!-- Botão Salvar -->
     <button id="save-name-button" onclick="saveUserName()" class="button" 
