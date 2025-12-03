@@ -75,10 +75,11 @@
         /* Estilos da Área de Texto (Descrição) */
         textarea, input[type="text"] {
             width: 100%;
-            padding: 2px;
+            padding: 10px !important;  /* afastar o texto das bordas */
+            height: 40px;              /* ajuste a altura para manter o tamanho original */
             margin: 10px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
             resize: none;
             font-size: 14px;
             box-sizing: border-box;
@@ -238,6 +239,22 @@ button:active {
     margin-right: 8px;
     font-size: 18px;
 }
+
+
+/* Input do Nome (caixa de digitação) */
+
+#user-name {
+    display: none;          /* Mantém oculto até ser ativado */
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f4faff; /* <<< COR DENTRO DA CAIXA */
+    box-sizing: border-box;
+}
+
 
 
 
@@ -782,8 +799,15 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
     <!-- Input do Nome -->
-    <input type="text" id="user-name" placeholder="Digite seu nome" 
-           style="display: none; width: 95%; padding: 10px; margin: 10px;">
+  <input type="text" id="user-name" placeholder="Digite seu nome" style="display: none;">
+
+
+
+
+
+
+
+
 
     <!-- Nome exibido + ícone -->
     <div style="display: flex; align-items: center; justify-content: space-between;">
