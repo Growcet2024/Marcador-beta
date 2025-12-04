@@ -277,7 +277,7 @@ button:active {
 .menu-lateral {
     width: 250px;
     height: 100%;
-    background: linear-gradient(to right, #0357cd, #2196f3);  /* Cor fundo lateral direita */
+    background: linear-gradient(to right, #5fa5b4cc, #02779e);  /* Cor fundo lateral direita */
     color: white;
     position: fixed;
     top: 0;
@@ -795,20 +795,26 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
     <!-- Cabeçalho Tela principal-->
     <header>
+
   <h1 style="text-align: center; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
     Checkin+
   </h1>
+
     </header>
 
     <!-- Inicio conteiner=1 principal -->
     <!-- Container Principal -->
     <div class="container">
 
-        <h2 style="text-align: left; font-size: 15px;">Registro de Presença 📍</h2>
+
+        <h2 style="width: 98%; margin: 10px auto; text-align: left; font-size: 15px; color: #000;">
+        Registro de Presença 📍
+        </h2>
 
         <!-- Nome da Rua -->
-        <h2 id="road-name">Rua: Local Carregando!</h2>
-        
+        <h2 id="road-name" style="width: 98%; margin: 10px auto; text-align: left; font-size: 15px; color: #000;">
+        Rua: Local Carregando!
+        </h2>
 
         <!-- Boco Mapa tipo iFrame -->
           <!-- Exibindo o GIF de carregamento antes de carregar o mapa -->
