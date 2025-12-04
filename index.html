@@ -8,9 +8,8 @@
 
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
+    <!-- Carregando o Font Awesome Carrega ícones lápis-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 
     <title>Registro de Presença</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -244,7 +243,6 @@ button:active {
 
 
 /* Input do Nome (caixa de digitação) */
-
 #user-name {
     display: none;
     width: 100%;
@@ -259,6 +257,61 @@ button:active {
 }
 
 
+/* CSS menu */
+/* Ícone do Menu Hambúrguer */
+.menu-hamburguer {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100; /* Aumentamos para ficar sobre o mapa */
+    color: #000000; /* Os três traços */
+    background: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Menu Deslizante */
+.menu-lateral {
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(to right, #0357cd, #2196f3);  /* Cor fundo lateral direita */
+    color: white;
+    position: fixed;
+    top: 0;
+    right: -250px; /* Escondido inicialmente */
+    transition: right 0.3s ease;
+    z-index: 99; /* Aumentamos para ficar sobre o mapa */
+    padding-top: 60px;
+}
+
+/* Estilo da Lista do Menu */
+.menu-lateral ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-lateral ul li {
+    padding: 15px;
+    border-bottom: 1px solid #444;
+}
+
+.menu-lateral ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+}
+
+.menu-lateral ul li a:hover {
+    background: #444;
+}
+
+#map {
+    position: relative;
+    z-index: 1; /* Mantém o mapa abaixo do menu */
 
 
 
@@ -267,7 +320,33 @@ button:active {
 
 
 
+<!-- Estilos CSS -->
+
+    
     </style>
+
+
+<span class="menu-hamburguer">☰</span>
+<div class="menu-lateral">
+    <ul>
+        <li><a href="sobre.html">Sobre</a></li>
+        <li><a href="informações.html">Informações importates</a></li>
+    </ul>
+</div>
+
+<script>
+    const menuIcon = document.querySelector(".menu-hamburguer");
+    const menuLateral = document.querySelector(".menu-lateral");
+
+    menuIcon.addEventListener("click", () => {
+        if (menuLateral.style.right === "0px") {
+            menuLateral.style.right = "-250px";
+        } else {
+            menuLateral.style.right = "0px";
+        }
+    });
+</script>
+
 
 <script>
     /* Variáveis Globais */
@@ -714,9 +793,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 <body>
 
 
-
-
-
     <!-- Cabeçalho Tela principal-->
     <header>
   <h1 style="text-align: center; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
@@ -818,8 +894,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
            style="font-size: 24px; color: #02779e; cursor: pointer;"></i>
     </div>
 
-
-
     <!-- Botão Salvar -->
     <button id="save-name-button" onclick="saveUserName()" class="button" 
             style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
@@ -829,12 +903,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 </div>
 
  
-
-
-
-  
-
-
       <!-- Fim conteúdo conteiner principal -->
 
 
@@ -865,19 +933,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     </div>
 </div>
 <!-- Fim conteine=2 histórico -->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <script>
@@ -1060,132 +1115,8 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             toggleHistory();
 }
 
-    <!-- Fim conteúdo histórico -->
-    </script>
-
-
-</head>
-<body>
-
-
-  <!-- Campo para o Nome do Usuário -->
  
-  <!-- Carregando o Font Awesome -->
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-
-<!-- Carregando o Font Awesome -->
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-
-
-
-
-<!-- Inicio conteiner=3 usuário -->
-<!-- Campo para o Nome do Usuário -->
-
-
-<!-- Inicio conteiner=3 usuário -->
-
-
-
-
-
-
-
-
-
-
-<!-- Estilos CSS -->
-<style>
-
-/* CSS menu */
-/* Ícone do Menu Hambúrguer */
-.menu-hamburguer {
-    font-size: 30px;
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100; /* Aumentamos para ficar sobre o mapa */
-    color: #000000; /* Os três traços */
-    background: white;
-    border-radius: 5px;
-    padding: 5px 10px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Menu Deslizante */
-.menu-lateral {
-    width: 250px;
-    height: 100%;
-    background: linear-gradient(to right, #0357cd, #2196f3);  /* Cor fundo lateral direita */
-    color: white;
-    position: fixed;
-    top: 0;
-    right: -250px; /* Escondido inicialmente */
-    transition: right 0.3s ease;
-    z-index: 99; /* Aumentamos para ficar sobre o mapa */
-    padding-top: 60px;
-}
-
-/* Estilo da Lista do Menu */
-.menu-lateral ul {
-    list-style: none;
-    padding: 0;
-}
-
-.menu-lateral ul li {
-    padding: 15px;
-    border-bottom: 1px solid #444;
-}
-
-.menu-lateral ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-}
-
-.menu-lateral ul li a:hover {
-    background: #444;
-}
-
-#map {
-    position: relative;
-    z-index: 1; /* Mantém o mapa abaixo do menu */
-
-</style>
-
-
-
-
-<body>
-    <span class="menu-hamburguer">☰</span>
-    <div class="menu-lateral">
-        <ul>
-            <li><a href="sobre.html">Sobre</a></li>
-            <li><a href="informações.html">Informações importates</a></li>
-        </ul>
-    </div>
-
-    <script>
-        // Seleciona o ícone do menu e o menu lateral
-        const menuIcon = document.querySelector(".menu-hamburguer");
-        const menuLateral = document.querySelector(".menu-lateral");
-    
-        // Adiciona evento de clique para abrir/fechar o menu
-        menuIcon.addEventListener("click", () => {
-            if (menuLateral.style.right === "0px") {
-                menuLateral.style.right = "-250px"; // Fecha o menu
-            } else {
-                menuLateral.style.right = "0px"; // Abre o menu
-            }
-        });
     </script>
-    
+ 
 </body>
 </html>
-
