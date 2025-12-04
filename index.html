@@ -314,10 +314,6 @@ button:active {
 
 
 
-
-
-
-
 <!-- Estilos CSS -->
 
     
@@ -355,7 +351,21 @@ button:active {
     /* Funções JavaScript */
 
 
-    // Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
+
+
+    // fUNÇÃO percistencia
+
+    // BLOCO 0 – Solicitar persistência do armazenamento
+async function pedirPersistencia() {
+  if (navigator.storage && navigator.storage.persist) {
+    await navigator.storage.persist();
+  }
+}
+
+    
+
+    // BLOCO- 1 Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
+
 function generateRandomID() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let randomID = '';
@@ -365,7 +375,12 @@ function generateRandomID() {
     return randomID;
 }
 
-// Função para verificar se o nome e ID já foram salvos
+
+
+
+
+
+// BLOCO- 2 Função para verificar se o nome e ID já foram salvos
 function checkUserName() {
     const savedUserName = localStorage.getItem("userName");
     const savedUserID = localStorage.getItem("userID");
@@ -384,7 +399,8 @@ function checkUserName() {
 }
 
 
-// Função para salvar o nome do usuário e gerar um ID único
+
+// BLOCO- 3 Função para salvar o nome do usuário e gerar um ID único
 
 function saveUserName() {
     const userName = document.getElementById("user-name").value.trim();
@@ -405,6 +421,14 @@ function saveUserName() {
         alert("Por favor, digite um nome.");
     }
 }
+
+
+
+
+
+
+
+
 
 
 // Função para permitir editar o nome do usuário
@@ -1122,13 +1146,13 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             toggleHistory();
 }
 
- 
     </script>
+
+
+    <script>
+  pedirPersistencia();
+</script>
+
  
 </body>
 </html>
-
-
-
-
-
