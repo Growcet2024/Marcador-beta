@@ -57,8 +57,6 @@
         border-radius: 15px; /* Bordas arredondadas */
     }  
 
-
-
         .container h2 {
             font-size: 18px;
             color: #000000;
@@ -277,7 +275,7 @@ button:active {
 .menu-lateral {
     width: 250px;
     height: 100%;
-    background: linear-gradient(to right, #5fa5b4cc, #02779e);  /* Cor fundo lateral direita */
+    background: linear-gradient(to right, #02779ecc, #02779e);  /* Cor fundo lateral direita */
     color: white;
     position: fixed;
     top: 0;
@@ -443,6 +441,7 @@ function editUserName() {
                 document.getElementById("address").innerText = "Erro ao obter endereço.";
             });
     }
+
 
 // Bloco=2 = Alteração feita: A função updateMap foi modificada para usar Leaflet com OpenStreetMap
 function updateMap(lat, lon) {
@@ -889,11 +888,13 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
     <!-- Input do Nome -->
 
-    <input type="text" id="user-name" placeholder="Digite seu nome">
 
+  <!-- Input do Nome -->
+   <input type="text" id="user-name" placeholder="Digite seu nome">
 
     <!-- Nome exibido + ícone -->
-    <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 20px; margin-bottom: 10px;">
+
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
         <i id="edit-name-button" onclick="editUserName()" 
            class="fas fa-pencil-alt" 
@@ -1126,4 +1127,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
-
