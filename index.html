@@ -16,8 +16,6 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     
-<script src="/persistence.js"></script> <!-- NÃO MEXER -->
-
 
     <style>
         /* Estilos Globais */
@@ -901,19 +899,28 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
 
 
-      
+<!-- PARTE DO HISTÓRICO -->
+<!-- Inicio conteine=2 histórico -->
+<!-- Container para Exibir o Histórico de Presença -->
+<div id="history-container" style="display: none;">
+    <h2><center>Histórico de Presença</h2>
+    <div id="records-list" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; padding: 10px;">
+        <!-- Lista de registros será carregada aqui -->
+    </div>
+</div>
+<!-- Fim conteine=2 histórico -->
+
+
 
   <!-- BLOCO Imput NOME USUÁRIO -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
-
-    <!-- Input do Nome -->
 
 
   <!-- Input do Nome -->
    <input type="text" id="user-name" placeholder="Digite seu nome">
 
     <!-- Nome exibido + ícone -->
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 10px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 0px;">
 
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
         <i id="edit-name-button" onclick="editUserName()" 
@@ -928,8 +935,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     </button>
 
 </div>
-
- 
       <!-- Fim conteúdo conteiner principal -->
 
 
@@ -948,18 +953,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 </body>
 
 
-
-
-<!-- PARTE DO HISTÓRICO -->
-<!-- Inicio conteine=2 histórico -->
-<!-- Container para Exibir o Histórico de Presença -->
-<div id="history-container" style="display: none;">
-    <h2><center>Histórico de Presença</h2>
-    <div id="records-list" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; padding: 10px;">
-        <!-- Lista de registros será carregada aqui -->
-    </div>
-</div>
-<!-- Fim conteine=2 histórico -->
 
 
 <script>
@@ -1143,20 +1136,6 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 }
 
   </script>
-
-
-<script>
-     // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-2.
-document.addEventListener("DOMContentLoaded", async () => {
-  if (navigator.storage && navigator.storage.persist) {
-    const isPersisted = await navigator.storage.persist();
-    console.log(isPersisted
-      ? "✅ Armazenamento persistente garantido"
-      : "⚠️ Armazenamento pode ser limpo automaticamente pelo sistema");
-  }
-});
-  </script>
-
  
 </body>
 </html>
