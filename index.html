@@ -15,6 +15,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+    // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-1.
+<!-- ===================== PERSISTÊNCIA ===================== -->
+<script src="/persistence.js"></script> <!-- NÃO MEXER -->
+
+
     <style>
         /* Estilos Globais */
         body {
@@ -354,14 +359,6 @@ button:active {
 
 
     // fUNÇÃO percistencia
-
-    // BLOCO 0 – Solicitar persistência do armazenamento
-async function pedirPersistencia() {
-  if (navigator.storage && navigator.storage.persist) {
-    await navigator.storage.persist();
-  }
-}
-
     
 
     // BLOCO- 1 Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
@@ -917,7 +914,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
    <input type="text" id="user-name" placeholder="Digite seu nome">
 
     <!-- Nome exibido + ícone -->
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 20px; margin-bottom: 10px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 10px;">
 
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
         <i id="edit-name-button" onclick="editUserName()" 
@@ -1146,13 +1143,19 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             toggleHistory();
 }
 
-    </script>
+ 
+    // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-2.
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  if (navigator.storage && navigator.storage.persist) {
+    const isPersisted = await navigator.storage.persist();
+    console.log(isPersisted
+      ? "✅ Armazenamento persistente garantido"
+      : "⚠️ Armazenamento pode ser limpo automaticamente pelo sistema");
+  }
+});
 
-
-    <script>
-  pedirPersistencia();
-</script>
-
+  </script>
  
 </body>
 </html>
