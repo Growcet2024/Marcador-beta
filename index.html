@@ -374,23 +374,40 @@ function generateRandomID() {
 
 
 
-// BLOCO- 2 Função para verificar se o nome e ID já foram salvos
+// BLOCO-2
 function checkUserName() {
     const savedUserName = localStorage.getItem("userName");
     const savedUserID = localStorage.getItem("userID");
 
+    // Captura segura do botão
+    const editIdBtn = document.getElementById("edit-id-button");
+
     if (savedUserName && savedUserID) {
-        document.getElementById("user-name").style.display = "none";  // Esconde o campo de nome
-        document.getElementById("user-name-display").style.display = "inline";  // Exibe o nome do usuário
-        document.getElementById("user-name-display").innerText = `Usuário: ${savedUserName} (ID: ${savedUserID})`;  // Exibe o nome e ID
-        document.getElementById("save-name-button").style.display = "none";  // Esconde o botão de salvar
-        document.getElementById("edit-name-button").style.display = "inline";  // Exibe o botão de editar
+        document.getElementById("user-name").style.display = "none";
+        document.getElementById("user-name-display").style.display = "inline";
+        document.getElementById("user-name-display").innerText =
+            `Usuário: ${savedUserName} (ID: ${savedUserID})`;
+        document.getElementById("save-name-button").style.display = "none";
+        document.getElementById("edit-name-button").style.display = "inline";
+
+        // 👉 Mostra o botão EDITAR ID
+        if (editIdBtn) editIdBtn.style.display = "inline";
+
     } else {
-        document.getElementById("user-name").style.display = "inline";  // Exibe o campo de nome
-        document.getElementById("save-name-button").style.display = "inline";  // Exibe o botão de salvar
-        document.getElementById("edit-name-button").style.display = "none";  // Esconde o botão de editar
+
+        document.getElementById("user-name").style.display = "inline";
+        document.getElementById("save-name-button").style.display = "inline";
+        document.getElementById("edit-name-button").style.display = "none";
+
+        // 👉 Esconde o botão EDITAR ID
+        if (editIdBtn) editIdBtn.style.display = "none";
     }
 }
+
+
+
+
+
 
 
 
@@ -417,6 +434,39 @@ function saveUserName() {
 }
 
 
+
+
+// Função para abrir a edição do ID
+function editUserID() {
+    // Mostra a área de edição do ID
+    document.getElementById("edit-id-area").style.display = "block";
+
+    // Preenche o input com o ID atual
+    document.getElementById("user-id-input").value = localStorage.getItem("userID") || "";
+
+    // Esconde a exibição do nome/ID temporariamente
+    document.getElementById("user-name-display").style.display = "none";
+}
+
+// Função para salvar o novo ID
+function saveUserID() {
+    const newID = document.getElementById("user-id-input").value.trim();
+
+    // Validação: ID deve ter exatamente 8 caracteres
+    if (newID.length !== 8) {
+        alert("O ID deve ter 8 caracteres.");
+        return;
+    }
+
+    // Salva no localStorage
+    localStorage.setItem("userID", newID);
+
+    // Esconde a área de edição do ID
+    document.getElementById("edit-id-area").style.display = "none";
+
+    // Atualiza a interface com o novo ID
+    checkUserName();
+}
 
 
 
@@ -914,29 +964,51 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-  <!-- BLOCO Imput NOME USUÁRIO -->
+ <!-- BLOCO Input NOME USUÁRIO -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
-
-  <!-- Input do Nome -->
-   <input type="text" id="user-name" placeholder="Digite seu nome">
+    <!-- Input do Nome -->
+    <input type="text" id="user-name" placeholder="Digite seu nome">
 
     <!-- Nome exibido + ícone -->
     <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 0px;">
 
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
+
         <i id="edit-name-button" onclick="editUserName()" 
            class="fas fa-pencil-alt" 
            style="font-size: 24px; color: #02779e; cursor: pointer;"></i>
+
+        <i id="edit-id-button" onclick="editUserID()" 
+           class="fas fa-id-card"
+           style="font-size: 24px; color: #cc0000; cursor: pointer; display: none;"></i>
+
     </div>
 
-    <!-- Botão Salvar -->
+    <!-- Campo para editar o ID -->
+    <div id="edit-id-area" style="display:none; width:95%; margin:auto;">
+
+        <input type="text" id="user-id-input" placeholder="Digite o novo ID"
+            style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 10px;">
+
+        <button id="save-id-button" onclick="saveUserID()" class="button"
+            style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 15px; background-color: #cc0000;">
+            Salvar ID
+        </button>
+
+    </div>
+
+    <!-- Botão Salvar Nome -->
     <button id="save-name-button" onclick="saveUserName()" class="button" 
             style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
         Salvar
     </button>
 
 </div>
+
+
+
+
 
       <!-- Fim conteúdo conteiner principal -->
 
