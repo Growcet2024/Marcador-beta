@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-1.
-<!-- ===================== PERSISTÊNCIA ===================== -->
+    
 <script src="/persistence.js"></script> <!-- NÃO MEXER -->
 
 
@@ -1143,9 +1142,11 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             toggleHistory();
 }
 
- 
-    // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-2.
+  </script>
+
+
 <script>
+     // 👇 Armazenamento persistente resiste ao limpar historico e dados de site- Parte-2.
 document.addEventListener("DOMContentLoaded", async () => {
   if (navigator.storage && navigator.storage.persist) {
     const isPersisted = await navigator.storage.persist();
@@ -1154,8 +1155,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       : "⚠️ Armazenamento pode ser limpo automaticamente pelo sistema");
   }
 });
-
   </script>
+
  
 </body>
 </html>
