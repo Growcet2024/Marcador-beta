@@ -966,17 +966,17 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <!-- Nome exibido + ícone -->
     <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 0px;">
 
+        <!-- Ícone para editar nome usando Font Awesome -->
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
-
         <i id="edit-name-button" onclick="editUserName()" 
            class="fas fa-pencil-alt" 
            style="font-size: 18px; color: #02779e; cursor: pointer;"></i>
 
-      <i id="edit-id-button" onclick="editUserID()" 
-   class="fas fa-id-card"
-   style="font-size: 18px; color: #02779e !important; cursor: pointer; display: none;"></i>
-
-    </div>
+        <!-- Ícone para editar ID usando Font Awesome -->
+        <span id="edit-id-button" onclick="editUserID()" 
+        style="font-size: 18px; color: #02779e; cursor: pointer; display: none;">
+        ID
+        </span>
 
     <!-- Campo para editar o ID -->
     <div id="edit-id-area" style="display:none; width:95%; margin:auto;">
