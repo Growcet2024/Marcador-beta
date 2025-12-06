@@ -355,7 +355,7 @@ button:active {
 
 
 
-    // fUNÇÃO percistencia
+    // fUNÇÃO USUÁRIO ID
     
 
     // BLOCO- 1 Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
@@ -368,10 +368,6 @@ function generateRandomID() {
     }
     return randomID;
 }
-
-
-
-
 
 
 // BLOCO-2
@@ -406,11 +402,6 @@ function checkUserName() {
 
 
 
-
-
-
-
-
 // BLOCO- 3 Função para salvar o nome do usuário e gerar um ID único
 
 function saveUserName() {
@@ -436,7 +427,7 @@ function saveUserName() {
 
 
 
-// Função para abrir a edição do ID
+// BLOCO- 4 Função para abrir a edição do ID
 function editUserID() {
     // Mostra a área de edição do ID
     document.getElementById("edit-id-area").style.display = "block";
@@ -470,12 +461,7 @@ function saveUserID() {
 
 
 
-
-
-
-
-
-// Função para permitir editar o nome do usuário
+// BLOCO- 5 Função para permitir editar o nome do usuário
 function editUserName() {
     document.getElementById("user-name").style.display = "inline";
     document.getElementById("save-name-button").style.display = "inline";
@@ -483,6 +469,13 @@ function editUserName() {
     document.getElementById("edit-name-button").style.display = "none";
     document.getElementById("user-name").value = localStorage.getItem("userName");
 }
+
+
+
+
+
+
+  // fim Função usuário
 
     // Função para obter o endereço a partir das coordenadas
     function getAddressFromCoordinates(latitude, longitude) {
@@ -977,11 +970,11 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
         <i id="edit-name-button" onclick="editUserName()" 
            class="fas fa-pencil-alt" 
-           style="font-size: 24px; color: #02779e; cursor: pointer;"></i>
+           style="font-size: 18px; color: #02779e; cursor: pointer;"></i>
 
-        <i id="edit-id-button" onclick="editUserID()" 
-           class="fas fa-id-card"
-           style="font-size: 24px; color: #cc0000; cursor: pointer; display: none;"></i>
+      <i id="edit-id-button" onclick="editUserID()" 
+   class="fas fa-id-card"
+   style="font-size: 18px; color: #02779e !important; cursor: pointer; display: none;"></i>
 
     </div>
 
