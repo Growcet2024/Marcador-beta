@@ -41,23 +41,17 @@
         } 
 
 
-        /* Estilos do Container Principal */
-        .container {
-            padding: 10px;
-            max-width: 600px;
-            margin: auto;
-            background-color: #ffffff ;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-        }
-
-
-        /* CSS CONTEINE PRINCIPAL*/
-    .container {
-        background-color: #F0F4F8; /* Cor fundo conteúdo geral conteiner *conteudo da tela /
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 15px; /* Bordas arredondadas */
-    }  
+        /* CSS COR CONTEINE PRINCIPAL*/
+       .container {
+    padding: 10px;           /* espaço interno lateral e superior */
+    padding-bottom: 0px;    /* espaço interno inferior que você quer */
+    max-width: 600px;
+    margin: auto;            /* centraliza horizontalmente */
+    background-color: #f0f4f8;  /* cor de fundo tela principal */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    margin-bottom: 20px;            /* margem inferior externa */
+}
 
         .container h2 {
             font-size: 18px;
@@ -157,23 +151,9 @@ button:active {
             color: #333;
         }
 
-        /* Estilos do Rodapé */
-        footer {
-            text-align: left;
-            padding: 10px;
-            background-color: #f9f9f9;
-            color: #000000;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
+       
 
-        footer p {
-            font-size: 10px; /* Alterado para 40px conforme pedido */
-        }
-
-
-/* 1 - Popup transparente com efeito vidro (recomendado) */
+/* 1 - Popup transparente com efeito vidro (recomendado) Eu estou aqui */
 /* Fundo da caixa da popup */
 .leaflet-popup-content-wrapper {
     background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
@@ -206,7 +186,7 @@ button:active {
 .record {
     background-color: #f0f4f8;
     border: 2px solid #ddd;
-    padding: 5px;
+    padding: 25px;
     margin-bottom: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -318,6 +298,7 @@ button:active {
 
 <!-- Estilos CSS -->
 
+
     
     </style>
 
@@ -353,11 +334,8 @@ button:active {
     /* Funções JavaScript */
 
 
-
-
     // fUNÇÃO USUÁRIO ID
     
-
     // BLOCO- 1 Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
 
 function generateRandomID() {
@@ -401,7 +379,6 @@ function checkUserName() {
 }
 
 
-
 // BLOCO- 3 Função para salvar o nome do usuário e gerar um ID único
 
 function saveUserName() {
@@ -423,8 +400,6 @@ function saveUserName() {
         alert("Por favor, digite um nome.");
     }
 }
-
-
 
 
 // BLOCO- 4 Função para abrir a edição do ID
@@ -460,7 +435,6 @@ function saveUserID() {
 }
 
 
-
 // BLOCO- 5 Função para permitir editar o nome do usuário
 function editUserName() {
     document.getElementById("user-name").style.display = "inline";
@@ -469,10 +443,6 @@ function editUserName() {
     document.getElementById("edit-name-button").style.display = "none";
     document.getElementById("user-name").value = localStorage.getItem("userName");
 }
-
-
-
-
 
 
   // fim Função usuário
@@ -609,8 +579,6 @@ async function generatePDF() {
     const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
 
 
-
-
     // Desenhando as margens
     doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
 
@@ -639,7 +607,6 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 }
 
 
-
        // Bloco= 3 =
          // Função botão ver no google mapas - adicionado
          function openGoogleMaps() {
@@ -647,7 +614,6 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
     window.open(googleMapsUrl, '_blank');
 }
      // Bloco= 3 = fim
-
 
 
    // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
@@ -699,7 +665,6 @@ L.marker([currentLatitude, currentLongitude]).addTo(map)
     .openPopup();
 
 
-
 // Círculo de precisão 50 metros
 // precisão real por GPS
 let gpsAccuracy = position.coords.accuracy;
@@ -716,7 +681,6 @@ L.circle([currentLatitude, currentLongitude], {
     weight: 1
 }).addTo(map);
 
-    
                 // Corrige o redimensionamento do mapa após a exibição
                 map.invalidateSize();
 
@@ -737,7 +701,6 @@ L.circle([currentLatitude, currentLongitude], {
         hideLoading(); // Garante que o GIF seja escondido em caso de erro
     }
 }
-
 
 
 // Função para exibir o GIF de carregamento
@@ -832,8 +795,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 // Bloco mapa na tela fim
 
 
-
-
     // Função para tocar um som
     function playSound(soundFile) {
         const audio = new Audio(soundFile);
@@ -845,9 +806,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         checkUserName();  // Verificar e carregar o nome do usuário salvo
         trackLocation();   // Rastrear a localização do usuário
     };
+
 </script>
-
-
 </head>
 <body>
 
@@ -881,17 +841,17 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Carregando..." style="width: 100px; height: 100px;">
 </div>
 
-<!-- Local do mapa OpenStreetMap -->
+    <!-- Local do mapa OpenStreetMap -->
         <div id="map" style="width: 100%; height: 300px;"></div>
 
 
-
-
-
+    <!-- Borda em volta conteudo -->
            <div class="info-container" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
 
+    <!-- Atualizar página -->
     <a href="index.html" class="btn-voltar">Atualizar mapa 🔄</a>
 
+     <!-- Alerta ativar localização -->
     <div id="alerta-gps" style="display: none; background-color: #ffffff; color: #000; padding: 10px; text-align: center; font-weight: bold;">
         ⚠️ Ative a localização
     </div>
@@ -922,7 +882,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
             <button class="button" onclick="saveRecord()">Salvar Registro</button>
         </div>
         
-
 
         <!-- Declaração de comparecimento na tela -->
 
@@ -999,14 +958,13 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 </div>
 
-
-
-
+      <!-- Linha separadora fim da página cinza -->
+      <hr style="width: 75%; margin: 20px auto; border: 1px solid #ccc;">
 
       <!-- Fim conteúdo conteiner principal -->
 
-      <!-- Início conteúdo conteiner histórico -->
 
+      <!-- Início conteúdo conteiner histórico -->
 <script>
     <!-- Inicio conteúdo histórico -->
     // Função para alternar a visibilidade do histórico
@@ -1076,9 +1034,7 @@ window.deleteRecord = function(index) {
     location.reload();
 };
 
-
-
-       
+     
 // Função para compartilhar no WhatsApp a partir do histórico
 function shareLocationHistory(index) {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
@@ -1186,6 +1142,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
             // Recarregar o histórico com a lista atualizada
             toggleHistory();
 }
+
 
   </script>
  
