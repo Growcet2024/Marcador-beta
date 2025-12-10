@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <!-- Carregando o Font Awesome Carrega ícones lápis-->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 
     <title>Registro de Presença</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -447,6 +451,26 @@ function editUserName() {
 
   // fim Função usuário
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Função para obter o endereço a partir das coordenadas
     function getAddressFromCoordinates(latitude, longitude) {
         const apiUrl = `https://us1.locationiq.com/v1/reverse?key=pk.73c7ec951f7e0c38e842f740a1a63917&lat=${latitude}&lon=${longitude}&format=json`;
@@ -607,6 +631,20 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
        // Bloco= 3 =
          // Função botão ver no google mapas - adicionado
          function openGoogleMaps() {
@@ -614,6 +652,18 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
     window.open(googleMapsUrl, '_blank');
 }
      // Bloco= 3 = fim
+
+
+
+
+
+
+
+
+
+
+
+
 
 
    // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
@@ -795,6 +845,79 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 // Bloco mapa na tela fim
 
 
+
+
+
+
+
+
+
+
+
+// Função COMPLETA para gerar o PDF do mapa
+
+async function generateMapPDF() {
+    const { jsPDF } = window.jspdf;
+
+    // Seleciona o mapa
+    const mapElement = document.getElementById("map");
+
+    // Captura o mapa como imagem
+    const canvas = await html2canvas(mapElement, {
+        useCORS: true,
+        scale: 2 // melhora a qualidade
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    // Cria o PDF
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Tamanho da imagem (mapa) para ocupar quase a página inteira
+    const imgWidth = pageWidth - 10;   // margem fina
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let yPosition = 5; // pequena margem superior
+
+    // Adiciona o mapa ao PDF
+    pdf.addImage(imgData, "PNG", 5, yPosition, imgWidth, imgHeight);
+
+    // Dados do rodapé
+    const userName = localStorage.getItem("userName") || "Usuário";
+    const userID = localStorage.getItem("userID") || "Sem ID";
+    const roadName = document.getElementById("road-name")?.innerText.replace("Local: ", "") || "Rua não encontrada";
+    const timestamp = document.getElementById("timestamp").innerText;
+
+    // Posição do texto no rodapé
+    const footerY = imgHeight + 15;
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(11);
+
+    pdf.text(`Usuário: ${userName} (ID: ${userID})`, 10, footerY);
+    pdf.text(`Local: ${roadName}`, 10, footerY + 7);
+    pdf.text(`Data / Hora: ${timestamp}`, 10, footerY + 14);
+
+    // Salva o arquivo
+    pdf.save("Checkin+_Mapa.pdf");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Função para tocar um som
     function playSound(soundFile) {
         const audio = new Audio(soundFile);
@@ -898,6 +1021,9 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
         <!-- Gerar PDF -->
         <button class="button" onclick="generatePDF()">PDF - Enviar / baixar</button>
+
+        <!-- Mapa PDF -->
+        <button class="button" onclick="generateMapPDF()">PDF Mapa - Enviar / baixar</button>
 
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
