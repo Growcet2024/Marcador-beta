@@ -613,17 +613,75 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
+// MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
 
+async function generateMapPDF() {
+    const { jsPDF } = window.jspdf;
 
+    // Aguarda o carregamento do mapa (tiles) para evitar PDF em branco
+    if (window.mapTileLayer) {
+        await new Promise((resolve) => {
+            let done = false;
 
+            // Tempo máximo de espera
+            const timeout = setTimeout(() => {
+                if (!done) { done = true; resolve(); }
+            }, 5000);
 
+            window.mapTileLayer.once("load", () => {
+                if (!done) {
+                    clearTimeout(timeout);
+                    done = true;
+                    resolve();
+                }
+            });
+        });
 
+        // pequena pausa para garantir renderização total
+        await new Promise(r => setTimeout(r, 300));
+    }
 
+    // Seleciona o mapa no HTML
+    const mapElement = document.getElementById("map");
 
+    // Captura do mapa
+    const canvas = await html2canvas(mapElement, {
+        useCORS: true, // permite carregar tiles externos sem bloqueio
+        scale: 2       // melhora a nitidez
+    });
 
+    const imgData = canvas.toDataURL("image/png");
 
+    // Criar PDF
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
 
+    const imgWidth = pageWidth - 10; // margem
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
+    // Adicionar mapa
+    pdf.addImage(imgData, "PNG", 5, 5, imgWidth, imgHeight);
+
+    // Dados do usuário e do local
+    const userName = localStorage.getItem("userName") || "Usuário";
+    const userID = localStorage.getItem("userID") || "Sem ID";
+    const roadName = document.getElementById("road-name")?.innerText.replace("Local: ", "") || "Rua não encontrada";
+    const timestamp = document.getElementById("timestamp")?.innerText || "Sem data";
+
+    const footerY = imgHeight + 15;
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(11);
+
+    pdf.text(`Usuário: ${userName} (ID: ${userID})`, 10, footerY);
+    pdf.text(`Local: ${roadName}`, 10, footerY + 7);
+    pdf.text(`Data / Hora: ${timestamp}`, 10, footerY + 14);
+
+    // Salvar arquivo
+    pdf.save("Checkin+_Mapa.pdf");
+}
+
+// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
 
 
@@ -827,6 +885,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
  // Bloco= 1 fim
 // Bloco mapa na tela fim
+
+
 
 
 
@@ -1186,4 +1246,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
-
