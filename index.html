@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <!-- Carregando o Font Awesome Carrega ícones lápis-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<!-- Gerar bMapa local PDF-->
+
+<!-- Gerar Mapa local PDF-->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 
@@ -553,6 +554,10 @@ const message = `*Checkin+*\nRegistro de Presença,\n\nDeclaração de compareci
 }
 
 
+
+
+
+
   // Função para gerar o PDF
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
@@ -613,75 +618,98 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
+
+
+
+
+
+
+
 // MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
 
+// Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
     const { jsPDF } = window.jspdf;
 
-    // Aguarda o carregamento do mapa (tiles) para evitar PDF em branco
-    if (window.mapTileLayer) {
-        await new Promise((resolve) => {
-            let done = false;
-
-            // Tempo máximo de espera
-            const timeout = setTimeout(() => {
-                if (!done) { done = true; resolve(); }
-            }, 5000);
-
-            window.mapTileLayer.once("load", () => {
-                if (!done) {
-                    clearTimeout(timeout);
-                    done = true;
-                    resolve();
-                }
-            });
-        });
-
-        // pequena pausa para garantir renderização total
-        await new Promise(r => setTimeout(r, 300));
-    }
-
-    // Seleciona o mapa no HTML
     const mapElement = document.getElementById("map");
 
-    // Captura do mapa
+    // Captura o mapa como imagem
     const canvas = await html2canvas(mapElement, {
-        useCORS: true, // permite carregar tiles externos sem bloqueio
-        scale: 2       // melhora a nitidez
+        useCORS: true,
+        scale: 2
     });
 
     const imgData = canvas.toDataURL("image/png");
 
-    // Criar PDF
+    // Cria o PDF
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
 
-    const imgWidth = pageWidth - 10; // margem
+    // Dimensões do mapa
+    const imgWidth = pageWidth - 20; 
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    // Adicionar mapa
-    pdf.addImage(imgData, "PNG", 5, 5, imgWidth, imgHeight);
+    // Margem
+    const margin = 10;
+    let y = margin;
 
-    // Dados do usuário e do local
+    // Mapa no topo
+    pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
+    y += imgHeight + 10;
+
+    // Dados para o rodapé / declaração
     const userName = localStorage.getItem("userName") || "Usuário";
     const userID = localStorage.getItem("userID") || "Sem ID";
     const roadName = document.getElementById("road-name")?.innerText.replace("Local: ", "") || "Rua não encontrada";
-    const timestamp = document.getElementById("timestamp")?.innerText || "Sem data";
+    const timestamp = document.getElementById("timestamp").innerText;
+    const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
+    const coordinates = document.getElementById("coordinates").innerText;
 
-    const footerY = imgHeight + 15;
+    // Título
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(16);
+    pdf.text("Checkin+", margin, y);
+    y += 8;
 
+    // Subtítulo 1
+    pdf.setFontSize(13);
+    pdf.text("Registro de Presença", margin, y);
+    y += 7;
+
+    // Subtítulo 2 (novo pedido)
+    pdf.setFontSize(12);
+    pdf.text("Comprovante de Comparecimento no Local", margin, y);
+    y += 10;
+
+    // Corpo da declaração
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(11);
 
-    pdf.text(`Usuário: ${userName} (ID: ${userID})`, 10, footerY);
-    pdf.text(`Local: ${roadName}`, 10, footerY + 7);
-    pdf.text(`Data / Hora: ${timestamp}`, 10, footerY + 14);
+    const text = 
+`Eu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${coordinates}
+Local: ${roadName}
+Descrição: ${description}
+Data/Hora: ${timestamp}
 
-    // Salvar arquivo
+Link da Localização:
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+
+A precisão da localização pode variar em um raio de até 50 metros.
+
+Aplicativo disponível no Google Play`;
+
+    pdf.text(text, margin, y, { maxWidth: pageWidth - 20 });
+
+    // Salvar PDF
     pdf.save("Checkin+_Mapa.pdf");
 }
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
+
+
+
 
 
 
