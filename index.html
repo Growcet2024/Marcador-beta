@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <!-- Carregando o Font Awesome Carrega ícones lápis-->
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+<!-- Gerar bMapa local PDF-->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 
@@ -448,26 +447,7 @@ function editUserName() {
     document.getElementById("user-name").value = localStorage.getItem("userName");
 }
 
-
   // fim Função usuário
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -644,6 +624,73 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
+// MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
+
+async function generateMapPDF() {
+    const { jsPDF } = window.jspdf;
+
+    // Seleciona o mapa
+    const mapElement = document.getElementById("map");
+
+    // Captura o mapa como imagem
+    const canvas = await html2canvas(mapElement, {
+        useCORS: true,
+        scale: 2 // melhora a qualidade
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    // Cria o PDF
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Tamanho da imagem (mapa) para ocupar quase a página inteira
+    const imgWidth = pageWidth - 10;   // margem fina
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let yPosition = 5; // pequena margem superior
+
+    // Adiciona o mapa ao PDF
+    pdf.addImage(imgData, "PNG", 5, yPosition, imgWidth, imgHeight);
+
+    // Dados do rodapé
+    const userName = localStorage.getItem("userName") || "Usuário";
+    const userID = localStorage.getItem("userID") || "Sem ID";
+    const roadName = document.getElementById("road-name")?.innerText.replace("Local: ", "") || "Rua não encontrada";
+    const timestamp = document.getElementById("timestamp").innerText;
+
+    // Posição do texto no rodapé
+    const footerY = imgHeight + 15;
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(11);
+
+    pdf.text(`Usuário: ${userName} (ID: ${userID})`, 10, footerY);
+    pdf.text(`Local: ${roadName}`, 10, footerY + 7);
+    pdf.text(`Data / Hora: ${timestamp}`, 10, footerY + 14);
+
+    // Salva o arquivo
+    pdf.save("Checkin+_Mapa.pdf");
+}
+
+// mAPA- Função COMPLETA para gerar o PDF do mapa > fim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
        // Bloco= 3 =
          // Função botão ver no google mapas - adicionado
@@ -652,18 +699,6 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
     window.open(googleMapsUrl, '_blank');
 }
      // Bloco= 3 = fim
-
-
-
-
-
-
-
-
-
-
-
-
 
 
    // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
@@ -843,24 +878,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
  // Bloco= 1 fim
 // Bloco mapa na tela fim
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1220,4 +1237,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
-
