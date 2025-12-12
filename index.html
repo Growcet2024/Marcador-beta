@@ -633,11 +633,29 @@ async function generateMapPDF() {
 
     const mapElement = document.getElementById("map");
 
+
+
+
+// ANTES de html2canvas — esconde só os SVG <path> do Leaflet (círculos)
+document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = 'none');
+
+
+
     // Captura o mapa como imagem
     const canvas = await html2canvas(mapElement, {
         useCORS: true,
         scale: 2
     });
+
+
+// DEPOIS do html2canvas — reexibe só esses SVG <path>
+document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = '');
+
+
+
+
+
+
 
     const imgData = canvas.toDataURL("image/png");
 
@@ -792,7 +810,9 @@ let gpsAccuracy = position.coords.accuracy;
 // limita o raio máximo
 if (gpsAccuracy > 80) gpsAccuracy = 80;
 
-// cria o círculo
+
+
+// cria o círculo em volta do pin
 L.circle([currentLatitude, currentLongitude], {
     color: '#007BFF',
     fillColor: '#007BFF',
@@ -800,6 +820,8 @@ L.circle([currentLatitude, currentLongitude], {
     radius: gpsAccuracy,
     weight: 1
 }).addTo(map);
+
+
 
                 // Corrige o redimensionamento do mapa após a exibição
                 map.invalidateSize();
