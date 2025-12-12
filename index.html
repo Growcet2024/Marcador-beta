@@ -625,7 +625,13 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
+
+
+
+
 // MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
+
+
 
 // Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
@@ -634,12 +640,8 @@ async function generateMapPDF() {
     const mapElement = document.getElementById("map");
 
 
-
-
 // ANTES de html2canvas — esconde só os SVG <path> do Leaflet (círculos)
 document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = 'none');
-
-
 
     // Captura o mapa como imagem
     const canvas = await html2canvas(mapElement, {
@@ -650,79 +652,83 @@ document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.
 
 // DEPOIS do html2canvas — reexibe só esses SVG <path>
 document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = '');
-
-
-
-
-
-
+    
 
     const imgData = canvas.toDataURL("image/png");
 
-    // Cria o PDF
+    // Criar PDF
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
 
-    // Dimensões do mapa
-    const imgWidth = pageWidth - 20; 
+    // Dimensões e margens
+    const margin = 10;
+    const imgWidth = pageWidth - 20;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    // Margem
-    const margin = 10;
     let y = margin;
 
     // Mapa no topo
     pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
     y += imgHeight + 10;
 
-    // Dados para o rodapé / declaração
+    // Obter dados
     const userName = localStorage.getItem("userName") || "Usuário";
     const userID = localStorage.getItem("userID") || "Sem ID";
-    const roadName = document.getElementById("road-name")?.innerText.replace("Local: ", "") || "Rua não encontrada";
     const timestamp = document.getElementById("timestamp").innerText;
     const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
     const coordinates = document.getElementById("coordinates").innerText;
 
-    // Título
+    // Endereço detalhado
+    const addressElement = document.getElementById("address").innerText;
+    const data = window.lastGeocodeData || { address: {} }; // garante que existe
+
+    const bairro = data.address.residential || "N/A";
+    const regiao = data.address.suburb || "N/A";
+    const cidade = data.address.city || data.address.town || data.address.village || "N/A";
+    const estado = data.address.state || "N/A";
+    const cep = data.address.postcode || "N/A";
+    const pais = data.address.country || "N/A";
+
+    // TÍTULO
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(16);
     pdf.text("Checkin+", margin, y);
     y += 8;
 
-    // Subtítulo 1
-    pdf.setFontSize(13);
-    pdf.text("Registro de Presença", margin, y);
-    y += 7;
-
-    // Subtítulo 2 (novo pedido)
+    // SUBTÍTULOS (sem negrito e sem espaço extra entre eles)
+    pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
+    pdf.text("Registro de Presença", margin, y);
+    y += 5;
+
     pdf.text("Comprovante de Comparecimento no Local", margin, y);
     y += 10;
 
-    // Corpo da declaração
-    pdf.setFont("helvetica", "normal");
+    // TEXTO GERAL
     pdf.setFontSize(11);
 
-    const text = 
+    const text =
 `Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-${coordinates}
-Local: ${roadName}
-Descrição: ${description}
 Data/Hora: ${timestamp}
+Descrição: ${description}
+
+${coordinates}
+Local: ${addressElement}
 
 Link da Localização:
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
-
 A precisão da localização pode variar em um raio de até 50 metros.
 
 Aplicativo disponível no Google Play`;
 
     pdf.text(text, margin, y, { maxWidth: pageWidth - 20 });
 
-    // Salvar PDF
+    // Salvar
     pdf.save("Checkin+_Mapa.pdf");
 }
+
+
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
