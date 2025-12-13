@@ -687,7 +687,7 @@ async function generateMapPDF() {
     pdf.text("Registro de Presença", margin, y);
     y += 5;
 
-    pdf.text("Comprovante de Comparecimento no Local", margin, y);
+    pdf.text("Comprovante de comparecimento ao Local", margin, y);
     y += 8;
 
     // TEXTO PRINCIPAL
@@ -701,7 +701,6 @@ Descrição: ${description}
 
 ${coordinates}
 Local: ${addressElement}
-
 Link da Localização:
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 A precisão da localização pode variar em um raio de até 50 metros.
@@ -1289,3 +1288,4 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
+
