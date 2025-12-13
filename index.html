@@ -1034,29 +1034,33 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         </div>
         
 
-        <!-- Declaração de comparecimento na tela -->
+<!-- Declaração de comparecimento na tela -->
 
      <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
-       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera uma declaração de comparecimento com nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
+       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar? Com o <strong>Checkin+</strong>, você registra sua presença com um clique! O app gera ums declaração de comparecimento com Mapa, nome, ID, data, hora e localização — uma prova incontestável, pronto para enviar por WhatsApp ou em PDF.
      </p>
  
-
-        <!-- Alteração: Botão para abrir o local no Google Maps -->
-        <button class="button" onclick="openGoogleMaps()">Google Maps</button>
 
         <!-- Compartilhar via WhatsApp -->
         <button class="button" onclick="shareLocation()">Enviar texto WhatsApp</button>
 
-        <!-- Gerar PDF -->
-        <button class="button" onclick="generatePDF()">PDF - Enviar / baixar</button>
-
         <!-- Mapa PDF -->
-        <button class="button" onclick="generateMapPDF()">PDF Mapa - Enviar / baixar</button>
+        <button class="button" onclick="generateMapPDF()">Mapa - Enviar / baixar</button>
+
+        <!-- Gerar PDF -->
+        <button class="button" onclick="generatePDF()">Declaração - Enviar / baixar</button>
+
+        
+         <!-- Alteração: Botão para abrir o local no Google Maps -->
+        <button class="button" onclick="openGoogleMaps()">Google Maps</button>
 
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
 
 
+        
+     
+        
 <!-- PARTE DO HISTÓRICO -->
 <!-- Inicio conteine=2 histórico -->
 <!-- Container para Exibir o Histórico de Presença -->
@@ -1302,6 +1306,7 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
+
 
 
 
