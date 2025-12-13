@@ -631,23 +631,27 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
 
-// Função COMPLETA para gerar o PDF do mapa + declaração
+
+// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
     const { jsPDF } = window.jspdf;
 
     const mapElement = document.getElementById("map");
 
-    // Esconde apenas círculos SVG do Leaflet antes da captura
-    document.querySelectorAll('#map svg path.leaflet-interactive')
+    // Esconde apenas os círculos do Leaflet antes da captura
+    document
+        .querySelectorAll('#map svg path.leaflet-interactive')
         .forEach(el => el.style.display = 'none');
 
+    // Captura o mapa
     const canvas = await html2canvas(mapElement, {
         useCORS: true,
         scale: 2
     });
 
-    // Reexibe os círculos após captura
-    document.querySelectorAll('#map svg path.leaflet-interactive')
+    // Reexibe os círculos após a captura
+    document
+        .querySelectorAll('#map svg path.leaflet-interactive')
         .forEach(el => el.style.display = '');
 
     const imgData = canvas.toDataURL("image/png");
@@ -665,7 +669,7 @@ async function generateMapPDF() {
 
     // Mapa no topo
     pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
-    y += imgHeight + 12; // margem só abaixo do mapa
+    y += imgHeight + 8;
 
     // Dados
     const userName = localStorage.getItem("userName") || "Usuário";
@@ -679,18 +683,18 @@ async function generateMapPDF() {
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(16);
     pdf.text("Checkin+", margin, y);
-    y += 8;
+    y += 7;
 
-    // SUBTÍTULOS
+    // SUBTÍTULOS (normais, sem espaço extra)
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(11);
+    pdf.setFontSize(12);
     pdf.text("Registro de Presença", margin, y);
-    y += 5;
+    y += 4;
 
-    pdf.text("Comprovante de comparecimento ao Local", margin, y);
+    pdf.text("Comprovante de Comparecimento no Local", margin, y);
     y += 8;
 
-    // TEXTO PRINCIPAL
+    // TEXTO GERAL — fonte reduzida em 1pt
     pdf.setFontSize(10);
 
     const text =
@@ -700,7 +704,8 @@ Data/Hora: ${timestamp}
 Descrição: ${description}
 
 ${coordinates}
-Local: ${addressElement}
+${addressElement}
+
 Link da Localização:
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 A precisão da localização pode variar em um raio de até 50 metros.
@@ -712,6 +717,9 @@ Aplicativo disponível no Google Play`;
     // Salvar PDF
     pdf.save("Checkin+_Mapa.pdf");
 }
+
+// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
+
 
 
 
@@ -1288,4 +1296,5 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
+
 
