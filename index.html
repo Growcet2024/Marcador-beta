@@ -631,28 +631,24 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
 
-
-
 // Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
     const { jsPDF } = window.jspdf;
 
     const mapElement = document.getElementById("map");
 
+    // Esconde apenas círculos SVG do Leaflet antes da captura
+    document.querySelectorAll('#map svg path.leaflet-interactive')
+        .forEach(el => el.style.display = 'none');
 
-// ANTES de html2canvas — esconde só os SVG <path> do Leaflet (círculos)
-document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = 'none');
-
-    // Captura o mapa como imagem
     const canvas = await html2canvas(mapElement, {
         useCORS: true,
         scale: 2
     });
 
-
-// DEPOIS do html2canvas — reexibe só esses SVG <path>
-document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.style.display = '');
-    
+    // Reexibe os círculos após captura
+    document.querySelectorAll('#map svg path.leaflet-interactive')
+        .forEach(el => el.style.display = '');
 
     const imgData = canvas.toDataURL("image/png");
 
@@ -660,7 +656,7 @@ document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
 
-    // Dimensões e margens
+    // Margens e dimensões
     const margin = 10;
     const imgWidth = pageWidth - 20;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
@@ -669,25 +665,15 @@ document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.
 
     // Mapa no topo
     pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
-    y += imgHeight + 10;
+    y += imgHeight + 12; // margem só abaixo do mapa
 
-    // Obter dados
+    // Dados
     const userName = localStorage.getItem("userName") || "Usuário";
     const userID = localStorage.getItem("userID") || "Sem ID";
     const timestamp = document.getElementById("timestamp").innerText;
     const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
     const coordinates = document.getElementById("coordinates").innerText;
-
-    // Endereço detalhado
     const addressElement = document.getElementById("address").innerText;
-    const data = window.lastGeocodeData || { address: {} }; // garante que existe
-
-    const bairro = data.address.residential || "N/A";
-    const regiao = data.address.suburb || "N/A";
-    const cidade = data.address.city || data.address.town || data.address.village || "N/A";
-    const estado = data.address.state || "N/A";
-    const cep = data.address.postcode || "N/A";
-    const pais = data.address.country || "N/A";
 
     // TÍTULO
     pdf.setFont("helvetica", "bold");
@@ -695,17 +681,17 @@ document.querySelectorAll('#map svg path.leaflet-interactive').forEach(el => el.
     pdf.text("Checkin+", margin, y);
     y += 8;
 
-    // SUBTÍTULOS (sem negrito e sem espaço extra entre eles)
+    // SUBTÍTULOS
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(12);
+    pdf.setFontSize(11);
     pdf.text("Registro de Presença", margin, y);
     y += 5;
 
     pdf.text("Comprovante de Comparecimento no Local", margin, y);
-    y += 10;
+    y += 8;
 
-    // TEXTO GERAL
-    pdf.setFontSize(11);
+    // TEXTO PRINCIPAL
+    pdf.setFontSize(10);
 
     const text =
 `Eu estou aqui,
@@ -724,7 +710,7 @@ Aplicativo disponível no Google Play`;
 
     pdf.text(text, margin, y, { maxWidth: pageWidth - 20 });
 
-    // Salvar
+    // Salvar PDF
     pdf.save("Checkin+_Mapa.pdf");
 }
 
