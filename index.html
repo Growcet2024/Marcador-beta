@@ -338,18 +338,45 @@ button:active {
     /* Funções JavaScript */
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     // fUNÇÃO USUÁRIO ID
     
-    // BLOCO- 1 Função para gerar um ID único de 8 caracteres aleatórios (números e letras)
+ // BLOCO- 1
+// Função para gerar um ID único com data de criação + parte aleatória
+// Formato: YYYYMMDD-XXXXXX  (ex: 20250324-K8F9A2)
 
 function generateRandomID() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let randomID = '';
-    for (let i = 0; i < 8; i++) {
-        randomID += characters.charAt(Math.floor(Math.random() * characters.length));
+    const now = new Date();
+
+    const year  = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day   = String(now.getDate()).padStart(2, '0');
+
+    const datePart = `${year}${month}${day}`;
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let randomPart = '';
+    for (let i = 0; i < 6; i++) {
+        randomPart += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+        );
     }
-    return randomID;
+
+    return `${datePart}-${randomPart}`;
 }
+
 
 
 // BLOCO-2
@@ -357,89 +384,80 @@ function checkUserName() {
     const savedUserName = localStorage.getItem("userName");
     const savedUserID = localStorage.getItem("userID");
 
-    // Captura segura do botão
-    const editIdBtn = document.getElementById("edit-id-button");
-
     if (savedUserName && savedUserID) {
+
+        // Mostra dados do usuário
         document.getElementById("user-name").style.display = "none";
         document.getElementById("user-name-display").style.display = "inline";
         document.getElementById("user-name-display").innerText =
             `Usuário: ${savedUserName} (ID: ${savedUserID})`;
+
+        // Botões
         document.getElementById("save-name-button").style.display = "none";
         document.getElementById("edit-name-button").style.display = "inline";
 
-        // 👉 Mostra o botão EDITAR ID
-        if (editIdBtn) editIdBtn.style.display = "inline";
+        // 🔒 ID NÃO É EDITÁVEL (garantia de segurança)
+        const editIdBtn = document.getElementById("edit-id-button");
+        if (editIdBtn) editIdBtn.style.display = "none";
 
     } else {
 
+        // Primeiro acesso (sem nome salvo)
         document.getElementById("user-name").style.display = "inline";
         document.getElementById("save-name-button").style.display = "inline";
         document.getElementById("edit-name-button").style.display = "none";
 
-        // 👉 Esconde o botão EDITAR ID
+        const editIdBtn = document.getElementById("edit-id-button");
         if (editIdBtn) editIdBtn.style.display = "none";
     }
 }
 
 
-// BLOCO- 3 Função para salvar o nome do usuário e gerar um ID único
+
+// BLOCO- 3
+// Função para salvar o nome do usuário e gerar um ID único FIXO (com data)
 
 function saveUserName() {
     const userName = document.getElementById("user-name").value.trim();
-    if (userName) {
-        // Verifica se já existe um ID único no localStorage
-        let userID = localStorage.getItem("userID");
-        if (!userID) {
-            // Se não existir, gera um novo ID único e salva no localStorage
-            userID = generateRandomID();
-            localStorage.setItem("userID", userID);  // Salva o ID único no localStorage
-        }
 
-        // Atualiza o nome do usuário sem alterar o ID
-        localStorage.setItem("userName", userName);  // Salvando o nome do usuário
-
-        checkUserName();  // Atualiza a interface com o nome e ID salvos
-    } else {
+    if (!userName) {
         alert("Por favor, digite um nome.");
-    }
-}
-
-
-// BLOCO- 4 Função para abrir a edição do ID
-function editUserID() {
-    // Mostra a área de edição do ID
-    document.getElementById("edit-id-area").style.display = "block";
-
-    // Preenche o input com o ID atual
-    document.getElementById("user-id-input").value = localStorage.getItem("userID") || "";
-
-    // Esconde a exibição do nome/ID temporariamente
-    document.getElementById("user-name-display").style.display = "none";
-}
-
-// Função para salvar o novo ID
-function saveUserID() {
-    const newID = document.getElementById("user-id-input").value.trim();
-
-    // Validação: ID deve ter exatamente 8 caracteres
-    if (newID.length !== 8) {
-        alert("O ID deve ter 8 caracteres.");
         return;
     }
 
-    // Salva no localStorage
-    localStorage.setItem("userID", newID);
+    // Verifica se já existe um ID salvo
+    let userID = localStorage.getItem("userID");
 
-    // Esconde a área de edição do ID
-    document.getElementById("edit-id-area").style.display = "none";
+    if (!userID) {
+        // Gera data no formato YYYYMMDD
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, "0");
+        const dd = String(now.getDate()).padStart(2, "0");
+        const datePart = `${yyyy}${mm}${dd}`;
 
-    // Atualiza a interface com o novo ID
+        // Gera sufixo aleatório de 5 caracteres
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let suffix = "";
+        for (let i = 0; i < 5; i++) {
+            suffix += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+
+        userID = `${datePart}-${suffix}`;
+
+        // 🔒 Salva o ID UMA ÚNICA VEZ
+        localStorage.setItem("userID", userID);
+    }
+
+    // Atualiza apenas o nome (ID permanece intacto)
+    localStorage.setItem("userName", userName);
+
+    // Atualiza a interface
     checkUserName();
 }
 
 
-// BLOCO- 5 Função para permitir editar o nome do usuário
+// BLOCO- 4 Função para permitir editar o nome do usuário
 function editUserName() {
     document.getElementById("user-name").style.display = "inline";
     document.getElementById("save-name-button").style.display = "inline";
@@ -449,6 +467,8 @@ function editUserName() {
 }
 
   // fim Função usuário
+
+
 
 
 
@@ -1041,47 +1061,44 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
- <!-- BLOCO Input NOME USUÁRIO -->
+
+
+<!-- BLOCO Input NOME USUÁRIO -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
-    <!-- Input do Nome -->
+    <!-- Input do Nome (usado só quando NÃO existe nome salvo ou ao editar) -->
     <input type="text" id="user-name" placeholder="Digite seu nome">
 
-    <!-- Nome exibido + ícone -->
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto; margin-top: 0px; margin-bottom: 0px;">
+    <!-- Nome exibido + ícone editar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto 0;">
 
-        <!-- Ícone para editar nome usando Font Awesome -->
+        <!-- Nome + ID exibidos -->
         <span id="user-name-display" style="font-weight: bold; display: none;"></span>
-        <i id="edit-name-button" onclick="editUserName()" 
-           class="fas fa-pencil-alt" 
-           style="font-size: 18px; color: #02779e; cursor: pointer;"></i>
 
-        <!-- Ícone para editar ID usando Font Awesome -->
-        <span id="edit-id-button" onclick="editUserID()" 
-        style="font-size: 18px; color: #02779e; cursor: pointer; display: none;">
-        ID
-        </span>
-
-    <!-- Campo para editar o ID -->
-    <div id="edit-id-area" style="display:none; width:95%; margin:auto;">
-
-        <input type="text" id="user-id-input" placeholder="Digite o novo ID"
-            style="width: 100%; padding: 8px; margin-top: 10px; border-radius: 10px;">
-
-        <button id="save-id-button" onclick="saveUserID()" class="button"
-            style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 15px; background-color: #cc0000;">
-            Salvar ID
-        </button>
+        <!-- Ícone editar nome -->
+        <i id="edit-name-button"
+           onclick="editUserName()"
+           class="fas fa-pencil-alt"
+           style="font-size: 18px; color: #02779e; cursor: pointer; display: none;">
+        </i>
 
     </div>
 
     <!-- Botão Salvar Nome -->
-    <button id="save-name-button" onclick="saveUserName()" class="button" 
+    <button id="save-name-button"
+            onclick="saveUserName()"
+            class="button"
             style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
         Salvar
     </button>
 
 </div>
+
+
+
+
+
+
 
       <!-- Linha separadora fim da página cinza -->
       <hr style="width: 75%; margin: 20px auto; border: 1px solid #ccc;">
