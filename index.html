@@ -631,7 +631,6 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
 
-
 // MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
     const { jsPDF } = window.jspdf;
@@ -659,13 +658,19 @@ async function generateMapPDF() {
     // Criar PDF
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Margens e dimensões
-    const margin = 10;
-    const imgWidth = pageWidth - 20;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let y = margin;
+
+
+// Margens e dimensões - ajustar margem esquerada o mapa esta colado a borda
+const margin = 10; // Mantém a margem original
+const imgWidth = pageWidth - 2 * margin - 2; // Subtrai 2px para afastar da borda direita
+const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+let y = margin + 2; // Afastar o mapa do topo em 2px
+
+
 
     // Mapa no topo
     pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
@@ -682,16 +687,16 @@ async function generateMapPDF() {
     // TÍTULO
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(16);
-    pdf.text("Checkin+", margin, y);
+    pdf.text("Checkin+", margin + 5, y);  // Ajuste o valor "+ 10" para afastar mais da borda
     y += 7;
 
     // SUBTÍTULOS (normais, sem espaço extra)
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
-    pdf.text("Registro de Presença", margin, y);
+    pdf.text("Registro de Presença", margin + 5, y);
     y += 4;
 
-    pdf.text("Comprovante de Comparecimento no Local", margin, y);
+    pdf.text("Comprovante de Comparecimento no Local", margin + 5, y);
     y += 8;
 
     // TEXTO GERAL — fonte reduzida em 1pt
@@ -712,7 +717,11 @@ A precisão da localização pode variar em um raio de até 50 metros.
 
 Aplicativo disponível no Google Play`;
 
-    pdf.text(text, margin, y, { maxWidth: pageWidth - 20 });
+    pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
+
+    // Desenhar a borda ao redor de toda a página
+    pdf.setLineWidth(0.5);  // Define a espessura da linha da borda
+    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);  // Borda em torno da página
 
     // Salvar PDF
     pdf.save("Checkin+_Mapa.pdf");
@@ -721,12 +730,7 @@ Aplicativo disponível no Google Play`;
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
 
-
-
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-
 
 
 
@@ -1296,5 +1300,3 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
  
 </body>
 </html>
-
-
