@@ -617,19 +617,7 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// MAPA- Função COMPLETA para gerar o PDF do mapa > inicio
+// MAPA- inicio
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
 async function generateMapPDF() {
@@ -661,20 +649,19 @@ async function generateMapPDF() {
     const pageHeight = pdf.internal.pageSize.getHeight();
 
 
+// Definindo margens e controle do tamanho do mapa
+const margin = 10; // Margem geral para a borda da página
+const mapLeftMargin = 12; // Nova margem do mapa para a borda esquerda (ajuste aqui)
 
-
-// Margens e dimensões - ajustar margem esquerada o mapa esta colado a borda
-const margin = 10; // Mantém a margem original
-const imgWidth = pageWidth - 2 * margin - 2; // Subtrai 2px para afastar da borda direita
-const imgHeight = (canvas.height * imgWidth) / canvas.width;
+const imgWidth = pageWidth - mapLeftMargin - margin - 2; // Calculando a largura do mapa
+const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantendo a proporção do mapa
 
 let y = margin + 2; // Afastar o mapa do topo em 2px
 
+// Adicionando o mapa no PDF com a margem esquerda controlada
+pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
+y += imgHeight + 8; // Afastando o texto do mapa
 
-
-    // Mapa no topo
-    pdf.addImage(imgData, "PNG", margin, y, imgWidth, imgHeight);
-    y += imgHeight + 8;
 
     // Dados
     const userName = localStorage.getItem("userName") || "Usuário";
@@ -696,7 +683,7 @@ let y = margin + 2; // Afastar o mapa do topo em 2px
     pdf.text("Registro de Presença", margin + 5, y);
     y += 4;
 
-    pdf.text("Comprovante de Comparecimento no Local", margin + 5, y);
+    pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
     y += 8;
 
     // TEXTO GERAL — fonte reduzida em 1pt
@@ -728,20 +715,6 @@ Aplicativo disponível no Google Play`;
 }
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-
-
-
-
-
-
-
-
-
 
 
 
