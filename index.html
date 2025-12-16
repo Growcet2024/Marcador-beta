@@ -261,7 +261,7 @@ button:active {
 .menu-lateral {
     width: 250px;
     height: 100%;
-    background: linear-gradient(to right, #00000080, #00000033);  /* Cor fundo lateral direita */
+    background: linear-gradient(to right, #00000080, #0000033);  /* Cor fundo lateral direita */
     color: white;
     position: fixed;
     top: 0;
@@ -336,18 +336,6 @@ button:active {
     let userName = "Usuário Logado";
 
     /* Funções JavaScript */
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1164,17 +1152,41 @@ records.forEach((record, index) => {
     
 
 
-// Função delelar registros com confirmação
+ // Função delete a partir do histórico sem confirmação
+ 
+ 
+
+// Função deletar registros com confirmação (corrigida)
 window.deleteRecord = function(index) {
     const confirmar = confirm("Tem certeza que deseja apagar este registro?");
     if (!confirmar) return;
 
     let records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-    records.splice(index, 1);
+
+    // Corrige a inversão entre lista exibida e array real
+    const originalIndex = records.length - 1 - index;
+
+    records.splice(originalIndex, 1);
     localStorage.setItem("presenceRecords", JSON.stringify(records));
+
     alert("Registro apagado com sucesso!");
     location.reload();
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
      
 // Função para compartilhar no WhatsApp a partir do histórico
@@ -1266,31 +1278,14 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     doc.save(`${userName}_Marcador_de_Presença.pdf`);
 }
 
+  // Função delete a partir do histórico 2
+   
+ 
 
-            // Função delete a partir do histórico
-           
-            function deleteRecord(index) {
-            const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-    
-            // Índice original no localStorage (sem inversão)
-            const originalIndex = records.length - 1 - index; // Corrigido para usar o índice original
 
-            // Remover o registro correto
-            records.splice(originalIndex, 1);
-
-            // Salvar os registros atualizados no localStorage
-            localStorage.setItem("presenceRecords", JSON.stringify(records));
-
-            // Recarregar o histórico com a lista atualizada
-            toggleHistory();
-}
 
 
   </script>
  
 </body>
 </html>
-
-
-
-
