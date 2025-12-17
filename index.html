@@ -539,7 +539,7 @@ const record = {
 }
 
 
-    // Função para compartilhar a localização via WhatsApp
+    // Função para compartilhar a localização via WhatsApp texto
 function shareLocation() {
     const coordinates = document.getElementById("coordinates").innerText;
     const address = document.getElementById("address").innerText;
@@ -1128,6 +1128,7 @@ records.forEach((record, index) => {
                     <div class="history-buttons">
 
 
+                     <!-- Botões historico -->
 
                         <div class="history-buttons">
     <button class="share-btn" onclick="shareLocationHistory(${index})">
@@ -1139,6 +1140,10 @@ records.forEach((record, index) => {
     <button class="delete-btn" onclick="deleteRecord(${index})">
         Apagar
     </button>
+
+
+                          <!-- Mapa PDF -->
+        <button class="button" onclick="generateMapPDF()">Mapa - Enviar / baixar</button>
 </div>
 
                        
@@ -1203,10 +1208,13 @@ function shareLocationHistory(index) {
     const userID = localStorage.getItem("userID");  // ID fixo
 
 
-   // Mensagem=2 zap ajustada com Checkin+ 
 
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-const message = `*Checkin+*\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${record.timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+
+ // Declaração- 1 PDF Checkin+ tttt
+    const title = "Checkin+";
+    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -1278,9 +1286,110 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     doc.save(`${userName}_Marcador_de_Presença.pdf`);
 }
 
-  // Função delete a partir do histórico 2
+
+
+
+  // Função delete a partir do histórico 2 parte 
    
- 
+ // MAPA- inicio
+
+// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
+async function generateMapPDF() {
+    const { jsPDF } = window.jspdf;
+
+    const mapElement = document.getElementById("map");
+
+    // Esconde apenas os círculos do Leaflet antes da captura
+    document
+        .querySelectorAll('#map svg path.leaflet-interactive')
+        .forEach(el => el.style.display = 'none');
+
+    // Captura o mapa
+    const canvas = await html2canvas(mapElement, {
+        useCORS: true,
+        scale: 2
+    });
+
+    // Reexibe os círculos após a captura
+    document
+        .querySelectorAll('#map svg path.leaflet-interactive')
+        .forEach(el => el.style.display = '');
+
+    const imgData = canvas.toDataURL("image/png");
+
+    // Criar PDF
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+
+// Definindo margens e controle do tamanho do mapa
+const margin = 10; // Margem geral para a borda da página
+const mapLeftMargin = 12; // Nova margem do mapa para a borda esquerda (ajuste aqui)
+
+const imgWidth = pageWidth - mapLeftMargin - margin - 2; // Calculando a largura do mapa
+const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantendo a proporção do mapa
+
+let y = margin + 2; // Afastar o mapa do topo em 2px
+
+// Adicionando o mapa no PDF com a margem esquerda controlada
+pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
+y += imgHeight + 8; // Afastando o texto do mapa
+
+
+    // Dados
+    const userName = localStorage.getItem("userName") || "Usuário";
+    const userID = localStorage.getItem("userID") || "Sem ID";
+    const timestamp = document.getElementById("timestamp").innerText;
+    const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
+    const coordinates = document.getElementById("coordinates").innerText;
+    const addressElement = document.getElementById("address").innerText;
+
+    // TÍTULO
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(16);
+    pdf.text("Checkin+", margin + 5, y);  // Ajuste o valor "+ 10" para afastar mais da borda
+    y += 7;
+
+    // SUBTÍTULOS (normais, sem espaço extra)
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(12);
+    pdf.text("Registro de Presença", margin + 5, y);
+    y += 4;
+
+    pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
+    y += 8;
+
+    // TEXTO GERAL — fonte reduzida em 1pt
+    pdf.setFontSize(10);
+
+    const text =
+`Eu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+Data/Hora: ${timestamp}
+Descrição: ${description}
+
+${coordinates}
+${addressElement}
+
+Link da Localização:
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+A precisão da localização pode variar em um raio de até 50 metros.
+
+Aplicativo disponível no Google Play`;
+
+    pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
+
+    // Desenhar a borda ao redor de toda a página
+    pdf.setLineWidth(0.5);  // Define a espessura da linha da borda
+    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);  // Borda em torno da página
+
+    // Salvar PDF
+    pdf.save("Checkin+_Mapa.pdf");
+}
+
+// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
+
 
 
 
