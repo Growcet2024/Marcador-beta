@@ -548,21 +548,36 @@ function shareLocation() {
     const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
-    // Verificando se o nome e o ID estão corretos e preparando a mensagem
 
 
-    // Mensagem=1 zap ajustada com Checkin+ 
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- início
 
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `*Checkin+*\nRegistro de Presença,\n\nDeclaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n${additionalMessage}\n\nAplicativo disponível no Google Play`;
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+
+const message = `*${title}*
+Registro de Presença
+
+Declaração de comparecimento:
+
+Eu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${coordinates}
+${address}
+Descrição: ${description}
+Data/hora local: ${timestamp}
+
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+
+${additionalMessage}
+
+Aplicativo disponível no Google Play`;
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- FIM
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
-
-
-
 
 
 
@@ -590,10 +605,25 @@ async function generatePDF() {
 
 
 
-    // Declaração- 1 PDF Checkin+
-    const title = "Checkin+";
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+
+const message = `Registro de presença
+Declaração de comparecimento:
+
+Eu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${coordinates}
+${address}
+Descrição: ${description}
+Data/hora local: ${timestamp}
+
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+
+Aplicativo disponível no Google Play`;
+// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
+
 
 
     // Desenhando as margens
@@ -1155,12 +1185,7 @@ records.forEach((record, index) => {
             }
         }
     
-
-
- // Função delete a partir do histórico sem confirmação
  
- 
-
 // Função deletar registros com confirmação (corrigida)
 window.deleteRecord = function(index) {
     const confirmar = confirm("Tem certeza que deseja apagar este registro?");
@@ -1209,12 +1234,24 @@ function shareLocationHistory(index) {
 
 
 
+console.log("Timestamp salvo no registro:", record.timestamp);
 
- // Declaração- 1 PDF Checkin+ tttt
-    const title = "Checkin+";
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${coordinates}\n${address}\nDescrição: ${description}\nData/hora local: ${timestamp}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
 
+
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
+const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${record.coordinates}
+${record.address}
+Descrição: ${record.description}
+Data/hora local: ${record.timestamp}
+
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+
+Aplicativo disponível no Google Play`;
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
@@ -1251,10 +1288,24 @@ async function generatePDFHistory(index) {
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
     const userID = localStorage.getItem("userID");  // ID fixo
 
-    // Declaração- 2 pdf Checkin+
-    const title = "Checkin+";
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-    const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,\nUsuário: ${userName} (ID: ${userID})\n${record.coordinates}\n${record.address}\nDescrição: ${record.description}\nData/hora local: ${new Date().toLocaleString()}\n\nhttps://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\nAplicativo disponível no Google Play`;
+
+   
+// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- início
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
+const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${record.coordinates}
+${record.address}
+Descrição: ${record.description}
+Data/hora local: ${record.timestamp}
+
+https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+
+Aplicativo disponível no Google Play`;
+// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- fim
+
+
 
     // Título do PDF
     doc.setFont("helvetica", "bold");
