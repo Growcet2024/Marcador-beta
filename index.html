@@ -261,7 +261,7 @@ button:active {
 .menu-lateral {
     width: 250px;
     height: 100%;
-    background: linear-gradient(to right, #02779e, #02779e);  /* Cor fundo lateral direita */
+    background: linear-gradient(to right, #000000E6, #0000080);  /* Cor fundo lateral direita */
     color: white;
     position: fixed;
     top: 0;
@@ -605,6 +605,21 @@ async function generatePDF() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
+
+
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
@@ -622,9 +637,9 @@ Data/hora local: ${timestamp}
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 Aplicativo disponível no Google Play`;
+
+
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
-
-
 
     // Desenhando as margens
     doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
@@ -649,9 +664,28 @@ doc.setFont("helvetica", "normal");
 doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); // Ajuste afastar a frase: Aprecisão da localização...
 
 
-    // Salvar o PDF gerado
-    doc.save("Marcador_de_Presença.pdf");
+   // Salvar o PDF gerado
+doc.save(
+  "Checkin+_Declaração_" +
+  String(new Date().getDate()).padStart(2, "0") + "-" +
+  String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
+  new Date().getFullYear() + "_" +
+  String(new Date().getHours()).padStart(2, "0") + "-" +
+  String(new Date().getMinutes()).padStart(2, "0") + "-" +
+  String(new Date().getSeconds()).padStart(2, "0") +
+  ".pdf"
+);
+
+
 }
+
+// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
+
+
+
+
+
+
 
 
 
@@ -1256,6 +1290,19 @@ Aplicativo disponível no Google Play`;
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Função para gerar PDF a partir do histórico (2ª parte)
 async function generatePDFHistory(index) {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
@@ -1284,7 +1331,6 @@ async function generatePDFHistory(index) {
     // Obtenção do nome e ID fixos
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
     const userID = localStorage.getItem("userID");  // ID fixo
-
 
    
 // FUNÇÃO - Declaração PDF Checkin+ HISTORICO- início
@@ -1331,9 +1377,27 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
 
 
     // Salvar o PDF gerado
-    doc.save(`${userName}_Marcador_de_Presença.pdf`);
+doc.save(
+  userName + "_Checkin+_Declaração_" +
+  String(new Date().getDate()).padStart(2, "0") + "-" +
+  String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
+  new Date().getFullYear() + "_" +
+  String(new Date().getHours()).padStart(2, "0") + "-" +
+  String(new Date().getMinutes()).padStart(2, "0") + "-" +
+  String(new Date().getSeconds()).padStart(2, "0") +
+  ".pdf"
+);
+
 }
   // Função delete a partir do histórico 2 parte 
+
+
+
+
+
+
+
+
 
    
  // MAPA- Historico
@@ -1450,5 +1514,3 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
-
-
