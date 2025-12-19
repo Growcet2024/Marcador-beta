@@ -655,9 +655,13 @@ doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); //
 
 
 
+
+
+
+
 // MAPA- inicio
 
-// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
+// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração (Tela Inicial)
 async function generateMapPDF() {
     const { jsPDF } = window.jspdf;
 
@@ -686,22 +690,20 @@ async function generateMapPDF() {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
+    // Margens e tamanho do mapa
+    const margin = 10;
+    const mapLeftMargin = 12;
 
-// Definindo margens e controle do tamanho do mapa
-const margin = 10; // Margem geral para a borda da página
-const mapLeftMargin = 12; // Nova margem do mapa para a borda esquerda (ajuste aqui)
+    const imgWidth = pageWidth - mapLeftMargin - margin - 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-const imgWidth = pageWidth - mapLeftMargin - margin - 2; // Calculando a largura do mapa
-const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantendo a proporção do mapa
+    let y = margin + 2;
 
-let y = margin + 2; // Afastar o mapa do topo em 2px
+    // Adiciona o mapa
+    pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
+    y += imgHeight + 8;
 
-// Adicionando o mapa no PDF com a margem esquerda controlada
-pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
-y += imgHeight + 8; // Afastando o texto do mapa
-
-
-    // Dados
+    // Dados da tela inicial
     const userName = localStorage.getItem("userName") || "Usuário";
     const userID = localStorage.getItem("userID") || "Sem ID";
     const timestamp = document.getElementById("timestamp").innerText;
@@ -712,21 +714,19 @@ y += imgHeight + 8; // Afastando o texto do mapa
     // TÍTULO
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(16);
-    pdf.text("Checkin+", margin + 5, y);  // Ajuste o valor "+ 10" para afastar mais da borda
+    pdf.text("Checkin+", margin + 5, y);
     y += 7;
 
-    // SUBTÍTULOS (normais, sem espaço extra)
+    // SUBTÍTULOS
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
     pdf.text("Registro de Presença", margin + 5, y);
     y += 4;
-
     pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
     y += 8;
 
-    // TEXTO GERAL — fonte reduzida em 1pt
+    // TEXTO
     pdf.setFontSize(10);
-
     const text =
 `Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
@@ -744,18 +744,26 @@ Aplicativo disponível no Google Play`;
 
     pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
 
-    // Desenhar a borda ao redor de toda a página
-    pdf.setLineWidth(0.5);  // Define a espessura da linha da borda
-    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);  // Borda em torno da página
+    // Borda
+    pdf.setLineWidth(0.5);
+    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);
 
-    // Salvar PDF
-    pdf.save("Checkin+_Mapa.pdf");
+    // Formatar data/hora para nome do arquivo
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+
+    // Salvar PDF com data/hora no nome
+    pdf.save(`Checkin+_Mapa_${formattedDate}.pdf`);
 }
 
+
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-
 
 
 
@@ -1079,8 +1087,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-
-
 <!-- BLOCO Input NOME USUÁRIO -->
 <div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
 
@@ -1115,13 +1121,13 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-
-
-
       <!-- Linha separadora fim da página cinza -->
       <hr style="width: 75%; margin: 20px auto; border: 1px solid #ccc;">
 
       <!-- Fim conteúdo conteiner principal -->
+
+
+
 
 
       <!-- Início conteúdo conteiner histórico -->
@@ -1173,7 +1179,12 @@ records.forEach((record, index) => {
 
 
                           <!-- Mapa PDF -->
-        <button class="button" onclick="generateMapPDF()">Mapa - Enviar / baixar</button>
+       
+       <button class="button" onclick="generateMapPDFHistory(${index})">
+  Mapa - Enviar / baixar
+</button>
+
+
 </div>
 
                        
@@ -1204,20 +1215,6 @@ window.deleteRecord = function(index) {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
      
 // Função para compartilhar no WhatsApp a partir do histórico
 function shareLocationHistory(index) {
@@ -1233,7 +1230,7 @@ function shareLocationHistory(index) {
     const userID = localStorage.getItem("userID");  // ID fixo
 
 
-
+ // conferir se pode apagar
 console.log("Timestamp salvo no registro:", record.timestamp);
 
 
@@ -1336,18 +1333,28 @@ doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth 
     // Salvar o PDF gerado
     doc.save(`${userName}_Marcador_de_Presença.pdf`);
 }
-
-
-
-
   // Função delete a partir do histórico 2 parte 
-   
- // MAPA- inicio
 
-// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração
-async function generateMapPDF() {
+   
+ // MAPA- Historico
+
+// MAPA - Função COMPLETA para gerar o PDF do mapa + declaração (HISTÓRICO)
+async function generateMapPDFHistory(index) {
     const { jsPDF } = window.jspdf;
 
+    // Recuperar registros salvos
+    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+
+    // Corrigir índice por causa do reverse()
+    const originalIndex = records.length - 1 - index;
+    const record = records[originalIndex];
+
+    if (!record) {
+        alert("Registro não encontrado.");
+        return;
+    }
+
+    // Captura o mapa ATUAL (visual apenas)
     const mapElement = document.getElementById("map");
 
     // Esconde apenas os círculos do Leaflet antes da captura
@@ -1355,7 +1362,6 @@ async function generateMapPDF() {
         .querySelectorAll('#map svg path.leaflet-interactive')
         .forEach(el => el.style.display = 'none');
 
-    // Captura o mapa
     const canvas = await html2canvas(mapElement, {
         useCORS: true,
         scale: 2
@@ -1373,36 +1379,34 @@ async function generateMapPDF() {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
+    // Margens e tamanho do mapa
+    const margin = 10;
+    const mapLeftMargin = 12;
 
-// Definindo margens e controle do tamanho do mapa
-const margin = 10; // Margem geral para a borda da página
-const mapLeftMargin = 12; // Nova margem do mapa para a borda esquerda (ajuste aqui)
+    const imgWidth = pageWidth - mapLeftMargin - margin - 2;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-const imgWidth = pageWidth - mapLeftMargin - margin - 2; // Calculando a largura do mapa
-const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantendo a proporção do mapa
+    let y = margin + 2;
 
-let y = margin + 2; // Afastar o mapa do topo em 2px
+    // Adiciona o mapa
+    pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
+    y += imgHeight + 8;
 
-// Adicionando o mapa no PDF com a margem esquerda controlada
-pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
-y += imgHeight + 8; // Afastando o texto do mapa
-
-
-    // Dados
-    const userName = localStorage.getItem("userName") || "Usuário";
-    const userID = localStorage.getItem("userID") || "Sem ID";
-    const timestamp = document.getElementById("timestamp").innerText;
-    const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
-    const coordinates = document.getElementById("coordinates").innerText;
-    const addressElement = document.getElementById("address").innerText;
+    // DADOS DO REGISTRO (HISTÓRICO)
+    const userName = record.userName || "Usuário";
+    const userID = record.userID || "Sem ID";
+    const timestamp = record.timestamp;
+    const description = record.description || "Nenhuma observação registrada.";
+    const coordinates = record.coordinates;
+    const addressElement = record.address;
 
     // TÍTULO
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(16);
-    pdf.text("Checkin+", margin + 5, y);  // Ajuste o valor "+ 10" para afastar mais da borda
+    pdf.text("Checkin+", margin + 5, y);
     y += 7;
 
-    // SUBTÍTULOS (normais, sem espaço extra)
+    // SUBTÍTULOS
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
     pdf.text("Registro de Presença", margin + 5, y);
@@ -1411,7 +1415,7 @@ y += imgHeight + 8; // Afastando o texto do mapa
     pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
     y += 8;
 
-    // TEXTO GERAL — fonte reduzida em 1pt
+    // TEXTO
     pdf.setFontSize(10);
 
     const text =
@@ -1424,25 +1428,22 @@ ${coordinates}
 ${addressElement}
 
 Link da Localização:
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+https://maps.google.com/?q=${record.latitude},${record.longitude}
 A precisão da localização pode variar em um raio de até 50 metros.
 
 Aplicativo disponível no Google Play`;
 
     pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
 
-    // Desenhar a borda ao redor de toda a página
-    pdf.setLineWidth(0.5);  // Define a espessura da linha da borda
-    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);  // Borda em torno da página
+    // Borda da página
+    pdf.setLineWidth(0.5);
+    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);
 
     // Salvar PDF
-    pdf.save("Checkin+_Mapa.pdf");
+    pdf.save(`Checkin+_Mapa_${timestamp}.pdf`);
 }
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-
 
 
   </script>
