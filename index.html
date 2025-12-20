@@ -1156,14 +1156,18 @@ records.forEach((record, index) => {
 
                     recordDiv.innerHTML = `
                     
-                    <p><strong>Declaração de comparecimento:</strong>
-                    
-                    <p><strong>Usuário:</strong> ${record.userName} (ID: ${record.userID})</p>
-                    <p><strong>Coordenadas:</strong> ${record.coordinates}</p>
-                    <p><strong>Endereço:</strong> ${record.address}</p>
-                    <p><strong>Descrição:</strong> ${record.description}</p>
-                    <p><strong>Data/Hora:</strong> ${record.timestamp}</p>
-                    <div class="history-buttons">
+                    <p><strong>Declaração de comparecimento:</strong></p>
+
+<div><strong>Usuário:</strong> ${record.userName}</div>
+<div><strong>ID:</strong> ${record.userID}</div>
+<div><strong>Descrição:</strong> ${record.description}</div>
+<div><strong>Data/Hora:</strong> ${record.timestamp}</div>
+<br> <!-- Pula uma linha depois da data -->
+<div><strong>Coordenadas:</strong> ${record.coordinates}</div>
+<div><strong>Endereço:</strong> ${record.address}</div>
+
+<div class="history-buttons">
+
                         
 
 <!-- Botões histórico -->
@@ -1469,3 +1473,4 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
+
