@@ -1197,8 +1197,7 @@ window.deleteRecord = function(index) {
     location.reload();
 };
 
-
-     
+  
 // Função para compartilhar no WhatsApp a partir do histórico
 function shareLocationHistory(index) {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
@@ -1220,11 +1219,13 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
+    
 
 
 
 
-/ FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
+
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
 
@@ -1246,12 +1247,19 @@ Aplicativo disponível no Google Play`;
 
     
 
-
 // Declaração Wwhatsapp Checkin+ HISTORICO
+const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+window.open(whatsappUrl, '_blank');
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-}
+
+
+
+
+
+        
+
+
 
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
@@ -1481,5 +1489,6 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
+
 
 
