@@ -1224,10 +1224,15 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
+/ FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
+
+const message = `*${title}*
+Registro de presença
+Declaração de comparecimento: 
+
+Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
@@ -1235,10 +1240,11 @@ Data/hora local: ${record.timestamp}
 ${record.coordinates}
 ${record.address}
 
-
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 Aplicativo disponível no Google Play`;
+
+    
 
 
 // Declaração Wwhatsapp Checkin+ HISTORICO
@@ -1475,4 +1481,5 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
+
 
