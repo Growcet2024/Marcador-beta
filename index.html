@@ -257,7 +257,6 @@ button:active {
    // box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); //
 }
 
-        
 /* Menu Deslizante */
 .menu-lateral {
     width: 250px;
@@ -272,8 +271,6 @@ button:active {
     padding-top: 60px;
 }
 
-
-        
 /* Estilo da Lista do Menu */
 .menu-lateral ul {
     list-style: none;
@@ -460,9 +457,6 @@ function editUserName() {
   // fim Função usuário
 
 
-
-
-
     // Função para obter o endereço a partir das coordenadas
     function getAddressFromCoordinates(latitude, longitude) {
         const apiUrl = `https://us1.locationiq.com/v1/reverse?key=pk.73c7ec951f7e0c38e842f740a1a63917&lat=${latitude}&lon=${longitude}&format=json`;
@@ -553,6 +547,9 @@ function shareLocation() {
 
 
 
+
+
+
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- início
 
 const title = "Checkin+";
@@ -560,31 +557,35 @@ const additionalMessage = "A precisão da localização no Google Maps pode vari
 
 const message = `*${title}*
 Registro de Presença
-
 Declaração de comparecimento:
 
 Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-${coordinates}
-${address}
 Descrição: ${description}
 Data/hora local: ${timestamp}
+
+${coordinates}
+${address}
 
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 ${additionalMessage}
 
 Aplicativo disponível no Google Play`;
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- FIM
 
+
+
+
+
+
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- FIM
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
 
+ // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - inicio
 
-
-  // Função para gerar o PDF
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -607,42 +608,28 @@ async function generatePDF() {
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
-
-
-// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
+// FUNÇÃO - Declaração PDF 
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
 
-const message = `Registro de presença
-Declaração de comparecimento:
+const message =
+  "Registro de presença\n" +
+  "Declaração de comparecimento:\n\n" +
 
-Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
-${coordinates}
-${address}
-Descrição: ${description}
-Data/hora local: ${timestamp}
+  "Eu estou aqui,\n" +
+  `Usuário: ${userName} (ID: ${userID})\n` +
+  `Descrição: ${description}\n` +
+  `Data/hora local: ${timestamp}\n\n` +
 
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+  `${coordinates}\n` +
+  `${address}\n\n` +
 
-Aplicativo disponível no Google Play`;
+  `https://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\n` +
+  "Aplicativo disponível no Google Play";
 
 
-// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL- início
+
+// FUNÇÃO - Declaração PDF Checkin+ 
 
     // Desenhando as margens
     doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
@@ -662,9 +649,9 @@ Aplicativo disponível no Google Play`;
 
 
 // Mensagem adicional (em tamanho menor)
-doc.setFontSize(8);  // Tamanho pequeno para a frase
+doc.setFontSize(12);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");
-doc.text(additionalMessage, textX, margin + 110, { maxWidth: contentWidth }); // Ajuste afastar a frase: Aprecisão da localização...
+doc.text(additionalMessage, textX, margin + 112, { maxWidth: contentWidth }); // Ajuste afastar a frase: Aprecisão da localização...
 
 
    // Salvar o PDF gerado
@@ -678,22 +665,9 @@ doc.save(
   String(new Date().getSeconds()).padStart(2, "0") +
   ".pdf"
 );
-
-
 }
 
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
-
-
-
-
-
-
-
-
-
-
-
 
 
 // MAPA- inicio
@@ -793,15 +767,13 @@ Aplicativo disponível no Google Play`;
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+   const formattedDate = `${day}-${month}-${year}_${hours}-${minutes}-${seconds}`;
 
     // Salvar PDF com data/hora no nome
     pdf.save(`Checkin+_Mapa_${formattedDate}.pdf`);
 }
 
-
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
 
 
        // Bloco= 3 =
@@ -879,7 +851,6 @@ L.circle([currentLatitude, currentLongitude], {
     radius: gpsAccuracy,
     weight: 1
 }).addTo(map);
-
 
 
                 // Corrige o redimensionamento do mapa após a exibição
@@ -994,8 +965,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
  // Bloco= 1 fim
 // Bloco mapa na tela fim
-
-
 
 
 
@@ -1155,9 +1124,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 </div>
 
-
-
-
       <!-- Linha separadora fim da página cinza -->
       <hr style="width: 75%; margin: 20px auto; border: 1px solid #ccc;">
 
@@ -1199,29 +1165,29 @@ records.forEach((record, index) => {
                     <p><strong>Descrição:</strong> ${record.description}</p>
                     <p><strong>Data/Hora:</strong> ${record.timestamp}</p>
                     <div class="history-buttons">
+                        
 
-
-                     <!-- Botões historico -->
-
-                        <div class="history-buttons">
+<!-- Botões histórico -->
+<div class="history-buttons">
+    <!-- Enviar texto WhatsApp -->
     <button class="share-btn" onclick="shareLocationHistory(${index})">
-      Enviar texto WhatsApp
+        Enviar texto WhatsApp
     </button>
+
+    <!-- Mapa PDF -->
+    <button class="button" onclick="generateMapPDFHistory(${index})">
+        Mapa - Enviar / baixar
+    </button>
+
+    <!-- Declaração PDF -->
     <button class="pdf-btn" onclick="generatePDFHistory(${index})">
-       PDF - Enviar / baixar
+        Declaração - Enviar / baixar
     </button>
+
+    <!-- Delete -->
     <button class="delete-btn" onclick="deleteRecord(${index})">
         Apagar
     </button>
-
-
-                          <!-- Mapa PDF -->
-       
-       <button class="button" onclick="generateMapPDFHistory(${index})">
-  Mapa - Enviar / baixar
-</button>
-
-
 </div>
 
                        
@@ -1272,21 +1238,35 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
+
+
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
 const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-${record.coordinates}
-${record.address}
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
+
+${record.coordinates}
+${record.address}
 
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 Aplicativo disponível no Google Play`;
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
+
+
+
+
+
+
+
+
+
+
+
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -1294,19 +1274,8 @@ Aplicativo disponível no Google Play`;
 
 
 
+// Função para gerar PDF a partir do histórico (2ª parte) inicio
 
-
-
-
-
-
-
-
-
-
-
-
-// Função para gerar PDF a partir do histórico (2ª parte)
 async function generatePDFHistory(index) {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
 
@@ -1335,23 +1304,28 @@ async function generatePDFHistory(index) {
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
     const userID = localStorage.getItem("userID");  // ID fixo
 
-   
-// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- início
+
+// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- 
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
+const message = `Registro de presença
+Declaração de comparecimento:
+
+Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-${record.coordinates}
-${record.address}
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
 
+${record.coordinates}
+${record.address}
+
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+\u200B
 
 Aplicativo disponível no Google Play`;
+
+
 // FUNÇÃO - Declaração PDF Checkin+ HISTORICO- fim
-
-
 
     // Título do PDF
     doc.setFont("helvetica", "bold");
@@ -1364,13 +1338,12 @@ Aplicativo disponível no Google Play`;
     doc.text(message, textX, margin + 20, { maxWidth: contentWidth });
 
 
-
   // Mensagem adicional (em menor tamanho)
 // Calculando a posição vertical do link
-const linkYPosition = margin + 100;  // Aqui é onde o link do Google Maps está sendo colocado
+const linkYPosition = margin + 103;  // Aqui é onde o link do Google Maps está sendo colocado
 
 // Mensagem adicional (em menor tamanho)
-doc.setFontSize(8);  // Tamanho pequeno para a frase
+doc.setFontSize(12);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");  // Fonte normal
 
 // Ajuste da posição Y para a frase ficar abaixo do link
@@ -1392,17 +1365,11 @@ doc.save(
 );
 
 }
-  // Função delete a partir do histórico 2 parte 
+
+// Função para gerar PDF a partir do histórico (2ª parte) fim 
 
 
-
-
-
-
-
-
-
-   
+ 
  // MAPA- Historico
 
 // MAPA - Função COMPLETA para gerar o PDF do mapa + declaração (HISTÓRICO)
@@ -1517,6 +1484,3 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
-
-
-
