@@ -536,31 +536,39 @@ const record = {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
     // Função para compartilhar a localização via WhatsApp texto
 function shareLocation() {
+    // Pegando os dados da tela e do localStorage
     const coordinates = document.getElementById("coordinates").innerText;
     const address = document.getElementById("address").innerText;
     const timestamp = document.getElementById("timestamp").innerText;
-    const userName = localStorage.getItem("userName") || "Usuário";  // Usando o nome salvo no localStorage
-    const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
+    const userName = localStorage.getItem("userName") || "Usuário";
+    const userID = localStorage.getItem("userID");
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
+    // Dados fixos para a mensagem
+    const title = "Checkin+";
+    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
 
-
-
-
-
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- início
-
-const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-
-const message = `*${title}*
+    // Montando a mensagem para WhatsApp
+    const message = `*${title}*
 Registro de Presença
 Declaração de comparecimento:
 
 Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
+Usuário: ${userName}
+ID: ${userID}
 Descrição: ${description}
 Data/hora local: ${timestamp}
 
@@ -573,16 +581,20 @@ ${additionalMessage}
 
 Aplicativo disponível no Google Play`;
 
-
-
-
-
-
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ TELA INICIAL- FIM
-
+    // Abrindo o WhatsApp com a mensagem pronta
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
+
+
+
+
+
+
+
+
+
+
 
  // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - inicio
 
@@ -606,41 +618,6 @@ async function generatePDF() {
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome salvo no localStorage
     const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
-
-
-
-
-
-
-
-// FUNÇÃO - Declaração PDF tela inicial
-const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-
-const message =
-  "Registro de presença\n" +
-  "Declaração de comparecimento:\n\n" +
-
-  "Eu estou aqui,\n" +
-doc.text(`Usuário: ${userName}`, textX, currentY);
-currentY += 8; // pula linha
-doc.text(`ID: ${userID}`, textX, currentY);
-currentY += 8; // pula linha para próxima informação
-
-  `Descrição: ${description}\n` +
-  `Data/hora local: ${timestamp}\n\n` +
-
-  `${coordinates}\n` +
-  `${address}\n\n` +
-
-  `https://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\n` +
-  "Aplicativo disponível no Google Play";
-
-
-
-
-
-
 
 
 // FUNÇÃO - Declaração PDF Checkin+ 
@@ -682,6 +659,14 @@ doc.save(
 }
 
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
+
+
+
+
+
+
+
+
 
 
 // MAPA- inicio
@@ -1252,34 +1237,21 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
-
-
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
-
 const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-
-const message = `*${title}* (Histórico)
-Registro de Presença
-Declaração de comparecimento:
-
-Eu estou aqui,
-Usuário: ${userName}
-ID: ${userID}
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
+const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
+Usuário: ${userName} (ID: ${userID})
+${record.coordinates}
+${record.address}
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
 
-${record.coordinates}
-${record.address}
-
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
-${additionalMessage}
-
 Aplicativo disponível no Google Play`;
-
-
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
+
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -1497,5 +1469,3 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
-
-
