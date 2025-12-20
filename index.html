@@ -537,17 +537,7 @@ const record = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-    // Função para compartilhar a localização via WhatsApp texto
+    // Função para compartilhar a localização via WhatsApp texto  organizado
 function shareLocation() {
     // Pegando os dados da tela e do localStorage
     const coordinates = document.getElementById("coordinates").innerText;
@@ -586,13 +576,7 @@ Aplicativo disponível no Google Play`;
     window.open(whatsappUrl, '_blank');
 }
 
-
-
-
-
-
-
-
+ // Função para compartilhar a localização via WhatsApp texto  organizado
 
 
 
@@ -659,13 +643,6 @@ doc.save(
 }
 
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
-
-
-
-
-
-
-
 
 
 
@@ -1079,6 +1056,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
 
 
+
 <!-- PARTE DO HISTÓRICO -->
 <!-- Inicio conteine=2 histórico -->
 <!-- Container para Exibir o Histórico de Presença -->
@@ -1168,8 +1146,7 @@ records.forEach((record, index) => {
 
 <div class="history-buttons">
 
-                        
-
+                    
 <!-- Botões histórico -->
 <div class="history-buttons">
     <!-- Enviar texto WhatsApp -->
@@ -1241,25 +1218,49 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
+
+
+
+
+
+
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
 const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-${record.coordinates}
-${record.address}
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
+${record.coordinates}
+${record.address}
+
 
 https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 Aplicativo disponível no Google Play`;
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
+
+// Declaração Wwhatsapp Checkin+ HISTORICO
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
+
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1473,4 +1474,3 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
-
