@@ -613,25 +613,24 @@ async function generatePDF() {
 
 
 
-// FUNÇÃO - Declaração PDF 
+// FUNÇÃO - Declaração PDF tela inicial
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
 
-const message = `Registro de presença
-Declaração de comparecimento:
+const message =
+  "Registro de presença\n" +
+  "Declaração de comparecimento:\n\n" +
 
-Eu estou aqui,
-Usuário: ${userName}
-ID: ${userID}
-Descrição: ${description}
-Data/hora local: ${timestamp}
+  "Eu estou aqui,\n" +
+  `Usuário: ${userName}\nID: ${userID}\n` +
+  `Descrição: ${description}\n` +
+  `Data/hora local: ${timestamp}\n\n` +
 
-${coordinates}
-${address}
+  `${coordinates}\n` +
+  `${address}\n\n` +
 
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
-\u200B
-Aplicativo disponível no Google Play`;
+  `https://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\n` +
+  "Aplicativo disponível no Google Play";
 
 
 
@@ -1494,3 +1493,4 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
+
