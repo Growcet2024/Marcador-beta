@@ -622,7 +622,11 @@ const message =
   "Declaração de comparecimento:\n\n" +
 
   "Eu estou aqui,\n" +
-  `Usuário: ${userName}\nID: ${userID}\n` +
+doc.text(`Usuário: ${userName}`, textX, currentY);
+currentY += 8; // pula linha
+doc.text(`ID: ${userID}`, textX, currentY);
+currentY += 8; // pula linha para próxima informação
+
   `Descrição: ${description}\n` +
   `Data/hora local: ${timestamp}\n\n` +
 
@@ -1493,4 +1497,5 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
+
 
