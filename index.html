@@ -1197,7 +1197,7 @@ window.deleteRecord = function(index) {
     location.reload();
 };
 
-  
+     
 // Função para compartilhar no WhatsApp a partir do histórico
 function shareLocationHistory(index) {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
@@ -1219,21 +1219,14 @@ console.log("Timestamp salvo no registro:", record.timestamp);
 
 
 
-    
-
-
 
 
 
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
+
 const title = "Checkin+";
 const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-
-const message = `*${title}*
-Registro de presença
-Declaração de comparecimento: 
-
-Eu estou aqui,
+const message = `Registro de presença\n\Declaração de comparecimento: \n\nEu estou aqui,
 Usuário: ${userName} (ID: ${userID})
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
@@ -1245,35 +1238,15 @@ https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
 Aplicativo disponível no Google Play`;
 
-    
-
-// Declaração Wwhatsapp Checkin+ HISTORICO
-const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-window.open(whatsappUrl, '_blank');
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
-
-
-
-
-
-
-        
-
-
 
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
 
 
-
-
-
-
-
-
-
-
-
+// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
 
 
@@ -1372,6 +1345,8 @@ doc.save(
 }
 
 // Função para gerar PDF a partir do histórico (2ª parte) fim 
+
+
 
 
  
@@ -1489,6 +1464,3 @@ Aplicativo disponível no Google Play`;
  
 </body>
 </html>
-
-
-
