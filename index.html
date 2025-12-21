@@ -580,7 +580,7 @@ Aplicativo disponível no Google Play`;
 
 
 
- // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - inicio
+// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - inicio
 
 async function generatePDF() {
     const { jsPDF } = window.jspdf;
@@ -602,6 +602,27 @@ async function generatePDF() {
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome salvo no localStorage
     const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
     const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
+
+
+// FUNÇÃO - Declaração PDF 
+const title = "Checkin+";
+const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
+
+const message =
+  "Registro de presença\n" +
+  "Declaração de comparecimento:\n\n" +
+
+  "Eu estou aqui,\n" +
+  `Usuário: ${userName} (ID: ${userID})\n` +
+  `Descrição: ${description}\n` +
+  `Data/hora local: ${timestamp}\n\n` +
+
+  `${coordinates}\n` +
+  `${address}\n\n` +
+
+  `https://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\n` +
+  "Aplicativo disponível no Google Play";
+
 
 
 // FUNÇÃO - Declaração PDF Checkin+ 
@@ -643,7 +664,6 @@ doc.save(
 }
 
 // FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
-
 
 
 // MAPA- inicio
@@ -1048,13 +1068,14 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <!-- Gerar PDF -->
         <button class="button" onclick="generatePDF()">Declaração - Enviar / baixar</button>
 
-        
+        <!-- Chegada / Saida -->
+        <button class="button" onclick="openArrivalDeparture()">Chegada / Saída</button>
+
          <!-- Alteração: Botão para abrir o local no Google Maps -->
         <button class="button" onclick="openGoogleMaps()">Google Maps</button>
 
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
-
 
 
 <!-- PARTE DO HISTÓRICO -->
@@ -1230,9 +1251,10 @@ const additionalMessage = "A precisão da localização no Google Maps pode vari
 const message = `*${title}*
 Registro de presença
 Declaração de comparecimento: 
-    
+
 Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
+
 Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
 
@@ -1465,14 +1487,65 @@ Aplicativo disponível no Google Play`;
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
-
   </script>
+
+
+
+
+
+
+
+  <script>
+function openArrivalDeparture() {
+    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+    if (records.length < 2) {
+        alert("É necessário pelo menos 2 registros.");
+        return;
+    }
+
+    alert("Modo Chegada / Saída aberto (lista simples será exibida).");
+}
+</script>
+
+<div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;">
+  <div style="background:#fff; margin:10% auto; padding:15px; width:90%; max-width:400px;">
+    <h3>Chegada / Saída</h3>
+    <div id="arrival-list"></div>
+    <button onclick="closeArrivalDeparture()">Fechar</button>
+  </div>
+</div>
+
+
+<script>
+function openArrivalDeparture() {
+    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+records.reverse();
+
+    if (records.length < 2) {
+        alert("É necessário pelo menos 2 registros.");
+        return;
+    }
+
+    const list = document.getElementById("arrival-list");
+    list.innerHTML = "";
+
+    records.forEach((record, index) => {
+        const div = document.createElement("div");
+        div.innerText = `${record.timestamp} - ${record.description}`;
+        list.appendChild(div);
+    });
+
+    document.getElementById("arrival-overlay").style.display = "block";
+}
+
+function closeArrivalDeparture() {
+    document.getElementById("arrival-overlay").style.display = "none";
+}
+
+
+</script>
+
+
  
 </body>
 </html>
-
-
-
-
-
-
