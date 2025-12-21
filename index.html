@@ -1495,31 +1495,26 @@ Aplicativo disponível no Google Play`;
 
 
 
-  <script>
-function openArrivalDeparture() {
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-    if (records.length < 2) {
-        alert("É necessário pelo menos 2 registros.");
-        return;
-    }
 
-    alert("Modo Chegada / Saída aberto (lista simples será exibida).");
-}
-</script>
 
 <div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;">
   <div style="background:#fff; margin:10% auto; padding:15px; width:90%; max-width:400px;">
     <h3>Chegada / Saída</h3>
     <div id="arrival-list"></div>
-    <button onclick="closeArrivalDeparture()">Fechar</button>
+ 
+<button id="generate-pdf-btn" style="display:none; margin-top:10px;" onclick="generateArrivalDeparturePDF()">Gerar PDF Chegada / Saída</button>
+
+  <button onclick="closeArrivalDeparture()">Fechar</button>
+  
   </div>
 </div>
 
 
 <script>
+
 function openArrivalDeparture() {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-records.reverse();
+    records.reverse();
 
     if (records.length < 2) {
         alert("É necessário pelo menos 2 registros.");
@@ -1529,11 +1524,38 @@ records.reverse();
     const list = document.getElementById("arrival-list");
     list.innerHTML = "";
 
-    records.forEach((record, index) => {
-        const div = document.createElement("div");
-        div.innerText = `${record.timestamp} - ${record.description}`;
-        list.appendChild(div);
-    });
+    let selected = [];
+
+
+
+
+ records.forEach((record, index) => {
+    const div = document.createElement("div");
+    div.innerText = `${record.timestamp} - ${record.description}`;
+    div.style.cursor = "pointer";
+    div.style.padding = "6px";
+    div.style.borderBottom = "1px solid #ccc";
+
+    // <-- Substitua por este bloco
+    div.onclick = () => {
+        if (selected.includes(index)) return;
+        if (selected.length >= 2) return;
+
+        selected.push(index);
+        div.style.background = "#d1f7d6";
+
+        if (selected.length === 2) {
+            document.getElementById("generate-pdf-btn").style.display = "inline-block";
+        }
+    };
+
+    list.appendChild(div);
+});
+
+
+
+
+
 
     document.getElementById("arrival-overlay").style.display = "block";
 }
@@ -1541,9 +1563,10 @@ records.reverse();
 function closeArrivalDeparture() {
     document.getElementById("arrival-overlay").style.display = "none";
 }
-
-
 </script>
+
+
+
 
 
  
