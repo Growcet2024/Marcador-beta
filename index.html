@@ -1616,10 +1616,17 @@ function generateArrivalDeparturePDF() {
     const end = new Date(saida.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
     const diff = end - start;
 
-    const minutos = Math.floor(diff / 60000) % 60;
-    const horas = Math.floor(diff / 3600000) % 24;
-    const dias = Math.floor(diff / 86400000);
-    const tempo = `${dias ? dias + " dias, " : ""}${horas} horas e ${minutos} minutos`;
+
+
+   const totalHoras = Math.floor(diff / 3600000);
+const totalMinutos = Math.floor(diff / 60000) % 60;
+const dias = Math.floor(totalHoras / 24);
+const horasRestantes = totalHoras % 24;
+
+const tempo = `${dias ? dias + " dias, " : ""}${horasRestantes} horas e ${totalMinutos} minutos`;
+
+
+
 
     const texto = `
 Checkin+
@@ -1654,6 +1661,38 @@ Aplicativo disponível no Google Play
 `;
 
     doc.text(texto, 10, 10);
+
+
+
+
+
+let y = 180; // posição vertical (ajuste se quiser)
+
+doc.setTextColor(0, 0, 255); // azul estilo link
+doc.textWithLink(
+  "Ver localização da ENTRADA no mapa",
+  10,
+  y,
+  { url: `https://maps.google.com/?q=${chegadaCoords}` }
+);
+
+y += 10;
+
+doc.textWithLink(
+  "Ver localização da SAÍDA no mapa",
+  10,
+  y,
+  { url: `https://maps.google.com/?q=${saidaCoords}` }
+);
+
+doc.setTextColor(0, 0, 0); // volta para preto
+
+
+
+
+
+
+
     doc.save("Checkin+_Chegada_Saida.pdf");
 
     closeArrivalDeparture();
