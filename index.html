@@ -1058,10 +1058,9 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
        Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar. Com o <strong>Checkin+</strong>, você registra sua presença com apenas um clique. O app gera uma declaração de comparecimento com mapa, nome, ID, data, hora e localização — uma prova incontestável, em texto ou PDF, pronto para enviar, baixar ou imprimir.
      </p>
  
-
-          <!-- Chegada / Saida -->
+        <!-- Chegada / Saida -->
         <button class="button" onclick="openArrivalDeparture()">Chegada / Saída</button>
-        
+
         <!-- Compartilhar via WhatsApp -->
         <button class="button" onclick="shareLocation()">Enviar texto WhatsApp</button>
 
@@ -1071,6 +1070,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
         <!-- Gerar PDF -->
         <button class="button" onclick="generatePDF()">Declaração - Enviar / baixar</button>
 
+        
          <!-- Alteração: Botão para abrir o local no Google Maps -->
         <button class="button" onclick="openGoogleMaps()">Google Maps</button>
 
@@ -1495,6 +1495,8 @@ Aplicativo disponível no Google Play`;
 
 
 
+
+
 <!-- Fução chegada e saída inicio -->
 
 <div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;">
@@ -1510,6 +1512,8 @@ Aplicativo disponível no Google Play`;
 </div>
 
 <!-- Bacground Botões -->
+
+
 
 
 <script>
@@ -1569,6 +1573,21 @@ function closeArrivalDeparture() {
 
 <script>
 
+
+
+    function formatCoordinates(coords) {
+    const matches = coords.match(/-?\d+\.?\d*/g);
+    if (matches && matches.length >= 2) {
+        return `${matches[0]},${matches[1]}`;
+    }
+    return "";
+}
+
+
+
+
+
+
 function generateArrivalDeparturePDF() {
     if (!window.selected || selected.length !== 2) {
         alert("Selecione dois registros.");
@@ -1577,29 +1596,32 @@ function generateArrivalDeparturePDF() {
 
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
 
-    const chegada = records[records.length - 1 - selected[0]];
-    const saida = records[records.length - 1 - selected[1]];
+    // Pega os registros selecionados pelo índice (lembrando que o overlay usa a lista invertida)
+    const rec1 = records[records.length - 1 - selected[0]];
+    const rec2 = records[records.length - 1 - selected[1]];
+
+    // Ordena pela data/hora para garantir chegada antes da saída
+    const chegada = new Date(rec1.timestamp.split("/").reverse().join("-")) < new Date(rec2.timestamp.split("/").reverse().join("-")) ? rec1 : rec2;
+    const saida   = chegada === rec1 ? rec2 : rec1;
+
+    const chegadaCoords = formatCoordinates(chegada.coordinates);
+    const saidaCoords = formatCoordinates(saida.coordinates);
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+    doc.setFontSize(12); // Mantendo o controle de fonte
 
     const start = new Date(chegada.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
     const end = new Date(saida.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
-
-
     const diff = end - start;
 
     const minutos = Math.floor(diff / 60000) % 60;
     const horas = Math.floor(diff / 3600000) % 24;
     const dias = Math.floor(diff / 86400000);
-
-    const tempo =
-        `${dias ? dias + " dias, " : ""}${horas} horas e ${minutos} minutos`;
+    const tempo = `${dias ? dias + " dias, " : ""}${horas} horas e ${minutos} minutos`;
 
     const texto = `
-     
-
 Checkin+
 Comprovante de entrada e saída
 
@@ -1612,7 +1634,8 @@ Descrição: ${chegada.description}
 
 ${chegada.coordinates}
 ${chegada.address}
-https://maps.google.com/?q=${chegada.latitude},${chegada.longitude}
+Link da Localização:
+https://maps.google.com/?q=${chegadaCoords}
 
 SAÍDA
 Data/Hora: ${saida.timestamp}
@@ -1620,17 +1643,14 @@ Descrição: ${saida.description}
 
 ${saida.coordinates}
 ${saida.address}
-https://maps.google.com/?q=${chegada.latitude},${chegada.longitude}
+Link da Localização:
+https://maps.google.com/?q=${saidaCoords}
 
 Tempo total de permanência:
 ${tempo}
 
 Documento gerado em ${new Date().toLocaleString()}
 Aplicativo disponível no Google Play
-
-
-
-        <!-- importante -->
 `;
 
     doc.text(texto, 10, 10);
@@ -1644,6 +1664,10 @@ Aplicativo disponível no Google Play
 </script>
 
 
+
+
+
+
 <!-- Fução chegada e saída fim -->
 
 
@@ -1651,5 +1675,3 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
-
-
