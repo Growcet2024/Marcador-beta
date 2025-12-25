@@ -1514,120 +1514,131 @@ Aplicativo disponível no Google Play`;
 <!-- Bacground Botões -->
 
 
-
-
 <script>
+let selected = [];
+let reversedRecords = [];
 
+/* ===============================
+   ABRIR CHEGADA / SAÍDA
+================================ */
 function openArrivalDeparture() {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-    records.reverse();
 
     if (records.length < 2) {
         alert("É necessário pelo menos 2 registros.");
         return;
     }
 
+    reversedRecords = [...records].reverse();
+    selected = [];
+
     const list = document.getElementById("arrival-list");
     list.innerHTML = "";
 
+    document.getElementById("generate-pdf-btn").style.display = "none";
 
-    selected = [];
+    reversedRecords.forEach((record, index) => {
+        const div = document.createElement("div");
+        div.innerText = `${record.timestamp} - ${record.description}`;
+        div.style.cursor = "pointer";
+        div.style.padding = "6px";
+        div.style.borderBottom = "1px solid #ccc";
 
+        div.onclick = () => {
+            if (selected.includes(index)) return;
+            if (selected.length >= 2) return;
 
- records.forEach((record, index) => {
-    const div = document.createElement("div");
-    div.innerText = `${record.timestamp} - ${record.description}`;
-    div.style.cursor = "pointer";
-    div.style.padding = "6px";
-    div.style.borderBottom = "1px solid #ccc";
+            selected.push(index);
+            div.style.background = "#d1f7d6";
 
-    // <-- Substitua por este bloco
-    div.onclick = () => {
-        if (selected.includes(index)) return;
-        if (selected.length >= 2) return;
+            if (selected.length === 2) {
+                document.getElementById("generate-pdf-btn").style.display = "inline-block";
+            }
+        };
 
-        selected.push(index);
-        div.style.background = "#d1f7d6";
-
-        if (selected.length === 2) {
-            document.getElementById("generate-pdf-btn").style.display = "inline-block";
-        }
-    };
-
-    list.appendChild(div);
-});
-
+        list.appendChild(div);
+    });
 
     document.getElementById("arrival-overlay").style.display = "block";
 }
 
+/* ===============================
+   FECHAR
+================================ */
 function closeArrivalDeparture() {
     document.getElementById("arrival-overlay").style.display = "none";
 }
-</script>
+
+/* ===============================
+   UTILIDADES
+================================ */
 
 
+function parseDateBR(dateStr) {
+    if (!dateStr) return null;
 
-<!-- Fução gerar pdf -->
+    // Extrai números: dia, mês, ano, hora, minuto, segundo
+    const parts = dateStr.match(/\d+/g);
 
+    if (!parts || parts.length < 3) return null;
 
-<script>
+    const [d, m, y, h = 0, min = 0, s = 0] = parts.map(Number);
 
-
-
-    function formatCoordinates(coords) {
-    const matches = coords.match(/-?\d+\.?\d*/g);
-    if (matches && matches.length >= 2) {
-        return `${matches[0]},${matches[1]}`;
-    }
-    return "";
+    return new Date(y, m - 1, d, h, min, s);
 }
 
 
+function formatCoordinates(coords) {
+    const matches = coords?.match(/-?\d+\.?\d*/g);
+    return matches && matches.length >= 2 ? `${matches[0]},${matches[1]}` : "";
+}
 
 
+/* ===============================
+   GERAR PDF
+================================ */
 
 
-function generateArrivalDeparturePDF() {
-    if (!window.selected || selected.length !== 2) {
+    function generateArrivalDeparturePDF() {
+    if (selected.length !== 2) {
         alert("Selecione dois registros.");
         return;
     }
 
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+    const rec1 = reversedRecords[selected[0]];
+    const rec2 = reversedRecords[selected[1]];
 
-    // Pega os registros selecionados pelo índice (lembrando que o overlay usa a lista invertida)
-    const rec1 = records[records.length - 1 - selected[0]];
-    const rec2 = records[records.length - 1 - selected[1]];
-
-    // Ordena pela data/hora para garantir chegada antes da saída
-    const chegada = new Date(rec1.timestamp.split("/").reverse().join("-")) < new Date(rec2.timestamp.split("/").reverse().join("-")) ? rec1 : rec2;
+    const chegada = parseDateBR(rec1.timestamp) < parseDateBR(rec2.timestamp) ? rec1 : rec2;
     const saida   = chegada === rec1 ? rec2 : rec1;
 
-    const chegadaCoords = formatCoordinates(chegada.coordinates);
-    const saidaCoords = formatCoordinates(saida.coordinates);
+    const start = parseDateBR(chegada.timestamp);
+    const end   = parseDateBR(saida.timestamp);
+    const diff  = end - start;
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    // Calcula dias, horas e minutos
+    const minutos = Math.floor(diff / 60000) % 60;
+    const horas   = Math.floor(diff / 3600000) % 24;
+    const dias    = Math.floor(diff / 86400000);
 
-    doc.setFontSize(12); // Mantendo o controle de fonte
+    // =========================
+    // MONTA TEMPO TOTAL DE PERMANÊNCIA
+    // Mostra apenas unidades existentes, evitando 0 dias ou 0 horas
+    // =========================
 
-    const start = new Date(chegada.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
-    const end = new Date(saida.timestamp.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1"));
-    const diff = end - start;
+    let tempoParts = [];
+    if (dias > 0) tempoParts.push(`${dias} ${dias === 1 ? "dia" : "dias"}`);
+    if (horas > 0) tempoParts.push(`${horas} ${horas === 1 ? "hora" : "horas"}`);
+    tempoParts.push(`${minutos} ${minutos === 1 ? "minuto" : "minutos"}`); // sempre mostra minutos
+    const tempo = tempoParts.join(", ");
 
+    // Formata coordenadas com fallback caso estejam vazias
+    const chegadaCoords = formatCoordinates(chegada.coordinates) || "0,0";
+    const saidaCoords   = formatCoordinates(saida.coordinates) || "0,0";
 
-
-   const totalHoras = Math.floor(diff / 3600000);
-const totalMinutos = Math.floor(diff / 60000) % 60;
-const dias = Math.floor(totalHoras / 24);
-const horasRestantes = totalHoras % 24;
-
-const tempo = `${dias ? dias + " dias, " : ""}${horasRestantes} horas e ${totalMinutos} minutos`;
-
-
-
-
+    // =========================
+    // INÍCIO DO TEXTO PARA PDF
+    // ⚠️ NÃO APAGAR ESTA CRASE
+    // =========================
     const texto = `
 Checkin+
 Comprovante de entrada e saída
@@ -1639,8 +1650,8 @@ ENTRADA
 Data/Hora: ${chegada.timestamp}
 Descrição: ${chegada.description}
 
-${chegada.coordinates}
-${chegada.address}
+${chegada.coordinates || ""}
+${chegada.address || ""}
 Link da Localização:
 https://maps.google.com/?q=${chegadaCoords}
 
@@ -1648,8 +1659,8 @@ SAÍDA
 Data/Hora: ${saida.timestamp}
 Descrição: ${saida.description}
 
-${saida.coordinates}
-${saida.address}
+${saida.coordinates || ""}
+${saida.address || ""}
 Link da Localização:
 https://maps.google.com/?q=${saidaCoords}
 
@@ -1660,39 +1671,15 @@ Documento gerado em ${new Date().toLocaleString()}
 Aplicativo disponível no Google Play
 `;
 
+    // =========================
+    // FIM DO TEXTO PARA PDF
+    // ⚠️ NÃO APAGAR ESTA CRASE
+    // =========================
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(12);
     doc.text(texto, 10, 10);
-
-
-
-
-
-let y = 180; // posição vertical (ajuste se quiser)
-
-doc.setTextColor(0, 0, 255); // azul estilo link
-doc.textWithLink(
-  "Ver localização da ENTRADA no mapa",
-  10,
-  y,
-  { url: `https://maps.google.com/?q=${chegadaCoords}` }
-);
-
-y += 10;
-
-doc.textWithLink(
-  "Ver localização da SAÍDA no mapa",
-  10,
-  y,
-  { url: `https://maps.google.com/?q=${saidaCoords}` }
-);
-
-doc.setTextColor(0, 0, 0); // volta para preto
-
-
-
-
-
-
-
     doc.save("Checkin+_Chegada_Saida.pdf");
 
     closeArrivalDeparture();
@@ -1701,7 +1688,6 @@ doc.setTextColor(0, 0, 0); // volta para preto
 
 
 </script>
-
 
 
 
