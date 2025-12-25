@@ -1500,52 +1500,20 @@ Aplicativo disponível no Google Play`;
 <!-- Fução chegada e saída inicio -->
 
         
+<!-- Modal -->
+<div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999; overflow:auto;">
+  <div style="background:#fff; margin:auto; padding:20px; width:90%; max-width:400px; max-height:80%; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3);">
+    <h3>Chegada / Saída</h3>
 
-<!-- Modal Chegada / Saída -->
-<div id="arrival-overlay" style="
-    display:none; 
-    position:fixed; 
-    top:0; left:0; 
-    width:100%; height:100%; 
-    background:rgba(0,0,0,0.6); 
-    z-index:999; 
-    justify-content:center; 
-    align-items:flex-start; 
-    padding:10px; 
-    overflow:auto;
-">
-    <div style="
-        background:#fff; 
-        width:90%; 
-        max-width:400px; 
-        border-radius:8px; 
-        box-shadow:0 0 10px rgba(0,0,0,0.3);
-        max-height:90vh; 
-        display:flex; 
-        flex-direction:column;
-        padding:20px;
-    ">
-        <h3>Chegada / Saída</h3>
-
-        <!-- Lista de registros -->
-        <div id="arrival-list" style="
-            flex:1 1 auto;  
-            overflow-y:auto; 
-            border:1px solid #ccc; 
-            border-radius:4px; 
-            padding:5px; 
-            margin-bottom:15px;
-        "></div>
-
-        <div style="display:flex; justify-content:space-between;">
-            <button id="generate-pdf-btn" style="display:none;">Gerar PDF</button>
-            <button onclick="closeArrivalDeparture()">Fechar</button>
-        </div>
+    Selecione dois registros
+    <div id="arrival-list" style="max-height:calc(80vh - 120px); overflow-y:auto; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;"></div>
+    
+    <div style="display:flex; justify-content:space-between;">
+      <button id="generate-pdf-btn" style="display:none;" onclick="generateArrivalDeparturePDF()">Gerar PDF</button>
+      <button onclick="closeArrivalDeparture()">Fechar</button>
     </div>
+  </div>
 </div>
-
-<!-- Botão para abrir modal -->
-<button onclick="openArrivalDeparture()">Chegada / Saída</button>
 
 
         
@@ -1741,5 +1709,6 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
