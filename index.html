@@ -64,6 +64,8 @@ header h1 {
     color: #000000;
 }
 
+
+        
 .container {
     /* margin-top: 150px;  Remover valor fixo */
     position: relative;
@@ -343,11 +345,19 @@ button:active {
 
 
 <!-- Estilos CSS -->
-
-
-    
     </style>
 
+    
+  <!-- Controlar a distancio no topo -->
+<script>
+window.addEventListener('load', function() {
+    const header = document.querySelector('header');
+    const container = document.querySelector('.container');
+
+    // Define a margem-top do container igual à altura do header
+    container.style.marginTop = header.offsetHeight + 'px';
+});
+</script>
 
 <span class="menu-hamburguer">☰</span>
 <div class="menu-lateral">
@@ -1768,6 +1778,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
