@@ -25,6 +25,7 @@
 
 
 
+
 /* ======================
    Estilos Globais
 ====================== */
@@ -94,23 +95,13 @@ header h1 {
 }
 
 
-  
 
 
-
-
-
-
-
-
-
-        
 
         /* Estilos do Mapa */
         #map {
             border-radius: 8px;
         }
-
 
 
         /* IMPUT - Área de Texto (Descrição) */
@@ -285,6 +276,9 @@ button:active {
 }
 
 
+
+
+
 /* CSS menu */
 /* Ícone do Menu Hambúrguer */
 .menu-hamburguer {
@@ -337,6 +331,10 @@ button:active {
     background: #444;
 }
 
+
+
+
+
 #map {
     position: relative;
     z-index: 1; /* Mantém o mapa abaixo do menu */
@@ -345,12 +343,17 @@ button:active {
 
 
 <!-- Estilos CSS -->
-    </style>
+
 
     
-  <!-- Controlar a distancio no topo -->
+    </style>
+
+    <!-- seu conteúdo HTML aqui -->
+
+
+    <!-- Controlar a distancio no topo -->
 <script>
-    
+
 window.addEventListener('load', function() {
     const header = document.querySelector('header');
     const container = document.querySelector('.container');
@@ -359,8 +362,9 @@ window.addEventListener('load', function() {
     container.style.marginTop = (header.offsetHeight + ajuste) + 'px';
 });
 
-    
 </script>
+
+
 
 <span class="menu-hamburguer">☰</span>
 <div class="menu-lateral">
@@ -382,6 +386,8 @@ window.addEventListener('load', function() {
         }
     });
 </script>
+
+
 // ==========================
 // Controle do Menu Lateral
 // ==========================
@@ -425,7 +431,8 @@ menu.addEventListener('touchmove', function(e) {
 });
 
 
-    
+
+
 
 <script>
     /* Variáveis Globais */
@@ -1079,6 +1086,11 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 <body>
 
 
+
+
+
+
+
     <!-- Cabeçalho Tela principal-->
     <header>
 
@@ -1224,6 +1236,19 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
       <hr style="width: 75%; margin: 20px auto; border: 1px solid #ccc;">
 
       <!-- Fim conteúdo conteiner principal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1596,20 +1621,17 @@ Aplicativo disponível no Google Play`;
 
 
 <!-- Função chegada e saída início -->
-        <!-- Função chegada e saída início -->
 
 
 <!-- Modal -->
 
-        <!-- Modal -->
-
-
-
 <div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
     background:rgba(0,0,0,0.6); z-index:999; overflow:auto; padding:40px 10px; box-sizing:border-box;">
-  <div style="background:#fff; padding:20px; width:100%; max-width:400px; 
+  <div style="background:#f0f4f8; padding:20px; width:100%; max-width:400px; 
+
       min-height:80vh; /* Aumenta o fundo branco para 75% da altura da tela */
       border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3); margin:0 auto; box-sizing:border-box;">
+
     <h3>Chegada / Saída</h3>
     Selecione dois registros
     <div id="arrival-list" style="max-height:calc(75vh - 120px); overflow-y:auto; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;"></div>
@@ -1621,14 +1643,7 @@ Aplicativo disponível no Google Play`;
   </div>
 </div>
 
-
-
-
-
-
-
 <!-- Função chegada e saída fim -->
-
 
 
 <script>
@@ -1823,38 +1838,3 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
