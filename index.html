@@ -24,14 +24,21 @@
     <style>
 
 
-      
-  
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #02779e; /* cor do fundo fora do container */
+    color: #333;
+}
+
+
         /* Estilos do Cabeçalho */
 header {
     text-align: left;
     padding: 5px 10px 50px 10px; /* padding-top: 5px; padding-right:10px; padding-bottom:50px; padding-left:10px */
-    background-color: #02779e;
-    color: #fdfefe;
+    background-color: #02779e; /* Cor do heder barra topo*/
+    color: #fdfefe; /* Cor titulo Checkin+*/
     position: fixed;
     top: 0;
     left: 0;
@@ -45,7 +52,6 @@ header h1 {
     font-size: 20px;
 }
 
- 
 
 /* CSS COR CONTEIN PRINCIPAL*/
 .container {
@@ -53,7 +59,7 @@ header h1 {
     padding-bottom: 0px;     /* espaço interno inferior que você quer */
     max-width: 600px;
     margin: auto;             /* centraliza horizontalmente */
-    background-color: #f0f4f8;  /* cor de fundo tela principal */
+    background-color: #f0f4f8;  /* cor de fundo tela conteiner */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 15px;
     margin-bottom: 20px;     /* margem inferior externa */
@@ -67,10 +73,9 @@ header h1 {
     color: #000000;
 }
 
-
-        
+  <!-- Controlar a distancio no topo -->
 .container {
-    /* margin-top: 250px;  Remover valor fixo */
+    /* margin-top: 150px;  Remover valor fixo */
     position: relative;
     z-index: 2;
     padding: 10px;
@@ -83,25 +88,6 @@ header h1 {
 }
 
 
-
-
-
-        /* CSS COR CONTEINE PRINCIPAL*/
-       .container {
-    padding: 10px;           /* espaço interno lateral e superior */
-    padding-bottom: 0px;    /* espaço interno inferior que você quer */
-    max-width: 600px;
-    margin: auto;            /* centraliza horizontalmente */
-    background-color: #f0f4f8;  /* cor de fundo tela principal */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 15px;
-    margin-bottom: 20px;            /* margem inferior externa */
-}
-
-        .container h2 {
-            font-size: 18px;
-            color: #000000;
-        }
 
 
 
@@ -1784,6 +1770,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
