@@ -382,7 +382,50 @@ window.addEventListener('load', function() {
         }
     });
 </script>
+// ==========================
+// Controle do Menu Lateral
+// ==========================
 
+// Seleciona os elementos
+const menu = document.querySelector('.menu-lateral');
+const menuButton = document.querySelector('.menu-hamburguer');
+
+// ==========================
+// Função para abrir/fechar o menu
+// ==========================
+function toggleMenu() {
+    if (menu.style.right === '0px') {
+        menu.style.right = '-250px'; // fecha o menu
+    } else {
+        menu.style.right = '0px';    // abre o menu
+    }
+}
+
+// ==========================
+// Clique no ícone do hambúrguer
+// ==========================
+menuButton.addEventListener('click', toggleMenu);
+
+// ==========================
+// Fechar o menu deslizando o dedo
+// ==========================
+let startX = 0; // posição inicial do toque
+
+menu.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX; // guarda a posição inicial
+});
+
+menu.addEventListener('touchmove', function(e) {
+    const currentX = e.touches[0].clientX;
+    const diffX = currentX - startX;
+
+    if (diffX > 50) { // deslizou para a direita
+        menu.style.right = '-250px'; // fecha o menu
+    }
+});
+
+
+    
 
 <script>
     /* Variáveis Globais */
@@ -1781,6 +1824,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
