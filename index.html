@@ -22,27 +22,54 @@
     
 
     <style>
-        /* Estilos Globais */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #02779e; /* cor fundo conteudo */
-            color: #333;
-        }
 
+
+      
         /* Estilos do Cabeçalho */
-        header {
-            text-align: left;
-            padding: 10px;
-            background-color: #02779e; /* cor barra superior */
-            color: #fdfefe;
-        }
+header {
+    text-align: left;
+    padding: 10px;
+    background-color: #02779e; /* cor barra superior */
+    color: #fdfefe;
+    position: fixed;       /* fixa o header no topo */
+    top: 0;                /* posição no topo */
+    left: 0;
+    width: 100%;           /* ocupa toda a largura */
+    z-index: 1;            /* valor baixo para o container sobrepor */
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 20px;
-        } 
+header h1 {
+    margin: 0;
+    font-size: 20px;
+}
+ 
+
+/* CSS COR CONTEIN PRINCIPAL*/
+.container {
+    padding: 10px;           /* espaço interno lateral e superior */
+    padding-bottom: 0px;     /* espaço interno inferior que você quer */
+    max-width: 600px;
+    margin: auto;             /* centraliza horizontalmente */
+    background-color: #f0f4f8;  /* cor de fundo tela principal */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    margin-bottom: 20px;     /* margem inferior externa */
+    
+    position: relative;       /* necessário para z-index funcionar */
+    z-index: 2;               /* maior que o header para sobrepor */
+}
+
+.container h2 {
+    font-size: 18px;
+    color: #000000;
+}
+
+.container {
+    margin-top: 80px;  /* ajuste esse valor para controlar a distância do topo */
+    /* resto do CSS permanece igual */
+}
+
+
 
 
         /* CSS COR CONTEINE PRINCIPAL*/
@@ -61,6 +88,12 @@
             font-size: 18px;
             color: #000000;
         }
+
+
+
+
+
+        
 
         /* Estilos do Mapa */
         #map {
@@ -1726,6 +1759,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
