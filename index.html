@@ -63,19 +63,21 @@ header h1 {
    CSS Container Principal
 ====================== */
 .container {
-    position: relative;       /* necessário para z-index funcionar */
-    z-index: 2;               /* maior que o header */
-    padding: 10px;            /* espaço interno */
-    padding-bottom: 0px;      
-    max-width: 600px;
-    margin: 0px 10px; /* 20px topo/baixo, 30px laterais */
-    background-color: #f0f4f8; /* cor de fundo do container */
+    padding: 10px;
+    padding-bottom: 0px;
+    max-width: 600px;           /* Define a largura máxima do container */
+    margin: 0 10px;             /* 0px topo/baixo, 30px nas laterais */
+    background-color: #f0f4f8;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1); /* sombra elegante */
-    margin-bottom: 20px;     
-    transition: margin-top 0.3s ease; /* transição suave ao rolar */
-}
+    position: relative;
+    z-index: 2;
 
+    /* Centraliza o container, garantindo que ele fique no meio da tela */
+    margin-left: auto;
+    margin-right: auto;
+}
+        
 .container h2 {
     font-size: 18px;
     color: #000000;
@@ -1793,6 +1795,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
