@@ -24,48 +24,55 @@
     <style>
 
 
-    body {
+
+/* ======================
+   Estilos Globais
+====================== */
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #02779e; /* cor do fundo fora do container */
+    background-color: #f0f4f8; /* cor do fundo fora do container */
     color: #333;
 }
 
-
-        /* Estilos do Cabeçalho */
+/* ======================
+   Estilos do Cabeçalho
+====================== */
 header {
     text-align: left;
-    padding: 5px 10px 50px 10px; /* padding-top: 5px; padding-right:10px; padding-bottom:50px; padding-left:10px */
-    background-color: #02779e; /* Cor do heder barra topo*/
-    color: #fdfefe; /* Cor titulo Checkin+*/
-    position: fixed;
+    padding: 5px 10px 50px 10px; /* padding-top pequeno, padding-bottom maior */
+    background-color: #02779e; 
+    color: #fdfefe;
+    position: fixed;       /* header fixo no topo */
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 1;
+    width: 100%;           /* ocupa toda a largura */
+    z-index: 1;            /* container passa por cima */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* sombra elegante */
 }
-
 
 header h1 {
-    margin: 0;
-    font-size: 20px;
+    margin: 0;             /* remove margens extras */
+    font-size: 22px;       /* tamanho do texto */
+    line-height: 1;        /* remove espaçamento vertical */
 }
 
-
-/* CSS COR CONTEIN PRINCIPAL*/
+/* ======================
+   CSS Container Principal
+====================== */
 .container {
-    padding: 10px;           /* espaço interno lateral e superior */
-    padding-bottom: 0px;     /* espaço interno inferior que você quer */
+    position: relative;       /* necessário para z-index funcionar */
+    z-index: 2;               /* maior que o header */
+    padding: 10px;            /* espaço interno */
+    padding-bottom: 0px;      
     max-width: 600px;
     margin: auto;             /* centraliza horizontalmente */
-    background-color: #f0f4f8;  /* cor de fundo tela conteiner */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #f0f4f8; /* cor de fundo do container */
     border-radius: 15px;
-    margin-bottom: 20px;     /* margem inferior externa */
-    
-    position: relative;       /* necessário para z-index funcionar */
-    z-index: 2;               /* maior que o header para sobrepor */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1); /* sombra elegante */
+    margin-bottom: 20px;     
+    transition: margin-top 0.3s ease; /* transição suave ao rolar */
 }
 
 .container h2 {
@@ -73,19 +80,23 @@ header h1 {
     color: #000000;
 }
 
-  <!-- Controlar a distancio no topo -->
-.container {
-    /* margin-top: 150px;  Remover valor fixo */
-    position: relative;
-    z-index: 2;
-    padding: 10px;
-    max-width: 600px;
-    margin: auto;
-    background-color: #f0f4f8;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 15px;
-    margin-bottom: 20px;
+/* ======================
+   Responsividade para telas pequenas
+====================== */
+@media (max-width: 400px) {
+    .container {
+        max-width: 95%;
+        padding: 8px;
+    }
+    header {
+        padding: 5px 8px 40px 8px;
+    }
 }
+
+
+  
+
+
 
 
 
@@ -1770,6 +1781,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
