@@ -350,13 +350,16 @@ button:active {
     
   <!-- Controlar a distancio no topo -->
 <script>
+    
 window.addEventListener('load', function() {
     const header = document.querySelector('header');
     const container = document.querySelector('.container');
 
-    // Define a margem-top do container igual à altura do header
-    container.style.marginTop = header.offsetHeight + 'px';
+    const ajuste = -20; // valor negativo faz o container subir sobre o header
+    container.style.marginTop = (header.offsetHeight + ajuste) + 'px';
 });
+
+    
 </script>
 
 <span class="menu-hamburguer">☰</span>
@@ -1778,6 +1781,7 @@ Aplicativo disponível no Google Play
 </body>
 </html>
         
+
 
 
 
