@@ -99,26 +99,42 @@ header h1 {
     margin-bottom: 20px;
 }
 
-
-
 .container {
     position: relative;
     z-index: 2;
 }
 
 
-/* abinha */
+
+
+
+
+        
+* abinha */
+
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* meia-lua */
 .container::before {
     content: "";
     position: absolute;
-    top: -48px;              /* sobe mais um pouco */
-    right: 0px;             /* mesma margem lateral do container */
-    width: 80px;   /* controla a LARGURA */
-    height: 80px;  /* controla a ALTURA */
+    top: -30px;                 /* quanto sobe no header */
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 240px;               /* largura da meia-lua */
+    height: 40px;               /* metade da largura = meia-lua */
+
     background-color: #f0f4f8;
-    border-radius: 15px;
+   border-radius: 140px 140px 0 0;
+
+    box-shadow: 0 4px 8px #0000001A;
     z-index: 3;
 }
+
 
 
 
@@ -317,7 +333,7 @@ button:active {
     top: 20px;
     right: 20px;
     z-index: 100; /* Aumentamos para ficar sobre o mapa */
-    color: #000000; /* Os três traços */
+    color: #f0f4f8; /* Os três traços */
     background: #ffffff00  ; /* Cor fundo 3 tracinhos menu f0f4f8 */
     border-radius: 5px;
     padding: 5px 10px;
@@ -1817,6 +1833,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
