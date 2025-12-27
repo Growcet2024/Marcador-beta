@@ -64,31 +64,20 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
- 
-/* Garantir que o box-sizing está configurado corretamente */
-* {
-    box-sizing: border-box; /* Inclui padding e border na largura/altura total */
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden; /* Evita o overflow horizontal */
-}
-
 /* CSS para a .container */
 .container {
     width: 100%;        /* Garantir que a largura seja 100% do espaço disponível */
-    max-width: 600px;   /* Limita a largura máxima */
-    margin: 0 5px;     /* Definir margem lateral de 65px */
+    max-width: 600px;   /* Limita a largura máxima para 600px */
+    margin: 0 auto;     /* Centraliza a .container na tela (auto para esquerda/direita) */
     padding: 10px;      /* Padding para dar espaço interno */
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
+    display: block;     /* Garante que seja um bloco e use margin auto para centralizar */
 }
+
 
 
 
@@ -1854,6 +1843,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
