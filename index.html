@@ -64,8 +64,8 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
-   
-   /* Garantir que o box-sizing está configurado corretamente */
+ 
+/* Garantir que o box-sizing está configurado corretamente */
 * {
     box-sizing: border-box; /* Inclui padding e border na largura/altura total */
 }
@@ -79,27 +79,15 @@ body {
 
 /* CSS para a .container */
 .container {
-    width: 100%;       /* 100% da largura disponível */
-    max-width: 600px;  /* Limita a largura para 600px */
-    margin: 0 10px;    /* Margem lateral de 10px */
-    padding: 10px;     /* Padding para dar um espaço interno */
+    width: 100%;        /* Garantir que a largura seja 100% do espaço disponível */
+    max-width: 600px;   /* Limita a largura máxima */
+    margin: 0 65px;     /* Definir margem lateral de 65px */
+    padding: 10px;      /* Padding para dar espaço interno */
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-}
-
-/* Responsividade para telas pequenas */
-@media (max-width: 768px) {
-    .container {
-        margin: 0 35px; /* Aumenta a margem lateral em telas menores */
-    }
-}
-
-/* Meta viewport para dispositivos móveis */
-meta[name="viewport"] {
-    content="width=device-width, initial-scale=1.0";
 }
 
 
@@ -1866,6 +1854,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
