@@ -28,7 +28,6 @@
 
 
 
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -64,33 +63,25 @@ header h1 {
 
 
 /* CSS COR CONTEIN PRINCIPAL*/
-/* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
-    max-width: 600px;  /* Limita a largura máxima */
-    width: 100%;       /* Ajusta a largura para 100% do disponível */
-    
-    /* Margem lateral de 10px (esquerda e direita) */
-    margin-left: 10px;  /* Margem esquerda de 10px */
-    margin-right: 10px; /* Margem direita de 10px */
-    
+    max-width: 600px;
+
+    /* Margem lateral mínima de 30px */
+    margin: 0 30px; /* 0 topo/baixo, 30px esquerda/direita */
+
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    box-sizing: border-box;  /* Inclui padding e border na largura total */
-
-    /* Ajuste o espaço abaixo do header fixo (topo) */
-    margin-top: 70px;  /* Esse valor pode ser ajustado conforme necessário */
 }
 
-/* Media Query para telas menores que 768px */
-@media (max-width: 768px) {
-    .container {
-        margin: 0 10px; /* Margem de 10px para esquerda e direita em telas pequenas */
-    }
+.container {
+    display: block;        /* garante que seja tratado como bloco */
+    margin-left: auto;     /* centraliza horizontalmente */
+    margin-right: auto;
 }
 
 
@@ -98,12 +89,6 @@ header h1 {
 
 
 
-
-
-
-        
-
-/* CSS COR 
 
 .container h2 {
     font-size: 18px;
@@ -166,42 +151,58 @@ header h1 {
 
 
 
-/* Estilos do Mapa */
-#map {
-    border-radius: 8px;
-}
 
-/* IMPUT - Área de Texto (Descrição) */
-textarea, input[type="text"] {
-    width: 100%;
-    padding: 10px !important;
-    height: 40px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    resize: none;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: #f0f7ff;
-}
 
-/* Botões */
+
+
+
+
+
+
+        /* Estilos do Mapa */
+        #map {
+            border-radius: 8px;
+        }
+
+
+        /* IMPUT - Área de Texto (Descrição) */
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px !important;  /* afastar o texto das bordas */
+            height: 40px;              /* ajuste a altura para manter o tamanho original */
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            resize: none;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #f0f7ff; /* 👈 Fundo secundário */
+        }
+
+
+/* =========================
+   Botões padronizados com efeito glossy e centralizados
+   ========================= */
 button {
-    width: 90%;
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
-    border: 2px solid #5fa5b4;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: bold;
+    width: 90%;                   /* Largura menor que 100% */
+    display: block;               /* Garante que margin auto funcione */
+    margin: 10px auto;            /* Centraliza horizontalmente + espaçamento vertical */
+    padding: 10px;                /* Mantém altura do botão */
+    border: 2px solid #5fa5b4;   /* Borda fina moderna */
+    border-radius: 25px;          /* Arredondado */
+    font-size: 16px;              /* Tamanho da fonte */
+    font-weight: bold;            /* Peso da fonte */
     cursor: pointer;
-    position: relative;
-    background: linear-gradient(to bottom, #02779e, #02779e);
+    position: relative;           /* Necessário para o efeito glossy */
+    overflow: hidden;             /* Brilho não vaza */
+    color: white;                 /* Cor do texto */
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Gradiente base */
     transition: background 0.3s, transform 0.2s;
     box-sizing: border-box;
 }
 
+
+/* Brilho plástico no topo */
 button::before {
     content: "";
     position: absolute;
@@ -209,35 +210,72 @@ button::before {
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00);
+    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00); /* Transparência para efeito glossy */
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     pointer-events: none;
 }
 
+/* Hover */
 button:hover {
-    background: linear-gradient(to bottom, #0393bb, #02779e);
+    background: linear-gradient(to bottom, #0393bb, #02779e); /* Gradiente mais claro ao passar o mouse */
     transform: scale(1.02);
 }
 
+/* Clique */
 button:active {
     transform: scale(0.98);
 }
 
-/* Estilos dos Campos de Coordenadas, Data/Hora e Endereço */
-.field {
-    margin: 10px 0;
+/* Histórico de botões (separados por cores para identificar ação) */
+.history-buttons button:nth-child(1) {
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Verde WhatsApp */
 }
 
-.field h2 {
-    font-size: 16px;
-    color: #333;
+.history-buttons button:nth-child(2) {
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Laranja PDF */
 }
 
-/* Histórico */
+.history-buttons button:nth-child(3) {
+    background: linear-gradient(to bottom, #02779e, #02779e); /* Vermelho Apagar */
+}
+
+
+        /* Estilos dos Campos de Coordenadas, Data/Hora e Endereço */
+        .field {
+            margin: 10px 0;
+        }
+
+        .field h2 {
+            font-size: 16px;
+            color: #333;
+        }
+
+       
+
+/* 1 - Popup transparente com efeito vidro (recomendado) Eu estou aqui */
+/* Fundo da caixa da popup */
+.leaflet-popup-content-wrapper {
+    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    backdrop-filter: blur(6px);
+    color: #000000;
+    border-radius: 12px;
+}
+
+/* Triângulo apontando para o marcador */
+.leaflet-popup-tip {
+    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    backdrop-filter: blur(6px);
+}
+
+
+
+<!-- CSS HISTORICO-->
+
+#/* Estilos do Container do Histórico */
 #history-container {
     padding: 10px;
-    margin: 10px auto;
+    margin: 10px auto 0 auto; /* topo, auto, baixo, auto */
     max-width: 600px;
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -254,17 +292,78 @@ button:active {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Botões dentro do histórico */
+.history-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.history-buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin: 0 auto;
+}
+
+.history-buttons button i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+
+
+/* Input do Nome (caixa de digitação) */
+#user-name {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    background-color: #f0f7ff; /* azul bem suave */
+    box-sizing: border-box;
+    display: block;
+}
+
+
+/* CSS menu */
+/* Ícone do Menu Hambúrguer */
+.menu-hamburguer {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100; /* Aumentamos para ficar sobre o mapa */
+    color: #f0f4f8; /* Os três traços */
+    background: #ffffff00  ; /* Cor fundo 3 tracinhos menu f0f4f8 */
+    border-radius: 5px;
+    padding: 5px 10px;
+   // box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); //
+}
+
 /* Menu Deslizante */
 .menu-lateral {
     width: 250px;
     height: 100%;
-    background: linear-gradient(to right, #00000066, #00000033);
+    background: linear-gradient(to right, #00000066, #00000033);  /* Cor fundo lateral direita */
     color: white;
     position: fixed;
     top: 0;
-    right: -250px;
+    right: -250px; /* Escondido inicialmente */
     transition: right 0.3s ease;
-    z-index: 99;
+    z-index: 99; /* Aumentamos para ficar sobre o mapa */
     padding-top: 60px;
 }
 
@@ -290,6 +389,9 @@ button:active {
     background: #444;
 }
 
+#map {
+    position: relative;
+    z-index: 1; /* Mantém o mapa abaixo do menu */
 
 
 
@@ -1744,6 +1846,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
