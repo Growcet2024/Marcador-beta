@@ -65,11 +65,10 @@ header h1 {
 /* CSS COR CONTEIN PRINCIPAL*/
 
 .container {
-    width: 100%;             /* 100% da largura disponível */
-    max-width: 600px;        /* Limita a largura a no máximo 600px */
-    margin-left: 5px;       /* Margem de 40px à esquerda */
-   margin-right: 40px !important; /* Força a margem de 40px à direita */
-    padding: 10px;           /* Padding interno */
+    width: calc(100% - 10px);  /* Subtrai 10px (5px à esquerda + 5px à direita) */
+    margin-left: 5px;          /* Margem de 5px à esquerda */
+    margin-right: 5px;         /* Margem de 5px à direita */
+    padding: 10px;
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
@@ -78,7 +77,6 @@ header h1 {
     display: block;
     box-sizing: border-box;
 }
-
 
 
 
@@ -1847,6 +1845,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
