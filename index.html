@@ -65,10 +65,10 @@ header h1 {
 /* CSS COR CONTEIN PRINCIPAL*/
 
    .container {
-    box-sizing: border-box; /* Inclui o padding e a borda no cálculo da largura */
     padding: 10px;
     padding-bottom: 0px;
-    width: calc(100% - 20px);
+    width: 100%;
+    max-width: 600px; /* Experimente valores como 900px, 800px, 700px */
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
@@ -76,7 +76,11 @@ header h1 {
     z-index: 2;
     margin-left: auto;
     margin-right: auto;
+    box-sizing: border-box;
 }
+
+
+
 
 
 
@@ -1841,6 +1845,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
