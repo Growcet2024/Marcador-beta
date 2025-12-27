@@ -63,39 +63,27 @@ header h1 {
 
         
 /* CSS COR CONTEIN PRINCIPAL*/
-
-  /* Container principal */
 .container {
     padding: 10px;
     padding-bottom: 0px;
-    max-width: 1000px; /* Limita a largura máxima do container */
-    margin: 0 auto; /* Centraliza o container na tela */
+    max-width: 600px;
+
+    /* Margem lateral mínima de 30px */
+    margin: 0 30px; /* 0 topo/baixo, 30px esquerda/direita */
+
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
-    margin-left: 3px; /* Adiciona margem de 10px à esquerda */
-    margin-right: 3px; /* Adiciona margem de 10px à direita */
 }
 
-/* Remover margem/padding do body para garantir que o conteúdo não cole */
-body, html {
-    margin: 0;
-    padding: 0;
+.container {
+    display: block;        /* garante que seja tratado como bloco */
+    margin-left: auto;     /* centraliza horizontalmente */
+    margin-right: auto;
 }
 
-/* Ajuste para garantir que o contêiner tenha espaço à esquerda e à direita */
-body {
-    margin: 0;
-    padding: 0 3px; /* Aplica 10px de padding global */
-}
-
-/* Evita rolagem horizontal indesejada */
-body, html {
-    overflow-x: hidden;
-}
 
 
 
@@ -1866,6 +1854,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
