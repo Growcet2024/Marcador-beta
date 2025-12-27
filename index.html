@@ -63,32 +63,41 @@ header h1 {
 
 
 /* CSS COR CONTEIN PRINCIPAL*/
+
+        /* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
-    max-width: 600px;
-
-    /* Margem lateral mínima de 30px */
-    margin: 0 30px; /* 0 topo/baixo, 30px esquerda/direita */
-
+    max-width: 600px;  /* Limita a largura máxima */
+    width: 100%;       /* Ajusta a largura para 100% do disponível */
+    
+    /* Margem lateral de 10px (esquerda e direita) */
+    margin-left: 10px;  /* Margem esquerda de 10px */
+    margin-right: 10px; /* Margem direita de 10px */
+    
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
+    box-sizing: border-box;  /* Inclui padding e border na largura total */
+
+    /* Ajuste o espaço abaixo do header fixo (topo) */
+    margin-top: 70px;  /* Esse valor pode ser ajustado conforme necessário */
 }
 
-.container {
-    display: block;        /* garante que seja tratado como bloco */
-    margin-left: auto;     /* centraliza horizontalmente */
-    margin-right: auto;
+/* Media Query para telas menores que 768px */
+@media (max-width: 768px) {
+    .container {
+        margin: 0 10px; /* Margem de 10px para esquerda e direita em telas pequenas */
+    }
 }
 
 
 
 
 
-
+/* CSS COR
 
 .container h2 {
     font-size: 18px;
@@ -1846,6 +1855,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
