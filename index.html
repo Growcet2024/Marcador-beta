@@ -64,14 +64,14 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
-        /* CSS COR CONTEIN PRINCIPAL */
+       /* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
     max-width: 600px;  /* Limita a largura máxima */
     width: 100%;       /* Ajusta a largura para 100% do disponível */
     
-    /* Margem lateral de 10px (esquerda e direita) */
+    /* Garantindo margens laterais de 10px */
     margin-left: 10px;  /* Margem esquerda de 10px */
     margin-right: 10px; /* Margem direita de 10px */
     
@@ -82,8 +82,13 @@ header h1 {
     z-index: 2;
     box-sizing: border-box;  /* Inclui padding e border na largura total */
 
-    /* Ajuste o espaço abaixo do header fixo (topo) */
+    /* Ajuste do espaço abaixo do header fixo */
     margin-top: 70px;  /* Esse valor pode ser ajustado conforme necessário */
+}
+
+/* Garantir que a .container não ultrapasse a largura da tela */
+body {
+    overflow-x: hidden;  /* Impede que o conteúdo transborde horizontalmente */
 }
 
 /* Media Query para telas menores que 768px */
@@ -1855,6 +1860,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
