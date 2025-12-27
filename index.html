@@ -64,35 +64,20 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
-/* Container principal */
 .container {
-    width: 100%;           /* Ocupa todo o espaço disponível */
-    max-width: 600px;      /* Largura máxima para telas grandes */
-    margin: 0 auto;        /* Centraliza horizontalmente no PC */
-    padding: 10px;         /* Espaço interno */
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;   /* Margin top/bottom de 20px e margin left/right automática */
+    padding: 10px;
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    display: block;        /* Garantir bloco para margin auto funcionar */
+    display: block;
+    box-sizing: border-box;
 }
 
-/* Ajuste para telas grandes (PC) */
-@media (min-width: 769px) {
-    .container {
-        margin-left: 65px;   /* Ajuste da margem esquerda no PC */
-        margin-right: 65px;  /* Ajuste da margem direita no PC */
-    }
-}
-
-/* Ajuste para celular */
-@media (max-width: 768px) {
-    .container {
-        margin-left: 10px;   /* Margem esquerda no celular */
-        margin-right: 10px;  /* Margem direita no celular */
-    }
-}
 
 
 
@@ -1861,6 +1846,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
