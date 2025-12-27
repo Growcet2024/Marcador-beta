@@ -64,46 +64,44 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
-      /* Garantir que o box-sizing está configurado corretamente */
+   
+   /* Garantir que o box-sizing está configurado corretamente */
 * {
     box-sizing: border-box; /* Inclui padding e border na largura/altura total */
 }
 
-/* Corpo da página - ajusta o overflow horizontal */
 body {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden; /* Impede que o conteúdo "estoure" na tela */
+    overflow-x: hidden; /* Evita o overflow horizontal */
 }
 
-/* CSS COR CONTEIN  */
+/* CSS para a .container */
 .container {
-    padding: 10px;
-    padding-bottom: 0px;
-    max-width: 600px;  /* Limita a largura máxima */
-    width: calc(100% - 20px); /* Garantir que a largura seja 100%, mas com 10px de margem em cada lado */
-    
-    /* Margem de 10px nas laterais (esquerda e direita) */
-    margin: 0 30px;  /* 10px de margem à esquerda e à direita */
-    
+    width: 100%;       /* 100% da largura disponível */
+    max-width: 600px;  /* Limita a largura para 600px */
+    margin: 0 10px;    /* Margem lateral de 10px */
+    padding: 10px;     /* Padding para dar um espaço interno */
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    box-sizing: border-box;  /* Inclui padding e border na largura total */
-
-    /* Ajuste o espaço abaixo do header fixo */
-    margin-top: 70px;  /* Ajuste esse valor se necessário */
 }
 
-/* Garantir que a .container não ultrapasse a largura da tela */
+/* Responsividade para telas pequenas */
 @media (max-width: 768px) {
     .container {
-        margin: 0 10px; /* 10px de margem nas laterais para telas pequenas */
+        margin: 0 15px; /* Aumenta a margem lateral em telas menores */
     }
 }
+
+/* Meta viewport para dispositivos móveis */
+meta[name="viewport"] {
+    content="width=device-width, initial-scale=1.0";
+}
+
 
 
 
@@ -1868,6 +1866,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
