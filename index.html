@@ -26,9 +26,8 @@
 
 
 
-/* ======================
-   Estilos Globais
-====================== */
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -37,43 +36,37 @@ body {
     color: #333;
 }
 
-/* ======================
-   Estilos do Cabeçalho
-====================== */
+
+        /* Estilos do Cabeçalho */
 header {
     text-align: left;
-    padding: 5px 10px 50px 10px; /* padding-top pequeno, padding-bottom maior */
-    background-color: #02779e; 
-    color: #fdfefe;
-    position: fixed;       /* header fixo no topo */
+    padding: 5px 10px 50px 10px; /* padding-top: 5px; padding-right:10px; padding-bottom:50px; padding-left:10px */
+    background-color: #02779e; /* Cor do heder barra topo*/
+    color: #fdfefe; /* Cor titulo Checkin+*/
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;           /* ocupa toda a largura */
-    z-index: 1;            /* container passa por cima */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* sombra elegante */
+    width: 100%;
+    z-index: 1;
 }
+
 
 header h1 {
-    margin: 0;             /* remove margens extras */
-    font-size: 22px;       /* tamanho do texto */
-    line-height: 1;        /* remove espaçamento vertical */
+    margin: 0;
+    font-size: 20px;
 }
 
-     
-/* ======================
-   CSS Container Principal
-====================== */
-/* CSS COR CONTEIN PRINCIPAL */
+/* CSS COR CONTEIN PRINCIPAL*/
 .container {
     padding: 10px;
     padding-bottom: 0px;
     max-width: 600px;
 
     /* Margem lateral mínima de 30px */
-    margin: 0 10px; /* 0 topo/baixo, 30px esquerda/direita */
+    margin: 0 30px; /* 0 topo/baixo, 30px esquerda/direita */
 
     background-color: #f0f4f8;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
@@ -84,25 +77,34 @@ header h1 {
     margin-left: auto;     /* centraliza horizontalmente */
     margin-right: auto;
 }
-     
+
+
 .container h2 {
     font-size: 18px;
     color: #000000;
 }
 
-/* ======================
-   Responsividade para telas pequenas
-====================== */
-@media (max-width: 400px) {
-    .container {
-        max-width: 95%;
-        padding: 8px;
-    }
-    header {
-        padding: 5px 8px 40px 8px;
-    }
+  <!-- Controlar a distancio no topo -->
+.container {
+
+    /* margin-top: 150px;  Remover valor fixo */
+    position: relative;
+    z-index: 2;
+    padding: 10px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f0f4f8;
+    box-shadow: 0 4px 8px #0000001A;
+    border-radius: 15px;
+    margin-bottom: 20px;
 }
 
+
+
+.container {
+    position: relative;
+    z-index: 2;
+}
 
 
 
@@ -110,12 +112,13 @@ header h1 {
 .container::before {
     content: "";
     position: absolute;
-    top: -40px;              /* sobe sobre o header */
-    right: 10px;             /* lado do menu */
-    width: 70px;             /* largura da abinha */
-    height: 60px;            /* altura */
+    top: -48px;              /* sobe mais um pouco */
+    right: 0px;             /* mesma margem lateral do container */
+    width: 80px;   /* controla a LARGURA */
+    height: 75px;  /* controla a ALTURA */
     background-color: #f0f4f8;
-    border-radius: 0 0 15px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px #0000001A;
     z-index: 3;
 }
 
@@ -126,15 +129,6 @@ header h1 {
 
 
 
-
-
-
-
-
-
-
-
-        
 
 
         /* Estilos do Mapa */
@@ -315,9 +309,6 @@ button:active {
 }
 
 
-
-
-
 /* CSS menu */
 /* Ícone do Menu Hambúrguer */
 .menu-hamburguer {
@@ -327,7 +318,7 @@ button:active {
     top: 20px;
     right: 20px;
     z-index: 100; /* Aumentamos para ficar sobre o mapa */
-    color: #000000; /* Os três traços */
+    color: #f0f4f8; /* Os três traços */
     background: #ffffff00  ; /* Cor fundo 3 tracinhos menu f0f4f8 */
     border-radius: 5px;
     padding: 5px 10px;
@@ -370,10 +361,6 @@ button:active {
     background: #444;
 }
 
-
-
-
-
 #map {
     position: relative;
     z-index: 1; /* Mantém o mapa abaixo do menu */
@@ -397,11 +384,13 @@ window.addEventListener('load', function() {
     const header = document.querySelector('header');
     const container = document.querySelector('.container');
 
-    const ajuste = -20; // valor negativo faz o container subir sobre o header
+    const ajuste = -35; // valor negativo faz o container subir sobre o header
     container.style.marginTop = (header.offsetHeight + ajuste) + 'px';
 });
 
 </script>
+
+
 
 <span class="menu-hamburguer">☰</span>
 <div class="menu-lateral">
@@ -423,15 +412,6 @@ window.addEventListener('load', function() {
         }
     });
 </script>
-
-
-
-    
-
-
-
-
-    
 
 
 <script>
@@ -1822,38 +1802,19 @@ Aplicativo disponível no Google Play
 
     closeArrivalDeparture();
 }
+
+
+
 </script>
+
+
+
+
 
 <!-- Fução chegada e saída fim -->
 
 
-
-   
+</script>
  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
