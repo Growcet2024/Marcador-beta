@@ -67,16 +67,15 @@ header h1 {
    .container {
     padding: 10px;
     padding-bottom: 0px;
-    width: 100%;
-    max-width: 600px; /* Experimente valores como 900px, 800px, 700px */
+    max-width: 1000px; /* Limita a largura máxima */
+    width: 100%; /* Faz o container ocupar 100% da largura, mas com o max-width aplicado */
+    margin: 0 10px; /* Aplica uma margem de 10px nas laterais (esquerda e direita) */
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
 }
 
 
@@ -1845,6 +1844,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
