@@ -48,6 +48,8 @@ header {
     left: 0;
     width: 100%;
     z-index: 1;
+
+     box-shadow: 0 4px 8px #0000001A; /* sombra abaixo do header*/
 }
 
 
@@ -56,29 +58,37 @@ header h1 {
     font-size: 20px;
 }
 
+
+
+
+        
 /* CSS COR CONTEIN PRINCIPAL*/
 .container {
     padding: 10px;
     padding-bottom: 0px;
     max-width: 600px;
 
-    /* Margem lateral mínima de 30px */
-    margin: 0 30px; /* 0 topo/baixo, 30px esquerda/direita */
+    /* Definindo margem lateral mínima de 30px e centralizando o container */
+    margin: 0 30px;  /* 0 topo/baixo, 30px esquerda/direita */
 
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-}
 
-.container {
-    display: block;        /* garante que seja tratado como bloco */
-    margin-left: auto;     /* centraliza horizontalmente */
+    /* Para centralizar o container horizontalmente com as margens laterais */
+    display: block;
+    margin-left: auto;
     margin-right: auto;
 }
 
 
+
+
+
+
+        
 .container h2 {
     font-size: 18px;
     color: #000000;
@@ -1834,6 +1844,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
