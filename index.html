@@ -64,16 +64,28 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
-       /* CSS COR CONTEIN PRINCIPAL */
+      /* Garantir que o box-sizing está configurado corretamente */
+* {
+    box-sizing: border-box; /* Inclui padding e border na largura/altura total */
+}
+
+/* Corpo da página - ajusta o overflow horizontal */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Impede que o conteúdo "estoure" na tela */
+}
+
+/* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
     max-width: 600px;  /* Limita a largura máxima */
-    width: 100%;       /* Ajusta a largura para 100% do disponível */
+    width: calc(100% - 20px); /* Garantir que a largura seja 100%, mas com 10px de margem em cada lado */
     
-    /* Garantindo margens laterais de 10px */
-    margin-left: 10px;  /* Margem esquerda de 10px */
-    margin-right: 10px; /* Margem direita de 10px */
+    /* Margem de 10px nas laterais (esquerda e direita) */
+    margin: 0 10px;  /* 10px de margem à esquerda e à direita */
     
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
@@ -82,21 +94,17 @@ header h1 {
     z-index: 2;
     box-sizing: border-box;  /* Inclui padding e border na largura total */
 
-    /* Ajuste do espaço abaixo do header fixo */
-    margin-top: 70px;  /* Esse valor pode ser ajustado conforme necessário */
+    /* Ajuste o espaço abaixo do header fixo */
+    margin-top: 70px;  /* Ajuste esse valor se necessário */
 }
 
 /* Garantir que a .container não ultrapasse a largura da tela */
-body {
-    overflow-x: hidden;  /* Impede que o conteúdo transborde horizontalmente */
-}
-
-/* Media Query para telas menores que 768px */
 @media (max-width: 768px) {
     .container {
-        margin: 0 10px; /* Margem de 10px para esquerda e direita em telas pequenas */
+        margin: 0 10px; /* 10px de margem nas laterais para telas pequenas */
     }
 }
+
 
 
 
@@ -1860,6 +1868,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
