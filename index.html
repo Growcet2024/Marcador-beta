@@ -24,86 +24,147 @@
     <style>
 
 
-/* Garantir que o box-sizing está configurado corretamente */
-* {
-    box-sizing: border-box; /* Inclui padding e border na largura/altura total */
-}
+
+
+
+
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    width: 100%;
-    overflow-x: hidden; /* Evita o overflow horizontal */
-    background-color: #02779eF5; /* Cor do fundo fora do container */
+    background-color: #02779e; /* cor do fundo fora do container */
     color: #333;
 }
 
-/* Estilos do Cabeçalho */
+
+        /* Estilos do Cabeçalho */
 header {
     text-align: left;
-    padding: 5px 10px 50px 10px;
-    background-color: #02779e; /* Cor do header */
-    color: #fdfefe; /* Cor título */
+    padding: 5px 10px 50px 10px; /* padding-top: 5px; padding-right:10px; padding-bottom:50px; padding-left:10px */
+    background-color: #02779e; /* Cor do heder barra topo*/
+    color: #fdfefe; /* Cor titulo Checkin+*/
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1;
-    box-shadow: 0 8px 4px #0000001A;
+    box-shadow: 0 4px 8px #0000001A;
 }
+
 
 header h1 {
     margin: 0;
     font-size: 20px;
 }
 
+
+
+
+
+
+/* CSS COR CONTEIN PRINCIPAL*/
 /* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
     max-width: 600px;  /* Limita a largura máxima */
     width: 100%;       /* Ajusta a largura para 100% do disponível */
-    margin: 0 10px;    /* Margem de 10px nas laterais */
+    
+    /* Margem lateral de 10px (esquerda e direita) */
+    margin-left: 10px;  /* Margem esquerda de 10px */
+    margin-right: 10px; /* Margem direita de 10px */
+    
     background-color: #f0f4f8;
     box-shadow: 0 4px 8px #0000001A;
     border-radius: 15px;
     position: relative;
     z-index: 2;
-    margin-top: 70px; /* Ajusta o espaçamento abaixo do header fixo */
-    box-sizing: border-box;  /* Inclui padding e border na largura */
-}
+    box-sizing: border-box;  /* Inclui padding e border na largura total */
 
-/* Centralizando a container */
-.container {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Meia-lua no topo do container */
-.container::before {
-    content: "";
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 19px;
-    background-color: #f0f4f8;
-    clip-path: ellipse(50% 100% at 50% 100%);
-    box-shadow: 0 4px 8px #0000001A;
-    z-index: 3;
+    /* Ajuste o espaço abaixo do header fixo (topo) */
+    margin-top: 70px;  /* Esse valor pode ser ajustado conforme necessário */
 }
 
 /* Media Query para telas menores que 768px */
 @media (max-width: 768px) {
     .container {
-        margin: 0 10px; /* Margem lateral de 10px */
-        width: 100%; /* Ajusta para 100% da tela em dispositivos menores */
-        box-sizing: border-box;
+        margin: 0 10px; /* Margem de 10px para esquerda e direita em telas pequenas */
     }
 }
+
+
+
+
+
+
+
+
+
+        
+
+/* CSS COR 
+
+.container h2 {
+    font-size: 18px;
+    color: #000000;
+}
+
+  <!-- Controlar a distancio no topo -->
+.container {
+
+    /* margin-top: 150px;  Remover valor fixo */
+    position: relative;
+    z-index: 2;
+    padding: 10px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f0f4f8;
+    box-shadow: 0 4px 8px #0000001A;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+
+
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+
+
+
+
+
+/* abinha */
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* meia-lua */
+.container::before {
+    content: "";
+    position: absolute;
+    top: -20px;                 /* quanto sobe no header */
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 200px;               /* largura da meia-lua */
+    height: 19px;               /* altura = meia-lua */
+
+    background-color: #f0f4f8;
+    
+  clip-path: ellipse(50% 100% at 50% 100%);
+    
+    box-shadow: 0 4px 8px #0000001A;
+    z-index: 3;
+}
+
+
+
+
 
 /* Estilos do Mapa */
 #map {
@@ -1683,6 +1744,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
