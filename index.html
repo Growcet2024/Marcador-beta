@@ -65,12 +65,28 @@ header h1 {
 
 /* CSS COR CONTEIN PRINCIPAL*/
 
+
+
+/* Garantir que o box-sizing está configurado corretamente */
+* {
+    box-sizing: border-box; /* Inclui padding e border na largura/altura total */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Evita o overflow horizontal */
+}
+
+/* CSS COR CONTEIN PRINCIPAL */
 .container {
     padding: 10px;
     padding-bottom: 0px;
-    max-width: 600px;
+    max-width: 600px;  /* Pode ajustar isso conforme o design */
+    width: 100%;       /* Faz a largura ser 100% do espaço disponível */
 
-    /* Ajustando as margens laterais para 10px */
+    /* Margem lateral mínima de 10px */
     margin: 0 10px; /* 0 topo/baixo, 10px esquerda/direita */
 
     background-color: #f0f4f8;
@@ -80,6 +96,7 @@ header h1 {
     z-index: 2;
 }
 
+/* Centralizando a container */
 .container {
     display: block;        /* garante que seja tratado como bloco */
     margin-left: auto;     /* centraliza horizontalmente */
@@ -1856,6 +1873,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
