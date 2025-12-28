@@ -132,11 +132,7 @@ body {
 
 
 
-
-
-
-/* ABINHA superior inicio = Obs: efeito “4 */
-
+/* ABINHA superior inicio = Obs: Com sombra */
 .container {
     position: relative;
     z-index: 2;
@@ -146,34 +142,23 @@ body {
 .container::before {
     content: "";
     position: absolute;
-    top: -20px;
+    top: -20px;                 /* quanto sobe no header */
     left: 50%;
     transform: translateX(-50%);
 
-    width: 200px;
-    height: 19px;
+    width: 200px;               /* largura da meia-lua */
+    height: 19px;               /* altura = meia-lua */
 
-    /* vidro: brilho + base */
-    background:
-      linear-gradient(to bottom,
-        rgba(255,255,255,.55),
-        rgba(255,255,255,0)
-      ),
-      #f0f4f8;
-
+    background-color: #f0f4f8;
     clip-path: ellipse(50% 100% at 50% 100%);
 
-    /* sombra premium mantida */
+    /* sombra premium */
     box-shadow:
-      0 2px 4px rgba(0,0,0,.08),
-      0 6px 12px rgba(0,0,0,.12);
+        0 2px 4px rgba(0,0,0,.08),
+        0 6px 12px rgba(0,0,0,.12);
 
     z-index: 3;
 }
-
-
-animation: rise 0.4s ease-out;
-
 /* ABINHA superior fim */
 
 
@@ -183,45 +168,31 @@ animation: rise 0.4s ease-out;
 .container::after {
     content: "";
     position: absolute;
-    bottom: -20px;
+    bottom: -20px;              /* quanto desce para fora do container */
     left: 50%;
     transform: translateX(-50%);
 
     width: 200px;
     height: 19px;
 
-    /* vidro invertido */
-    background:
-      linear-gradient(to top,
-        rgba(255,255,255,.45),
-        rgba(255,255,255,0)
-      ),
-      #f0f4f8;
-
+    background-color: #f0f4f8;
     clip-path: ellipse(50% 100% at 50% 0%);
 
-    /* sombra premium invertida */
+    /* sombra premium */
     box-shadow:
-      0 -2px 4px rgba(0,0,0,.06),
-      0 -6px 12px rgba(0,0,0,.10);
+        0 -2px 4px rgba(0,0,0,.06),
+        0 -6px 12px rgba(0,0,0,.10);
 
     z-index: 1;
 }
-
-animation: rise 0.4s ease-out;
-
 /* ABINHA inferior fim */
 
-@keyframes rise {
-    from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(6px) scale(0.96);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0) scale(1);
-    }
-}
+
+
+
+
+
+
 
 
 
@@ -1923,6 +1894,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
