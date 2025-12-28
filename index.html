@@ -134,59 +134,77 @@ body {
 
 
 
-/* ABINHA superior inicio
-/* abinha */
+/* ABINHA superior inicio = Obs: efeito “vidro” (highlight sutil) */
+
 .container {
     position: relative;
     z-index: 2;
 }
 
-/* meia-lua */
+/* meia-lua superior */
 .container::before {
     content: "";
     position: absolute;
-    top: -20px;                 /* quanto sobe no header */
-    left: 50%;
-    transform: translateX(-50%);
-
-    width: 200px;               /* largura da meia-lua */
-    height: 19px;               /* altura = meia-lua */
-
-    background-color: #f0f4f8;
-    
-  clip-path: ellipse(50% 100% at 50% 100%);
-    
-    box-shadow: 0 4px 8px #0000001A;
-    z-index: 3;
-}
-/* ABINHA superior fim
-
-
-/* ABINHA inferior inicio
-.container {
-    position: relative;
-    z-index: 2;
-}
-
-/* meia-lua inferior */
-.container::after {
-    content: "";
-    position: absolute;
-    bottom: -20px;              /* quanto desce para fora do container */
+    top: -20px;
     left: 50%;
     transform: translateX(-50%);
 
     width: 200px;
     height: 19px;
 
-    background-color: #f0f4f8;
+    /* vidro: brilho + base */
+    background:
+      linear-gradient(to bottom,
+        rgba(255,255,255,.55),
+        rgba(255,255,255,0)
+      ),
+      #f0f4f8;
+
+    clip-path: ellipse(50% 100% at 50% 100%);
+
+    /* sombra premium mantida */
+    box-shadow:
+      0 2px 4px rgba(0,0,0,.08),
+      0 6px 12px rgba(0,0,0,.12);
+
+    z-index: 3;
+}
+/* ABINHA superior fim */
+
+
+/* ABINHA inferior inicio */
+
+/* meia-lua inferior */
+.container::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 200px;
+    height: 19px;
+
+    /* vidro invertido */
+    background:
+      linear-gradient(to top,
+        rgba(255,255,255,.45),
+        rgba(255,255,255,0)
+      ),
+      #f0f4f8;
 
     clip-path: ellipse(50% 100% at 50% 0%);
-    box-shadow: 0 4px 8px #0000001A;
+
+    /* sombra premium invertida */
+    box-shadow:
+      0 -2px 4px rgba(0,0,0,.06),
+      0 -6px 12px rgba(0,0,0,.10);
 
     z-index: 1;
 }
-/* ABINHA inferior fim
+/* ABINHA inferior fim */
+
+
 
 
 
@@ -1885,6 +1903,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
