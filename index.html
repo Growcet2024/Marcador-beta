@@ -132,13 +132,16 @@ body {
 
 
 
-/* ABINHA superior inicio = Obs: Com sombra */
+/* ===========================
+   ABINHAS MEIA-LUA – EFEITO 3D
+   =========================== */
+
 .container {
     position: relative;
     z-index: 2;
 }
 
-/* meia-lua superior */
+/* ABINHA SUPERIOR */
 .container::before {
     content: "";
     position: absolute;
@@ -147,24 +150,27 @@ body {
     transform: translateX(-50%);
 
     width: 200px;               /* largura da meia-lua */
-    height: 19px;               /* altura = meia-lua */
+    height: 19px;               /* altura */
 
-    background-color: #f0f4f8;
+    /* efeito material / relevo */
+    background:
+        linear-gradient(to bottom,
+            rgba(255,255,255,0.9),
+            rgba(255,255,255,0.4)
+        ),
+        #f0f4f8;
+
     clip-path: ellipse(50% 100% at 50% 100%);
 
-    /* sombra premium */
     box-shadow:
-        0 2px 4px rgba(0,0,0,.08),
-        0 6px 12px rgba(0,0,0,.12);
+        0 2px 3px rgba(0,0,0,0.15),        /* encaixe */
+        0 6px 10px rgba(0,0,0,0.25),       /* profundidade */
+        inset 0 1px 1px rgba(255,255,255,0.8); /* luz interna */
 
     z-index: 3;
 }
-/* ABINHA superior fim */
 
-
-/* ABINHA inferior inicio */
-
-/* meia-lua inferior */
+/* ABINHA INFERIOR */
 .container::after {
     content: "";
     position: absolute;
@@ -175,17 +181,23 @@ body {
     width: 200px;
     height: 19px;
 
-    background-color: #f0f4f8;
+    /* efeito material / relevo invertido */
+    background:
+        linear-gradient(to top,
+            rgba(255,255,255,0.85),
+            rgba(255,255,255,0.3)
+        ),
+        #f0f4f8;
+
     clip-path: ellipse(50% 100% at 50% 0%);
 
-    /* sombra premium */
     box-shadow:
-        0 -2px 4px rgba(0,0,0,.06),
-        0 -6px 12px rgba(0,0,0,.10);
+        0 -2px 3px rgba(0,0,0,0.12),
+        0 -6px 10px rgba(0,0,0,0.22),
+        inset 0 -1px 1px rgba(255,255,255,0.7);
 
     z-index: 1;
 }
-/* ABINHA inferior fim */
 
 
 
@@ -1894,6 +1906,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
