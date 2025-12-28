@@ -131,6 +131,8 @@ body {
 
 
 
+
+/* ABINHA superior inicio
 /* abinha */
 .container {
     position: relative;
@@ -155,7 +157,34 @@ body {
     box-shadow: 0 4px 8px #0000001A;
     z-index: 3;
 }
+/* ABINHA superior fim
 
+
+/* ABINHA inferior inicio
+.container {
+    position: relative;
+    z-index: 2;
+}
+
+/* meia-lua inferior */
+.container::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;              /* quanto desce para fora do container */
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 200px;
+    height: 19px;
+
+    background-color: #f0f4f8;
+
+    clip-path: ellipse(50% 100% at 50% 0%);
+    box-shadow: 0 4px 8px #0000001A;
+
+    z-index: 1;
+}
+/* ABINHA inferior fim
 
 
 
@@ -1855,6 +1884,7 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
 
 
 
