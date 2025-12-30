@@ -1695,6 +1695,7 @@ let reversedRecords = [];
 ================================ */
 
 
+
 function openArrivalDeparture() {
     const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
 
@@ -1744,7 +1745,11 @@ div.style.textOverflow = "ellipsis";
 
     // Mostra o overlay
     document.getElementById("arrival-overlay").style.display = "block";
+
+    document.body.style.overflow = "hidden";
 }
+
+
 
 
 /* ===============================
@@ -1752,8 +1757,14 @@ div.style.textOverflow = "ellipsis";
 ================================ */
 function closeArrivalDeparture() {
     document.getElementById("arrival-overlay").style.display = "none";
+
+    document.body.style.overflow = "";
 }
 
+
+
+
+    
 /* ===============================
    UTILIDADES
 ================================ */
@@ -1885,3 +1896,4 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
+
