@@ -32,7 +32,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #02779e; /* cor do fundo fora do container */
+    background-color: #02779eE6; /* cor do fundo fora do container */
     color: #333;
 }
 
@@ -60,15 +60,10 @@ header h1 {
 }
 
 
-
-
-
-
 /* CSS COR CONTEIN PRINCIPAL*/
 
 .container {
-max-width: 600px;          /* Limita a largura máxima da container para 600px */
-    
+    max-width: 600px;          /* Limita a largura máxima da container para 600px */
     width: calc(100% - 10px);  /* Subtrai 10px (5px à esquerda + 5px à direita) */
     margin-left: 5px;          /* Margem de 5px à esquerda */
     margin-right: 5px;         /* Margem de 5px à direita */
@@ -82,6 +77,7 @@ max-width: 600px;          /* Limita a largura máxima da container para 600px *
     box-sizing: border-box;
 }
 
+
 body {
     display: flex;
     justify-content: center;
@@ -90,16 +86,8 @@ body {
 }
 
 
+/* CSS coteiner fim
 
-
-
-
-
-
-
-
-
-/* CSS COR
 
 .container h2 {
     font-size: 18px;
@@ -121,14 +109,10 @@ body {
     margin-bottom: 20px;
 }
 
-
-
 .container {
     position: relative;
     z-index: 2;
 }
-
-
 
 
 
@@ -158,7 +142,7 @@ body {
             rgba(255,255,255,0.9),
             rgba(255,255,255,0.4)
         ),
-        #f0f7ff;
+        #f0f4f8;
 
     clip-path: ellipse(50% 100% at 50% 100%);
 
@@ -187,7 +171,7 @@ body {
             rgba(255,255,255,0.85),
             rgba(255,255,255,0.3)
         ),
-        #f0f7ff;
+        #f0f4f8;
 
     clip-path: ellipse(50% 100% at 50% 0%);
 
@@ -199,26 +183,6 @@ body {
     z-index: 1;
 }
 /* ABINHA final */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -483,8 +447,6 @@ window.addEventListener('load', function() {
 
 
 
-    
-
 <span class="menu-hamburguer">•••</span>
 <div class="menu-lateral">
     <ul>
@@ -524,14 +486,6 @@ menuLateral.addEventListener("touchend", (e) => {
 </script>
 
 
-
-
-
-
-
-
-
-    
 
 <script>
     /* Variáveis Globais */
@@ -1331,22 +1285,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 </div>
 
-   
-
+    
       <!-- Fim conteúdo conteiner principal -->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1744,6 +1684,8 @@ Aplicativo disponível no Google Play`;
 <!-- Função chegada e saída fim -->
 
 
+
+
 <script>
 let selected = [];
 let reversedRecords = [];
@@ -1769,12 +1711,19 @@ function openArrivalDeparture() {
 
     document.getElementById("generate-pdf-btn").style.display = "none";
 
+
     reversedRecords.forEach((record, index) => {
         const div = document.createElement("div");
         div.innerText = `${record.timestamp} - ${record.description}`;
         div.style.cursor = "pointer";
         div.style.padding = "6px";
         div.style.borderBottom = "1px solid #ccc";
+
+     // Linha única
+        div.style.whiteSpace = "nowrap";
+div.style.overflow = "hidden";
+div.style.textOverflow = "ellipsis";
+
 
         // Clique para selecionar/desmarcar
         div.onclick = () => {
@@ -1936,76 +1885,3 @@ Aplicativo disponível no Google Play
  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
