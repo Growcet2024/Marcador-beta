@@ -1637,19 +1637,45 @@ async function generateMapPDFHistory(index) {
         return;
     }
 
+
+
+
+
+
     // Captura o mapa ATUAL (visual apenas)
-    const mapElement = document.getElementById("map");
+   
+   // Captura o mapa do registro histórico (temporário) no futuro
+// Por enquanto, mantém o mapa atual, mas já isolado para troca
+const mapElement = document.getElementById("map"); // PONTO CRÍTICO: substituir futuramente pelo mapa do record
+
+
+
+
+
 
     // Esconde apenas os círculos do Leaflet antes da captura
     document
         .querySelectorAll('#map svg path.leaflet-interactive')
         .forEach(el => el.style.display = 'none');
 
-    const canvas = await html2canvas(mapElement, {
-        useCORS: true,
-        scale: 2
-    });
 
+
+
+    // Captura o mapa como imagem para o PDF
+// PONTO CRÍTICO: futuramente substituir por mapa temporário do registro
+const canvas = await html2canvas(mapElement, {
+    useCORS: true,
+    scale: 2
+});
+
+
+
+
+
+
+
+
+    
     // Reexibe os círculos após a captura
     document
         .querySelectorAll('#map svg path.leaflet-interactive')
@@ -2107,3 +2133,4 @@ closeArrivalDeparture();
  
 </body>
 </html>
+
