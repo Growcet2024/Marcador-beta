@@ -931,6 +931,19 @@ Aplicativo disponível no Google Play`;
     pdf.save(`Checkin+_Mapa_${formattedDate}.pdf`);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
 
@@ -971,9 +984,20 @@ function trackLocation() {
                 // Inicializa o mapa com as coordenadas obtidas
                 map = L.map('map').setView([currentLatitude, currentLongitude], 15);
 
+
+
+
+
+              
+                // Ajuste para o mapa abrir no firebase
+
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    crossOrigin: true
+}).addTo(map);
+
+
+
 
 
                 // Adiciona o marcador e a popup
@@ -1643,10 +1667,46 @@ async function generateMapPDFHistory(index) {
 
 
     // Captura o mapa ATUAL (visual apenas)
-   
-   // Captura o mapa do registro histórico (temporário) no futuro
-// Por enquanto, mantém o mapa atual, mas já isolado para troca
-const mapElement = document.getElementById("map"); // PONTO CRÍTICO: substituir futuramente pelo mapa do record
+
+    // Criar um mapa temporário invisível só para o PDF
+const tempMapDiv = document.createElement("div");
+tempMapDiv.style.width = "600px";   // largura do mapa
+tempMapDiv.style.height = "400px";  // altura do mapa
+tempMapDiv.style.position = "absolute";
+tempMapDiv.style.top = "-10000px";  // fora da tela
+document.body.appendChild(tempMapDiv);
+
+// Inicializa o mapa centrado nas coordenadas do registro
+const [lat, lng] = record.coordinates || [0, 0];
+const tempMap = L.map(tempMapDiv).setView([lat, lng], 15); // zoom 15
+
+// Adiciona camada do mapa
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    crossOrigin: true
+}).addTo(tempMap);
+
+
+
+// Adiciona marcador no ponto do registro
+L.marker([lat, lng]).addTo(tempMap);
+
+
+
+
+tempMap.invalidateSize();
+
+
+
+
+// Define mapElement para capturar com html2canvas
+const mapElement = tempMapDiv;
+
+
+
+
+
+
 
 
 
@@ -1661,27 +1721,39 @@ const mapElement = document.getElementById("map"); // PONTO CRÍTICO: substituir
 
 
 
-    // Captura o mapa como imagem para o PDF
-// PONTO CRÍTICO: futuramente substituir por mapa temporário do registro
-const canvas = await html2canvas(mapElement, {
-    useCORS: true,
-    scale: 2
-});
+
+await new Promise(resolve => setTimeout(resolve, 1500));
+
+   
 
 
 
 
 
 
+    const canvas = await html2canvas(mapElement, {
+        useCORS: true,
+        scale: 2
+    });
 
-
-    
     // Reexibe os círculos após a captura
     document
         .querySelectorAll('#map svg path.leaflet-interactive')
         .forEach(el => el.style.display = '');
 
     const imgData = canvas.toDataURL("image/png");
+
+
+
+
+    tempMap.remove();
+tempMapDiv.remove();
+
+
+
+
+
+
 
     // Criar PDF
     const pdf = new jsPDF("p", "mm", "a4");
@@ -1724,6 +1796,8 @@ pdf.addImage(
     const description = record.description || "Nenhuma observação registrada.";
     const coordinates = record.coordinates;
     const addressElement = record.address;
+
+
 
     // TÍTULO
     pdf.setFont("helvetica", "bold");
@@ -2133,4 +2207,3 @@ closeArrivalDeparture();
  
 </body>
 </html>
-
