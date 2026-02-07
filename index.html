@@ -4,9 +4,10 @@
     <!-- Cabeçalho da Página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Presença</title>
+    <title>Marcador de presença</title>
 
-    <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <!-- Carregando o Font Awesome Carrega ícones lápis-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -14,18 +15,17 @@
 <!-- Gerar Mapa local PDF-->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+     <!-- Biblioteca QRCode (uma vez no projeto) -->
 
-    <title>Registro de Presença</title>
+<!-- Biblioteca QRCode MAPA -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+
+    <title>Marcador de presença</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    
-
     <style>
-
-
-
-
 
 
 body {
@@ -48,9 +48,9 @@ header {
     left: 0;
     width: 100%;
     z-index: 1;
-    box-shadow: 0 4px 8px #0000001A;
+    box-shadow: 0 8px 8px #0000001A;
 
-     border-bottom: 2px solid #e0e0e0; /* Linha inferior para separar o cabeçalho */
+     border-bottom: 20px solid #99c2ec; /* Linha inferior para separar o cabeçalho */
 }
 
 
@@ -61,7 +61,6 @@ header h1 {
 
 
 /* CSS COR CONTEIN PRINCIPAL*/
-
 .container {
     max-width: 600px;          /* Limita a largura máxima da container para 600px */
     width: calc(100% - 10px);  /* Subtrai 10px (5px à esquerda + 5px à direita) */
@@ -77,7 +76,7 @@ header h1 {
     box-sizing: border-box;
 }
 
-
+/* Centralização */
 body {
     display: flex;
     justify-content: center;
@@ -86,15 +85,14 @@ body {
 }
 
 
-/* CSS coteiner fim
-
+/* CSS container fim */
 
 .container h2 {
     font-size: 18px;
     color: #000000;
 }
 
-  <!-- Controlar a distancio no topo -->
+   /*Controlar a distancio no topo*/
 .container {
 
     /* margin-top: 150px;  Remover valor fixo */
@@ -115,56 +113,82 @@ body {
 }
 
 
-
-/* ===========================
-   ABINHAS MEIA-LUA – EFEITO 3D
-   =========================== */
-
-.container {
-    position: relative;
-    z-index: 2;
-}
-
-/* ABINHA SUPERIOR */
+/* ABINHA SUPERIOR topo*/
 .container::before {
     content: "";
     position: absolute;
-    top: -20px;                 /* quanto sobe no header */
+    top: -20px;                 /* Quanto sobe no header */
     left: 50%;
     transform: translateX(-50%);
-
-    width: 200px;               /* largura da meia-lua */
-    height: 19px;               /* altura */
-
-    /* efeito material / relevo */
+    width: 200px;               /* Largura da meia-lua */
+    height: 19px;               /* Altura */
     background:
         linear-gradient(to bottom,
             rgba(255,255,255,0.9),
             rgba(255,255,255,0.4)
         ),
         #f0f4f8;
-
     clip-path: ellipse(50% 100% at 50% 100%);
-
     box-shadow:
-        0 2px 3px rgba(0,0,0,0.15),        /* encaixe */
-        0 6px 10px rgba(0,0,0,0.25),       /* profundidade */
-        inset 0 1px 1px rgba(255,255,255,0.8); /* luz interna */
-
+        0 2px 3px rgba(0,0,0,0.15),        /* Encaixe */
+        0 6px 10px rgba(0,0,0,0.25),       /* Profundidade */
+        inset 0 1px 1px rgba(255,255,255,0.8); /* Luz interna */
     z-index: 3;
+    animation: moveAba 10s ease-in-out infinite alternate;
 }
 
-/* ABINHA INFERIOR */
+/* Animação para mover a aba (superior) */
+@keyframes moveAba {
+    0% {
+        transform: translateX(-50%) translateX(-30%); /* Começa na esquerda */
+    }
+    50% {
+        transform: translateX(-50%) translateX(30%);  /* Vai para a direita */
+    }
+    100% {
+        transform: translateX(-50%) translateX(-30%); /* Volta para a esquerda */
+    }
+}
+
+
+
+/* ABINHA INFERIOR topo*/
 .container::after {
     content: "";
     position: absolute;
-    bottom: -20px;              /* quanto desce para fora do container */
+    top: 1px;                 /* Coloca a aba inferior logo abaixo da superior */
     left: 50%;
     transform: translateX(-50%);
+    width: 200px;              /* Mesma largura que a superior */
+    height: 19px;              /* Mesma altura que a superior */
 
-    width: 200px;
-    height: 19px;
+    clip-path: ellipse(50% 100% at 50% 0%); /* Formato espelhado */
+    box-shadow:
+        0 2px 3px rgba(0,0,0,0.15), 
+        0 6px 10px rgba(0,0,0,0.25), 
+        inset 0 1px 1px rgba(255,255,255,0.8); /* Mesma sombra da superior */
 
+    z-index: 2; /* Aba inferior abaixo da superior */
+    background-color: rgba(0, 0, 255, 0.3); /* Cor de fundo temporária para ajudar na visualização */
+    animation: moveAba 10s ease-in-out infinite alternate;
+}
+
+/* Animação para mover a aba (superior e inferior) */
+@keyframes moveAba {
+    0% {
+        transform: translateX(-50%) translateX(-30%); /* Começa na esquerda */
+    }
+    50% {
+        transform: translateX(-50%) translateX(30%);  /* Vai para a direita */
+    }
+    100% {
+        transform: translateX(-50%) translateX(-30%); /* Volta para a esquerda */
+    }
+}
+
+/* ABINHA INFERIOR COR*/
+.container::after {
+   
     /* efeito material / relevo invertido */
     background:
         linear-gradient(to top,
@@ -172,19 +196,12 @@ body {
             rgba(255,255,255,0.3)
         ),
         #f0f4f8;
-
-    clip-path: ellipse(50% 100% at 50% 0%);
-
-    box-shadow:
-        0 -2px 3px rgba(0,0,0,0.12),
-        0 -6px 10px rgba(0,0,0,0.22),
-        inset 0 -1px 1px rgba(255,255,255,0.7);
-
     z-index: 1;
 }
+
+
+
 /* ABINHA final */
-
-
 
         /* Estilos do Mapa */
         #map {
@@ -213,7 +230,7 @@ body {
 button {
     width: 90%;                   /* Largura menor que 100% */
     display: block;               /* Garante que margin auto funcione */
-    margin: 10px auto;            /* Centraliza horizontalmente + espaçamento vertical */
+    margin: 15px auto;            /* Centraliza horizontalmente + espaçamento vertical */
     padding: 10px;                /* Mantém altura do botão */
     border: 2px solid #5fa5b4;   /* Borda fina moderna */
     border-radius: 25px;          /* Arredondado */
@@ -280,18 +297,30 @@ button:active {
 
        
 
-/* 1 - Popup transparente com efeito vidro (recomendado) Eu estou aqui */
+/* 1 - Mapa Popup transparente com efeito vidro (recomendado) Eu estou aqui */
+
 /* Fundo da caixa da popup */
+/* Caixa da popup */
 .leaflet-popup-content-wrapper {
-    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    background: #FFFFFF99 !important;
     backdrop-filter: blur(6px);
     color: #000000;
-    border-radius: 12px;
+    border-radius: 6px;
+    max-width: 160px;
+    padding: 2px 2px; /* isso sozinho não resolve */
 }
+
+/* Conteúdo da popup */
+.leaflet-popup-content {
+    margin: 0;      /* remove margens extras */
+    padding: 4px;   /* reduz o espaço interno do texto */
+    font-size: 14px;
+}
+
 
 /* Triângulo apontando para o marcador */
 .leaflet-popup-tip {
-    background: #FFFFFF40 !important;  /* branco com 25% de opacidade */
+    background: #FFFFFF99 !important;  /* branco com 25% de opacidade */
     backdrop-filter: blur(6px);
 }
 
@@ -323,7 +352,7 @@ button:active {
 .history-buttons {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 15px;
     margin-top: 10px;
 }
 
@@ -362,6 +391,61 @@ button:active {
     box-sizing: border-box;
     display: block;
 }
+
+
+
+/* Toggle switch BOOLEANO*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    transition: .3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #99c2ec;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center; /* alinha verticalmente */
+    gap: 10px;           /* espaço entre botão e texto */
+    margin-bottom: 20px; /* espaço abaixo do toggle */
+}
+
+
+/* Toggle switch BOOLEANO*/
 
 
 /* CSS menu */
@@ -421,8 +505,6 @@ button:active {
     z-index: 1; /* Mantém o mapa abaixo do menu */
 
 
-
-
 <!-- Estilos CSS -->
 
 
@@ -452,6 +534,8 @@ window.addEventListener('load', function() {
     <ul>
         <li><a href="sobre.html">Sobre</a></li>
         <li><a href="informações.html">Informações importates</a></li>
+        <li><a href="backup.html">Backup e recuperação</a></li>
+
     </ul>
 </div>
 
@@ -591,6 +675,7 @@ function saveUserName() {
 
         userID = `${datePart}-${suffix}`;
 
+
         // 🔒 Salva o ID UMA ÚNICA VEZ
         localStorage.setItem("userID", userID);
     }
@@ -615,6 +700,7 @@ function editUserName() {
   // fim Função usuário
 
 
+
     // Função para obter o endereço a partir das coordenadas
     function getAddressFromCoordinates(latitude, longitude) {
         const apiUrl = `https://us1.locationiq.com/v1/reverse?key=pk.73c7ec951f7e0c38e842f740a1a63917&lat=${latitude}&lon=${longitude}&format=json`;
@@ -628,7 +714,7 @@ function editUserName() {
                                  Região: ${data.address.suburb || "N/A"},
                                  Cidade: ${data.address.city || "N/A"},
                                  Estado: ${data.address.state || "N/A"},
-                                 CEP: ${data.address.postcode || "N/A"},
+                                 CEP: ${data.address.postcode ? data.address.postcode.substring(0, 5) : "N/A"},
                                  País: ${data.address.country || "N/A"}`;
 
                 document.getElementById("road-name").innerText = `Local: ${roadName}`;
@@ -660,8 +746,163 @@ function updateMap(lat, lon) {
              // Bloco= 2 fim
 
 
-    // Função para salvar o registro
-function saveRecord() {
+
+
+
+
+
+
+// 1 ===== BLOCO BASE — INDEXEDDB (INFRA) =====
+const DB_NAME = "CheckinDB";
+const DB_VERSION = 1;
+const STORE_NAME = "presenceRecords";
+
+let db = null;
+
+
+// 2 ===== 🔒 proteção =====
+
+async function ensureDB() {
+    if (db && db.objectStoreNames.contains(STORE_NAME)) {
+        return db;
+    }
+    db = null;
+    return await initDB();
+}
+
+
+
+function initDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (event) => {
+            const database = event.target.result;
+
+
+            if (!database.objectStoreNames.contains(STORE_NAME)) {
+                database.createObjectStore(STORE_NAME, {
+                    keyPath: "id",
+                    autoIncrement: true
+                });
+            }
+        };
+
+
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+        };
+
+
+
+    // 1 🔒 proteção para evitar DB "morto" após erro ou reload
+db.onclose = () => {
+    db = null;
+};
+
+db.onerror = () => {
+    db = null;
+};
+
+
+
+
+// ===== Notificação armazenamento cheio =====
+        request.onerror = (event) => {
+    const err = event.target.error;
+
+    if (err && err.name === "QuotaExceededError") {
+        const msg = document.getElementById("saveMessage");
+        if (msg) msg.innerText = "Armazenamento cheio. Limpe os dados do site.";
+        msg.style.textAlign = "center";
+        msg.style.color = "red";
+    }
+    // Cor da mensagem 👈
+
+    reject(err);
+};
+});
+}
+
+
+
+
+// 1 ===== BLOCO BASE — INDEXEDDB (INFRA) =====
+
+
+// Inicializa o IndexedDB ao carregar o app (necessário)
+document.addEventListener("DOMContentLoaded", () => {
+    initDB();
+});
+
+
+
+// 3 ===== LEITURA INDEXEDDB (TESTE) =====
+
+async function getAllRecordsFromDB() {
+const database = await ensureDB();
+// 3 ===== not bug=====
+
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject("DB não inicializado");
+            return;
+        }
+
+
+// 4 ===== not bug====
+
+      const tx = database.transaction(STORE_NAME, "readonly");
+        const store = tx.objectStore(STORE_NAME);
+        const request = store.getAll();
+
+
+        request.onsuccess = () => {
+            resolve(request.result);
+        };
+
+        request.onerror = () => {
+            reject(request.error);
+        };
+    });
+}
+
+
+// 3 ===== LEITURA INDEXEDDB (TESTE) =====
+
+
+// 4 ===== HISTÓRICO VIA INDEXEDDB =====
+async function getHistoryRecords() {
+    try {
+        const records = await getAllRecordsFromDB();
+        return records || [];
+    } catch (e) {
+        console.error("Erro ao ler histórico do IndexedDB", e);
+        return [];
+    }
+}
+// 4 ===== HISTÓRICO VIA INDEXEDDB =====
+
+
+
+    // Função para salvar o registro 👈
+    async function saveRecord() {
+
+     // Notificação armazenamento cheio 👈
+        const msg = document.getElementById("saveMessage");
+
+     if (msg) msg.innerText = "";
+
+if (msg) {
+    msg.innerText = "";
+    msg.style.color = "";
+}
+ // Notificação armazenamento cheio 👈
+
+        const database = await ensureDB();
+        // 5 ===== not bug=====
+
     const coordinates = document.getElementById("coordinates").innerText;
     const address = document.getElementById("address").innerText;
     const timestamp = document.getElementById("timestamp").innerText;
@@ -671,6 +912,7 @@ function saveRecord() {
 const userInput = localStorage.getItem("userName") || "Usuário";  
 const userID = localStorage.getItem("userID") || "Sem ID";  // Recupera o ID ou usa um valor padrão
 const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
+
 
 const record = {
     userName: userInput,
@@ -682,9 +924,28 @@ const record = {
 };
 
 
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
-    records.push(record);
-    localStorage.setItem("presenceRecords", JSON.stringify(records));
+// Captura do mapa atual em Base64- indeBD
+const mapElement = document.getElementById("map");
+const canvas = await html2canvas(mapElement, { useCORS: true, scale: 2 });
+record.mapImage = canvas.toDataURL("image/png");
+record.mapWidth = canvas.width;
+record.mapHeight = canvas.height;
+// Captura do mapa atual em Base64- indeBD
+
+
+
+// 2 ===== SALVAR TAMBÉM NO INDEXEDDB inicio =====
+       
+{
+const tx = database.transaction(STORE_NAME, "readwrite");
+ // 6 ===== not bug===== apagar if (db) ==
+
+    const store = tx.objectStore(STORE_NAME);
+    store.add(record);
+}
+
+
+//  ===== SALVAR TAMBÉM NO INDEXEDDB  =====
 
     const saveButton = document.querySelector("button[onclick='saveRecord()']");
     saveButton.innerText = "Registro salvo com sucesso!";
@@ -695,248 +956,23 @@ const record = {
 
 
 
-    // Função para compartilhar a localização via WhatsApp texto  organizado
-function shareLocation() {
-    // Pegando os dados da tela e do localStorage
-    const coordinates = document.getElementById("coordinates").innerText;
-    const address = document.getElementById("address").innerText;
-    const timestamp = document.getElementById("timestamp").innerText;
-    const userName = localStorage.getItem("userName") || "Usuário";
-    const userID = localStorage.getItem("userID");
-    const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
 
-    // Dados fixos para a mensagem
-    const title = "Checkin+";
-    const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
 
-    // Montando a mensagem para WhatsApp
-    const message = `*${title}*
-Registro de Presença
-Declaração de comparecimento:
 
-Eu estou aqui,
-Usuário: ${userName}
-ID: ${userID}
-Descrição: ${description}
-Data/hora local: ${timestamp}
 
-${coordinates}
-${address}
 
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
 
-${additionalMessage}
 
-Aplicativo disponível no Google Play`;
 
-    // Abrindo o WhatsApp com a mensagem pronta
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+// ===== IMPORTANTE NÃO APAGAR ===== 👈
+function parseCoords(coordString) {
+    // coordString exemplo: "Latitude: -23.6766 Longitude: -46.1234"
+    const match = coordString.match(/Latitude:\s*([-0-9.]+)\s*Longitude:\s*([-0-9.]+)/);
+    if (!match) return null;  // Retorna null se não encontrar
+    return `${match[1]},${match[2]}`;  // Retorna "lat,lon"
 }
+// ===== IMPORTANTE NÃO APAGAR ===== 👈
 
- // Função para compartilhar a localização via WhatsApp texto  organizado
-
-
-
-// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - inicio
-
-async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Definir as margens
-    const margin = 20;  // 20mm = 2cm
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-
-    // Ajustando a área útil do documento (sem contar as margens)
-    const contentWidth = pageWidth - 2 * margin;
-    const contentHeight = pageHeight - 2 * margin;
-
-    // Dados para o PDF
-    const coordinates = document.getElementById("coordinates").innerText;
-    const address = document.getElementById("address").innerText;
-    const timestamp = document.getElementById("timestamp").innerText;
-    const userName = localStorage.getItem("userName") || "Usuário";  // Nome salvo no localStorage
-    const userID = localStorage.getItem("userID");  // ID único do usuário (fixo)
-    const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
-
-
-// FUNÇÃO - Declaração PDF 
-const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros.";
-
-const message =
-  "Registro de presença\n" +
-  "Declaração de comparecimento:\n\n" +
-
-  "Eu estou aqui,\n" +
-  `Usuário: ${userName} (ID: ${userID})\n` +
-  `Descrição: ${description}\n` +
-  `Data/hora local: ${timestamp}\n\n` +
-
-  `${coordinates}\n` +
-  `${address}\n\n` +
-
-  `https://maps.google.com/?q=${currentLatitude},${currentLongitude}\n\n\n` +
-  "Aplicativo disponível no Google Play";
-
-
-
-// FUNÇÃO - Declaração PDF Checkin+ 
-
-    // Desenhando as margens
-    doc.rect(margin, margin, contentWidth, contentHeight);  // Adicionando a margem de 2cm em todos os lados
-
-    // Afastamento da margem esquerda (5mm de distância)
-    const textX = margin + 5;  // Ajuste do afastamento da margem esquerda (5mm)
-
-    // Título do PDF
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(title, textX, margin + 10);  // Usando textX para o afastamento
-
-    // Corpo do texto (mensagem principal)
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    doc.text(message, textX, margin + 20, { maxWidth: contentWidth });
-
-
-// Mensagem adicional (em tamanho menor)
-doc.setFontSize(12);  // Tamanho pequeno para a frase
-doc.setFont("helvetica", "normal");
-doc.text(additionalMessage, textX, margin + 112, { maxWidth: contentWidth }); // Ajuste afastar a frase: Aprecisão da localização...
-
-
-   // Salvar o PDF gerado
-doc.save(
-  "Checkin+_Declaração_" +
-  String(new Date().getDate()).padStart(2, "0") + "-" +
-  String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
-  new Date().getFullYear() + "_" +
-  String(new Date().getHours()).padStart(2, "0") + "-" +
-  String(new Date().getMinutes()).padStart(2, "0") + "-" +
-  String(new Date().getSeconds()).padStart(2, "0") +
-  ".pdf"
-);
-}
-
-// FUNÇÃO - Declaração PDF Checkin+ TELA INICIAL - fim
-
-
-// MAPA- inicio
-
-// MAPA- Função COMPLETA para gerar o PDF do mapa + declaração (Tela Inicial)
-async function generateMapPDF() {
-    const { jsPDF } = window.jspdf;
-
-    const mapElement = document.getElementById("map");
-
-    // Esconde apenas os círculos do Leaflet antes da captura
-    document
-        .querySelectorAll('#map svg path.leaflet-interactive')
-        .forEach(el => el.style.display = 'none');
-
-    // Captura o mapa
-    const canvas = await html2canvas(mapElement, {
-        useCORS: true,
-        scale: 2
-    });
-
-    // Reexibe os círculos após a captura
-    document
-        .querySelectorAll('#map svg path.leaflet-interactive')
-        .forEach(el => el.style.display = '');
-
-    const imgData = canvas.toDataURL("image/png");
-
-    // Criar PDF
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-
-    // Margens e tamanho do mapa
-    const margin = 10;
-    const mapLeftMargin = 12;
-
-    const imgWidth = pageWidth - mapLeftMargin - margin - 2;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let y = margin + 2;
-
-    // Adiciona o mapa
-    pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
-    y += imgHeight + 8;
-
-    // Dados da tela inicial
-    const userName = localStorage.getItem("userName") || "Usuário";
-    const userID = localStorage.getItem("userID") || "Sem ID";
-    const timestamp = document.getElementById("timestamp").innerText;
-    const description = document.getElementById("description")?.value || "Nenhuma observação registrada.";
-    const coordinates = document.getElementById("coordinates").innerText;
-    const addressElement = document.getElementById("address").innerText;
-
-    // TÍTULO
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(16);
-    pdf.text("Checkin+", margin + 5, y);
-    y += 7;
-
-    // SUBTÍTULOS
-    pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(12);
-    pdf.text("Registro de Presença", margin + 5, y);
-    y += 4;
-    pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
-    y += 8;
-
-    // TEXTO
-    pdf.setFontSize(10);
-    const text =
-`Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
-Data/Hora: ${timestamp}
-Descrição: ${description}
-
-${coordinates}
-${addressElement}
-
-Link da Localização:
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
-A precisão da localização pode variar em um raio de até 50 metros.
-
-Aplicativo disponível no Google Play`;
-
-    pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
-
-    // Borda
-    pdf.setLineWidth(0.5);
-    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);
-
-    // Formatar data/hora para nome do arquivo
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-   const formattedDate = `${day}-${month}-${year}_${hours}-${minutes}-${seconds}`;
-
-    // Salvar PDF com data/hora no nome
-    pdf.save(`Checkin+_Mapa_${formattedDate}.pdf`);
-}
-
-// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-       // Bloco= 3 =
-         // Função botão ver no google mapas - adicionado
-         function openGoogleMaps() {
-    const googleMapsUrl = `https://maps.google.com/?q=${currentLatitude},${currentLongitude}`;
-    window.open(googleMapsUrl, '_blank');
-}
-     // Bloco= 3 = fim
 
 
    // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
@@ -971,40 +1007,100 @@ function trackLocation() {
                 // Inicializa o mapa com as coordenadas obtidas
                 map = L.map('map').setView([currentLatitude, currentLongitude], 15);
 
+
+
+              
+                // Ajuste para o mapa abrir no firebase
+
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    crossOrigin: true
+}).addTo(map);
 
 
-                // Adiciona o marcador e a popup
-                // Obter o nome do usuário do localStorage
+// Adiciona o marcador e a popup Mapa
+            
 const userName = localStorage.getItem("userName") || "Usuário";
 
-// Adiciona o marcador e a popup com o nome do usuário
-L.marker([currentLatitude, currentLongitude]).addTo(map)
- 
-    .bindPopup(`Eu estou aqui 😊<br>${userName}`) // Inclui o nome do usuário na mensagem
+// Função para converter metros em pixels baseado no zoom do mapa
+function metersToPixels(meters, lat, map) {
+    const pointC = map.latLngToContainerPoint([lat, 0]);
+    const pointX = map.latLngToContainerPoint([lat, meters / 111320]); // 1 grau ~ 111.32 km
+    return Math.abs(pointX.x - pointC.x);
+}
 
+// Obtem a posição do usuário
+navigator.geolocation.getCurrentPosition((position) => {
+    const currentLatitude = position.coords.latitude;
+    const currentLongitude = position.coords.longitude;
+    let gpsAccuracy = position.coords.accuracy;
+
+    // Limita o raio do círculo para não ficar muito grande- tamanho
+    if (gpsAccuracy > 19) gpsAccuracy = 19; // Tamanho do circulo
+
+    // --- Pin HTML tamanho ---
+    const htmlPin = L.divIcon({
+        html: `<div style="
+            width: 5px;
+            height: 5px;
+            background: #007BFF;
+            border-radius: 50%;
+            border: 2px solid #0056b3;
+        "></div>`,
+        className: '',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+    });
+
+
+   L.marker([currentLatitude, currentLongitude], { icon: htmlPin })
+    .addTo(map)
+    .bindPopup(`
+        <div style="text-align: center;">
+            Eu estou aqui 😊<br>
+            <strong>${userName}</strong>
+        </div>
+    `)
     .openPopup();
 
 
-// Círculo de precisão 50 metros
-// precisão real por GPS
-let gpsAccuracy = position.coords.accuracy;
+    // --- Círculo de precisão HTML ---
+    function addAccuracyCircle() {
+        const pixelRadius = metersToPixels(gpsAccuracy, currentLatitude, map);
 
-// limita o raio máximo
-if (gpsAccuracy > 80) gpsAccuracy = 80;
+        // Ajuste para centralizar o círculo e evitar deslocamento
+        const htmlCircle = L.divIcon({
+            html: `<div style="
+                width: ${pixelRadius*3.4}px;
+                height: ${pixelRadius*3.4}px;
+                background: #007BFF2E;
+                border: 1px solid #007BFF;
+                border-radius: 50%;
 
+                transform: translate(-${pixelRadius}px, -${pixelRadius}px);
 
+                position: absolute;
+            "></div>`,
+            className: '',
+            iconSize: [pixelRadius*2, pixelRadius*2],
+            iconAnchor: [pixelRadius, pixelRadius]
+        });
 
-// cria o círculo em volta do pin
-L.circle([currentLatitude, currentLongitude], {
-    color: '#007BFF',
-    fillColor: '#007BFF',
-    fillOpacity: 0.15,
-    radius: gpsAccuracy,
-    weight: 1
-}).addTo(map);
+        // Remove círculo antigo se houver
+        if (window.accuracyMarker) map.removeLayer(window.accuracyMarker);
+
+        window.accuracyMarker = L.marker([currentLatitude, currentLongitude], { icon: htmlCircle }).addTo(map);
+    }
+
+    // Inicializa o círculo
+    addAccuracyCircle();
+
+    // Atualiza o círculo ao mudar o zoom
+    map.on('zoomend', addAccuracyCircle);
+
+    // Centraliza o mapa na posição do usuário
+    map.setView([currentLatitude, currentLongitude], 16);
+});
 
 
                 // Corrige o redimensionamento do mapa após a exibição
@@ -1141,9 +1237,6 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
 
 
 
-
-
-
     <!-- Cabeçalho Tela principal-->
     <header>
 
@@ -1158,8 +1251,8 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <div class="container">
 
 
-        <h2 style="width: 90%; margin: 10px auto; text-align: left; font-size: 15px; color: #000;">
-        Registro de Presença 📍
+        <h2 style="width: 90%; margin: 15px auto; text-align: left; font-size: 15px; color: #000;">
+        Marcador de presença 📍
         </h2>
 
         <!-- Nome da Rua -->
@@ -1214,31 +1307,31 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
             <button class="button" onclick="saveRecord()">Salvar Registro</button>
         </div>
         
+        <!--Notificação armazenamento cheio-->
+        <div id="saveMessage" style="margin-top:8px; font-size:14px;"></div>
+
 
         <!-- Declaração de comparecimento na tela -->
 
-     <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 13px; color: #000;">
-       Já precisou provar ao chefe que foi ao médico? Ou confirmar que esteve no trabalho, na escola ou em qualquer outro lugar. Com o <strong>Checkin+</strong>, você registra sua presença com apenas um clique. O app gera uma declaração de comparecimento com mapa, nome, ID, data, hora e localização — uma prova incontestável, em texto ou PDF, pronto para enviar, baixar ou imprimir.
-     </p>
- 
+    <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 14px; color: #000;">
+  Já precisou provar ao chefe que foi ao médico?<br>
+  Precisa provar sua presença e permanência em um local?<br>
+  Vai precisar provar aos pais que está na escola?<br>
+
+<hr style="width: 75%; margin: 10px auto; border: 1px solid #ccc;">
+
+<p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 14px; color: #000;">
+  Com o <strong>Checkin+</strong>, você registra sua presença com apenas um clique.  
+  O app gera um comprovante de chegada e saída, e uma declaração de comparecimento com nome, ID, data, hora e localização — uma prova incontestável, em texto ou PDF, pronta para enviar, baixar ou imprimir.
+</p>
+
+
         <!-- Chegada / Saida -->
         <button class="button" onclick="openArrivalDeparture()">Chegada / Saída</button>
 
-        <!-- Compartilhar via WhatsApp -->
-        <button class="button" onclick="shareLocation()">Enviar texto WhatsApp</button>
-
-        <!-- Mapa PDF -->
-        <button class="button" onclick="generateMapPDF()">Mapa - Enviar / baixar</button>
-
-        <!-- Gerar PDF -->
-        <button class="button" onclick="generatePDF()">Declaração - Enviar / baixar</button>
-
-        
-         <!-- Alteração: Botão para abrir o local no Google Maps -->
-        <button class="button" onclick="openGoogleMaps()">Google Maps</button>
-
         <!-- Botão para Exibir o Histórico dentro do mesmo container -->
         <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
+
 
 
 <!-- PARTE DO HISTÓRICO -->
@@ -1284,10 +1377,7 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     </button>
 
 </div>
-
-    
       <!-- Fim conteúdo conteiner principal -->
-
 
 
 
@@ -1297,40 +1387,68 @@ window.addEventListener('load', verificarLocalizacaoAtiva);
     <!-- Inicio conteúdo histórico -->
     // Função para alternar a visibilidade do histórico
 
-    function toggleHistory() {
-            const historyContainer = document.getElementById("history-container");
-            const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+
+    //IndexBD 
+            async function toggleHistory() {
+    const historyContainer = document.getElementById("history-container");
+    const records = await getHistoryRecords();
+
 
             if (historyContainer.style.display === "none") {
                 historyContainer.style.display = "block";
                 const recordsList = document.getElementById("records-list");
                 recordsList.innerHTML = ""; // Limpar a lista antes de adicionar novamente
 
+
 // Ordenar os registros de forma decrescente (mais recente primeiro)
 records.reverse();  // Aqui é onde você inverte a ordem dos registros
 
+
 // Adicionar os registros parte ver na tela do app
 records.forEach((record, index) => {
+
+
+// Contagem de registros
+const numeroRegistro = records.length - index;
+
+
+
                     const recordDiv = document.createElement("div");
                     recordDiv.classList.add("record");
-
                     recordDiv.innerHTML = `
-                    
-                    <p><strong>Declaração de comparecimento:</strong></p>
+
+                    <p><strong>Registro da localização nº ${numeroRegistro}</strong></p>
+
 
 <div><strong>Usuário:</strong> ${record.userName}</div>
 <div><strong>ID:</strong> ${record.userID}</div>
+<div><strong>Data/Hora:</strong> ${record.timestamp}</div>                        
 <div><strong>Descrição:</strong> ${record.description}</div>
-<div><strong>Data/Hora:</strong> ${record.timestamp}</div>
 <br> <!-- Pula uma linha depois da data -->
-<div><strong>Coordenadas:</strong> ${record.coordinates}</div>
+
+<div><strong>Coordenadas:</strong> <span class="coords">${record.coordinates}</span></div>
+
 <div><strong>Endereço:</strong> ${record.address}</div>
 
-<div class="history-buttons">
+<br> <!-- Pula uma linha depois da data -->
+    <!-- Aqui está o booleano visível -->
 
-                    
+   <div class="toggle-container">
+    <label class="switch">
+        <input type="checkbox" class="toggle-btn" onchange="toggleButtonsVisibility(${index})">
+        <span class="slider"></span>
+    </label>
+   <span><strong>Mostrar ações</strong></span>
+
+</div>
+
+
+<div class="history-buttons">
+                  
 <!-- Botões histórico -->
 <div class="history-buttons">
+
+
     <!-- Enviar texto WhatsApp -->
     <button class="share-btn" onclick="shareLocationHistory(${index})">
         Enviar texto WhatsApp
@@ -1346,11 +1464,13 @@ records.forEach((record, index) => {
         Declaração - Enviar / baixar
     </button>
 
+ <!-- Alteração: Botão para abrir o local no Google Maps -->
+   <button class="button" onclick="openGoogleMaps('${parseCoords(record.coordinates)}')">Google Maps</button>
+
     <!-- Delete -->
 <button class="delete-btn" onclick="deleteRecord(${index})">
         Apagar
     </button>
-
 
 
 </div>
@@ -1358,6 +1478,8 @@ records.forEach((record, index) => {
                        
                     `;
                     recordsList.appendChild(recordDiv);
+                    recordDiv.querySelector(".history-buttons").style.display = "none";
+
                 });
             } else {
                 historyContainer.style.display = "none";
@@ -1365,32 +1487,95 @@ records.forEach((record, index) => {
         }
     
 
-// Função deletar registros com confirmação- DIRETO
-window.deleteRecord = function(index) {
+
+
+// 6 ===== DELETE REGISTRO NO INDEXEDDB COM CONFIRMAÇÃO =====
+window.deleteRecord = async function(index) {
     const confirmar = confirm("Tem certeza que deseja apagar este registro?");
     if (!confirmar) return;
 
-    let records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+    try {
+        // Recupera todos os registros
+        const records = await getAllRecordsFromDB();
 
-    // Corrige a inversão entre lista exibida e array real
-    const originalIndex = records.length - 1 - index;
+        if (!records || records.length === 0) return;
 
-    records.splice(originalIndex, 1);
-    localStorage.setItem("presenceRecords", JSON.stringify(records));
+        // Corrige a inversão entre lista exibida e array real
+        const originalIndex = records.length - 1 - index;
+        const recordToDelete = records[originalIndex];
 
-    location.reload();
+        if (!recordToDelete) return;
+
+        // Abre transação de escrita
+        const tx = db.transaction(STORE_NAME, "readwrite");
+        const store = tx.objectStore(STORE_NAME);
+
+        // Deleta pelo id
+        store.delete(recordToDelete.id);
+
+        // Recarrega a página após deletar
+        tx.oncomplete = () => {
+            location.reload();
+        };
+    } catch (e) {
+        console.error("Erro ao deletar registro do IndexedDB", e);
+    }
 };
+// 6 ===== DELETE REGISTRO NO INDEXEDDB COM CONFIRMAÇÃO =====
 
 
+
+     // Bloco= 3 = novo bloco
+   
+   // Função para abrir a coordenada do registro no Google Maps
+function openGoogleMaps(coords) {
+    // coords deve estar no formato "latitude,longitude"
+    const url = `https://www.google.com/maps?q=${coords}`;
+    window.open(url, "_blank");
+}
+
+     // Bloco= 3 = fim novo bloco
+
+
+   // FUNÇÃO Boolean 
+function toggleButtonsVisibility(index) {
+    const records = document.querySelectorAll(".record");
+    const buttons = records[index].querySelector(".history-buttons");
+
+    const checkbox = records[index].querySelector(".toggle-btn");
+
+    if (checkbox.checked) {
+        buttons.style.display = "block";
+    } else {
+        buttons.style.display = "none";
+    }
+}
+
+   // FUNÇÃO Boolean 
+
+
+
+
+// =========================
+// FUNÇÃO COMPARTILHER TEXTO NO WHATSAPP
+// =========================
      
-// Função para compartilhar no WhatsApp a partir do histórico
-function shareLocationHistory(index) {
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+// Função para compartilhar no WhatsApp Texto a partir do histórico
+    async function shareLocationHistory(index) {
+    const records = await getAllRecordsFromDB() || [];
+
 
     // Ordenar os registros de forma decrescente (mais recente primeiro)
     records.reverse();
 
     const record = records[index];  // Pega o registro com o índice passado
+
+
+    // 🔽 COLE EXATAMENTE AQUI
+  const coordsLimpa = record.coordinates
+    .match(/-?\d+(\.\d+)?/g)
+    .join(",");
+   
 
     // Obtenção do nome e ID fixos
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
@@ -1401,65 +1586,143 @@ function shareLocationHistory(index) {
 console.log("Timestamp salvo no registro:", record.timestamp);
 
 
-
-
-
-
-
-
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- início
+// Descrição frase no zap
 
 const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-
+const additionalMessage = ""; 
 const message = `*${title}*
-Registro de presença
-Declaração de comparecimento: 
+Registro da localização: 
 
 Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
 
-Descrição: ${record.description}
 Data/hora local: ${record.timestamp}
+Descrição: ${record.description}
 
 ${record.coordinates}
 ${record.address}
 
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
+Google Mapas
+https://maps.google.com/?q=${coordsLimpa}
+A precisão da localização no Google Maps pode variar em um raio de 50 metros.
 
 Aplicativo disponível no Google Play`;
 
-
-
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
+// FUNÇÃO 
 
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 }
 
-
 // FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
 
 
 
+// =========================
+// FUNDO GERAR PDF 1
+// =========================
 
-
-// Função para gerar PDF a partir do histórico (2ª parte) inicio
+// Função DECLARAÇÃO PDF a partir do histórico (2ª parte) inicio
 
 async function generatePDFHistory(index) {
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+
+    const records = await getAllRecordsFromDB() || [];
 
     // Ordenar os registros de forma decrescente (mais recente primeiro)
     records.reverse();
 
     const record = records[index];
 
+
+// 🔽 COLE EXATAMENTE AQUI
+// Extrair somente números das coordenadas
+const coordsLimpa = record.coordinates
+  .match(/-?\d+(\.\d+)?/g)
+  .join(",");
+
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
+
+// =========================
+// FUNDO PDF 1 PUBLIC if
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  doc.addImage(
+    "fundo-pdf.png",
+    "png",
+    0,
+    0,
+    doc.internal.pageSize.width,
+    doc.internal.pageSize.height
+  );
+}
+// =========================
+// FUNDO PDF 1 PUBLIC if
+// =========================
+
+
+// =========================
+// LOGO NO PDF 1 PUBLIC if
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  doc.addImage(
+    "logo-pdf.png",
+    "PNG",
+    177,
+    15,
+    22,
+    22
+  );
+}
+// =========================
+// LOGO NO PDF 1 PUBLIC if
+
+
+// =========================
+// GERAR QR CODE BASE64 (AJUSTADO)
+// =========================
+const qrCanvas = document.createElement("canvas");
+
+await QRCode.toCanvas(
+  qrCanvas,
+  `https://maps.google.com/?q=${coordsLimpa}`,
+  { width: 300 } // tamanho do QR Code
+);
+
+const qrBase64 = qrCanvas.toDataURL("image/png");
+
+// Adicionar QR Code ao PDF 1
+doc.addImage(qrBase64, "PNG", 175, 90, 25, 25);
+
+// =========================
+// GERAR QR CODE BASE64 (AJUSTADO)
+// =========================
+
+
+// =========================
+// MARCA D'ÁGUA (segura) DECLARAÇÃO
+// =========================
+doc.saveGraphicsState();
+doc.setGState(doc.GState({ opacity: 0.15 })); // transparência
+doc.setFont("helvetica", "bold");
+doc.setFontSize(20);
+doc.setTextColor("#02779e"); // cinza claro
+doc.text(
+    "Declaração de\nComparecimento",
+    90, 200,               // X e Y, ajuste conforme necessidade visual
+    { align: "left", angle: 45 }
+);
+doc.restoreGraphicsState();
+// =========================
+// MARCA D'ÁGUA (segura) DECLARAÇÃO
+// =========================
+
+
     // Definir as margens
-    const margin = 20;  // 20mm = 2cm
-    const textX = margin + 5;  // Afastamento de 5mm da margem esquerda
+    const margin = 10;  // 20mm = 2cm
+    const textX = margin + 0;  // Afastamento de 5mm da margem esquerda
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
 
@@ -1468,7 +1731,7 @@ async function generatePDFHistory(index) {
     const contentHeight = pageHeight - 2 * margin;
 
     // Desenhando a margem (borda de 2cm ao redor)
-    doc.rect(margin, margin, contentWidth, contentHeight); 
+ 
 
     // Obtenção do nome e ID fixos
     const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
@@ -1477,20 +1740,22 @@ async function generatePDFHistory(index) {
 
 // FUNÇÃO - Declaração PDF Checkin+ HISTORICO- 
 const title = "Checkin+";
-const additionalMessage = "A precisão da localização no Google Maps pode variar em um raio de 50 metros."; 
-const message = `Registro de presença
-Declaração de comparecimento:
+const additionalMessage = " ";
+const message = `Declaração de comparecimento: 
 
 Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
-Descrição: ${record.description}
+
 Data/hora local: ${record.timestamp}
+Descrição: ${record.description}
 
 ${record.coordinates}
 ${record.address}
 
-https://maps.google.com/?q=${currentLatitude},${currentLongitude}
-\u200B
+Link e QR Code da localização:
+https://maps.google.com/?q=${coordsLimpa}
+
+A precisão da localização no Google Maps pode variar em um raio de 50 metros
 
 Aplicativo disponível no Google Play`;
 
@@ -1505,7 +1770,10 @@ Aplicativo disponível no Google Play`;
     // Corpo do texto (mensagem principal)
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(message, textX, margin + 20, { maxWidth: contentWidth });
+
+
+doc.text(message, textX, margin + 15, { maxWidth: contentWidth - 10 });
+
 
 
   // Mensagem adicional (em menor tamanho)
@@ -1517,7 +1785,7 @@ doc.setFontSize(12);  // Tamanho pequeno para a frase
 doc.setFont("helvetica", "normal");  // Fonte normal
 
 // Ajuste da posição Y para a frase ficar abaixo do link
-const additionalMessageY = linkYPosition + 10;  // Adicionando 10mm de espaçamento entre o link e a frase: Aprecisão da localização....
+const additionalMessageY = linkYPosition + 8.5;  // Adicionando 10mm de espaçamento entre o link e a frase: Aprecisão da localização....
 
 doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth });
 
@@ -1540,63 +1808,111 @@ doc.save(
 
 
 
-
- 
- // MAPA- Historico
+// =========================
+// FUNDO GERAR PDF 2 MAPA
+// =========================
 
 // MAPA - Função COMPLETA para gerar o PDF do mapa + declaração (HISTÓRICO)
 async function generateMapPDFHistory(index) {
     const { jsPDF } = window.jspdf;
 
-    // Recuperar registros salvos
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+
+    // Recuperar Lê os registros salvos
+const records = await getAllRecordsFromDB() || [];
+
 
     // Corrigir índice por causa do reverse()
     const originalIndex = records.length - 1 - index;
     const record = records[originalIndex];
+
+
+
+// 🔽 COLE EXATAMENTE AQUI
+// Extrair somente números das coordenadas
+const coordsLimpa = record.coordinates
+  .match(/-?\d+(\.\d+)?/g)
+  .join(",");
+
+
 
     if (!record) {
         alert("Registro não encontrado.");
         return;
     }
 
-    // Captura o mapa ATUAL (visual apenas)
-    const mapElement = document.getElementById("map");
 
-    // Esconde apenas os círculos do Leaflet antes da captura
-    document
-        .querySelectorAll('#map svg path.leaflet-interactive')
-        .forEach(el => el.style.display = 'none');
+    // Captura o mapa indexBD
+    // Usa a imagem do mapa salva no registro
+if (!record.mapImage) {
+    alert("Imagem do mapa não encontrada no registro.");
+    return;
+}
 
-    const canvas = await html2canvas(mapElement, {
-        useCORS: true,
-        scale: 2
-    });
+const imgData = record.mapImage;
+    // Captura o mapa indexBD
 
-    // Reexibe os círculos após a captura
-    document
-        .querySelectorAll('#map svg path.leaflet-interactive')
-        .forEach(el => el.style.display = '');
-
-    const imgData = canvas.toDataURL("image/png");
 
     // Criar PDF
     const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Margens e tamanho do mapa
-    const margin = 10;
-    const mapLeftMargin = 12;
 
-    const imgWidth = pageWidth - mapLeftMargin - margin - 2;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let y = margin + 2;
+// =========================
+// FUNDO DA PÁGINA MAPA PUBLIC if
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  pdf.addImage(
+    "fundo-pdf.png",
+    "png",
+    0,
+    0,
+    pdf.internal.pageSize.width,
+    pdf.internal.pageSize.height
+  );
+}
+// FUNDO DA PÁGINA MAPA
+
+
+
+ const pageWidth = pdf.internal.pageSize.getWidth();
+ const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Captura o mapa indexBD
+   const margin = 10;
+const mapLeftMargin = 12;
+
+const imgWidth  = 186; // Largura
+const imgHeight = 130; // Altura
+let y = 12;   // margem do topo
+
+
+    // Captura o mapa indexBD
+
 
     // Adiciona o mapa
     pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
     y += imgHeight + 8;
+
+
+
+// =========================
+// LOGO DA PÁGINA MAPA PUBLIC (condicional)
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  pdf.addImage(
+    "logo-pdf.png", // imagem na pasta public
+    "PNG",          // tipo correto
+    177,            // X (ajuste - X move para esquerda e direita)
+    15,            // Y (ajuste - y vertical sobe - desse)
+    22,             // largura
+    22              // altura
+  );
+}
+
+// =========================
+// LOGO NO PDF 3 (MAPA) – PUBLIC if
+
+
 
     // DADOS DO REGISTRO (HISTÓRICO)
     const userName = record.userName || "Usuário";
@@ -1608,42 +1924,80 @@ async function generateMapPDFHistory(index) {
 
     // TÍTULO
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(16);
+    pdf.setFontSize(14);
     pdf.text("Checkin+", margin + 5, y);
-    y += 7;
+    y += 1;
 
     // SUBTÍTULOS
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(12);
-    pdf.text("Registro de Presença", margin + 5, y);
+   
     y += 4;
 
-    pdf.text("Comprovante de comparecimento ao Local", margin + 5, y);
+    pdf.text("Registro da localização", margin + 5, y);
     y += 8;
 
     // TEXTO
-    pdf.setFontSize(10);
+    pdf.setFontSize(12);
 
     const text =
 `Eu estou aqui,
 Usuário: ${userName} (ID: ${userID})
+
 Data/Hora: ${timestamp}
 Descrição: ${description}
 
 ${coordinates}
 ${addressElement}
 
-Link da Localização:
-https://maps.google.com/?q=${record.latitude},${record.longitude}
+Link e QR Code da localização:
+https://maps.google.com/?q=${coordsLimpa}
 A precisão da localização pode variar em um raio de até 50 metros.
 
 Aplicativo disponível no Google Play`;
 
-    pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin });
+pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin - 5 });
 
+   
+   // =========================
+// QR CODE MAPA (PADRÃO 1º PDF)
+// =========================
+// BLOCO 1 — GERAR QR CODE (FUNCIONAL)
+const qrCanvas = document.createElement("canvas");
+
+
+await QRCode.toCanvas(
+    qrCanvas,
+    `https://maps.google.com/?q=${coordsLimpa}`,
+    { width: 300 }
+);
+
+
+const qrBase64 = qrCanvas.toDataURL("image/png");
+
+// Adicionar QR Code ao PDF Mapa
+pdf.addImage(qrBase64, "PNG", 175, 237, 25, 25);
+// =========================
+// QR CODE MAPA (PADRÃO 1º PDF)
+// =========================
+   
     // Borda da página
-    pdf.setLineWidth(0.5);
-    pdf.rect(margin, margin, pageWidth - 2 * margin, pageHeight - 2 * margin);
+    
+// =========================
+// MARCA D'ÁGUA (segura) // MAPA- Historico
+// =========================
+pdf.saveGraphicsState();
+
+pdf.setFont("helvetica", "bold");
+pdf.setFontSize(20);
+pdf.setTextColor("#c9e0e8"); // cinza claro
+pdf.text(
+    "Registro da\nlocolização",
+    100, 220,               // X e Y, ajuste conforme necessidade visual
+    { align: "left", angle: 45 }
+);
+pdf.restoreGraphicsState();
+
 
     // Salvar PDF
     pdf.save(`Checkin+_Mapa_${timestamp}.pdf`);
@@ -1651,7 +2005,6 @@ Aplicativo disponível no Google Play`;
 
 // MAPA- Função COMPLETA para gerar o PDF do mapa > fim
 
-  </script>
 
 
 
@@ -1661,9 +2014,13 @@ Aplicativo disponível no Google Play`;
 
 
 
+// =========================
+// FUNDO GERAR PDF 3 CHEGADA E SAIDA
+// =========================
 <!-- Função chegada e saída início -->
 
-<!-- Modal -->
+  </script>
+  <!-- Modal -->
 
 <div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
     background:rgba(0,0,0,0.6); z-index:999; overflow:auto; padding:40px 10px; box-sizing:border-box;">
@@ -1688,8 +2045,8 @@ Aplicativo disponível no Google Play`;
 </div>
 
 <!-- Modal -->
-
 <script>
+
 let selected = [];
 let reversedRecords = [];
 
@@ -1698,8 +2055,10 @@ let reversedRecords = [];
 ================================ */
 
 
-function openArrivalDeparture() {
-    const records = JSON.parse(localStorage.getItem("presenceRecords")) || [];
+<!-- indeBD-->
+async function openArrivalDeparture() {
+const records = await getAllRecordsFromDB() || [];
+
 
     if (records.length < 2) {
         alert("É necessário pelo menos 2 registros.");
@@ -1753,7 +2112,6 @@ div.style.textOverflow = "ellipsis";
 
 
 
-
 /* ===============================
    FECHAR
 ================================ */
@@ -1795,14 +2153,10 @@ function formatCoordinates(coords) {
 ================================ */
 
 
+async function generateArrivalDeparturePDF() {
 
 
 
-
-
-
-
-    function generateArrivalDeparturePDF() {
     if (selected.length !== 2) {
         alert("Selecione dois registros.");
         return;
@@ -1843,6 +2197,42 @@ const { jsPDF } = window.jspdf;
 const doc = new jsPDF();
 
 
+
+// =========================
+// FUNDO PDF 1 CHEGADA E SAÍDA PUBLIC if
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  doc.addImage(
+    "fundo-pdf.png",
+    "png",
+    0,
+    0,
+    doc.internal.pageSize.width,
+    doc.internal.pageSize.height
+  );
+}
+// =========================
+// FUNDO PDF 1 CHEGADA E SAÍDA PUBLIC if
+// =========================
+
+// =========================
+// LOGO NO PDF 1 PUBLIC if
+// =========================
+if (typeof window !== "undefined" && location.protocol !== "file:") {
+  doc.addImage(
+    "logo-pdf.png",
+    "PNG",
+    177,
+    15,
+    22,
+    22
+  );
+}
+// =========================
+// LOGO NO PDF 1 PUBLIC if
+// =========================
+
+
 // =========================
 // Título e subtítulo
 // =========================
@@ -1854,8 +2244,10 @@ doc.setFont("helvetica", "normal");
 doc.setFontSize(12);
 doc.text("Comprovante de chegada e saída", 10, 25);
 
+
+
 // =========================
-// Conteúdo antes de CHEGADA
+// Conteúdo antes de CHEGADA- 1
 // =========================
 const textoAntesChegada = `
 Usuário: ${chegada.userName}
@@ -1875,6 +2267,7 @@ doc.setFillColor(0, 200, 0); // verde
 doc.circle(11, y - 2, 1.5, 'F'); // bolinha preenchida
 doc.text(" CHEGADA", 13, y); // texto logo após a bolinha
 
+
 // =========================
 // Conteúdo entre CHEGADA e SAÍDA
 // =========================
@@ -1884,20 +2277,45 @@ Descrição: ${chegada.description}
 
 ${chegada.coordinates || ""}
 ${chegada.address || ""}
-Link da Localização:
+Link e QR Code da localização:
 https://maps.google.com/?q=${chegadaCoords}
 `;
 
 // Escreve o conteúdo logo após CHEGADA
 y += 1; // pequeno espaço para separar da palavra CHEGADA
-doc.text(textoEntre, 10, y);
+doc.text(textoEntre, 10, y, { maxWidth: 180 });
+
+
+
+// =========================
+// GERAR QR CODES (CHEGADA E SAÍDA) - AJUSTADO
+// =========================
+const qrCanvasChegada = document.createElement("canvas");
+await QRCode.toCanvas(
+  qrCanvasChegada,
+  `https://maps.google.com/?q=${chegadaCoords}`,
+  { width: 300 }
+);
+const qrChegada = qrCanvasChegada.toDataURL("image/png");
+
+const qrCanvasSaida = document.createElement("canvas");
+await QRCode.toCanvas(
+  qrCanvasSaida,
+  `https://maps.google.com/?q=${saidaCoords}`,
+  { width: 300 }
+);
+const qrSaida = qrCanvasSaida.toDataURL("image/png");
+
+// Adiciona os QR Codes no PDF
+doc.addImage(qrChegada, "PNG", 175, 93, 25, 25);
+doc.addImage(qrSaida,   "PNG", 175, 192, 25, 25);
 
 
 
 // =========================
 // SAÍDA com bolinha azul
 // =========================
-y += textoEntre.split('\n').length * 5; // calcula Y para SAÍDA
+y += textoEntre.split('\n').length * 6; // calcula Y para SAÍDA
 doc.setFillColor(0, 0, 200); // azul
 doc.circle(11, y - 2, 1.5, 'F'); // bolinha azul preenchida
 doc.text(" SAÍDA", 13, y); // texto logo após a bolinha
@@ -1911,7 +2329,7 @@ Descrição: ${saida.description}
 
 ${saida.coordinates || ""}
 ${saida.address || ""}
-Link da Localização:
+Link e QR Code da localização:
 https://maps.google.com/?q=${saidaCoords}
 
 Tempo total de permanência:
@@ -1923,7 +2341,29 @@ Aplicativo disponível no Google Play
 
 // Escreve o restante do conteúdo
 y += 1; // pequeno espaço
-doc.text(textoDepoisSaida, 10, y);
+doc.text(textoDepoisSaida, 10, y, { maxWidth: 180 });
+
+
+
+// =========================
+// MARCA D'ÁGUA (segura) CHEGADA E SAÍDA
+// =========================
+doc.saveGraphicsState();
+doc.setGState(doc.GState({ opacity: 0.15 })); // transparência
+doc.setFont("helvetica", "bold");
+doc.setFontSize(20);
+
+doc.setTextColor("#02779e"); // cinza claro ("#C8C8C8");
+
+doc.text(
+    "Comprovante de\nChegada e Saída",
+  90, 160,
+  { align: "left", angle: 45 }
+
+);
+doc.restoreGraphicsState();
+
+
 
 // =========================
 // Salvar PDF
@@ -1932,19 +2372,69 @@ doc.save("Checkin+_Chegada_Saida.pdf");
 
 closeArrivalDeparture();
 
-
-
 }
 
-
-
 </script>
 
-<!-- Fução chegada e saída fim -->
 
 
 
-</script>
+<!-- CRIAR BOLHA -->
+
+      
+<script>
+window.addEventListener("load", function () {
+   // Criar a bolha
+const bubble = document.createElement('div'); // cria uma div nova via JavaScript
+
+bubble.style.width = '40px'; // define tamanho da bolha
+bubble.style.height = '40px'; // define tamanho da bolha
+bubble.style.borderRadius = '50%'; // deixa a div redonda (círculo)
+
+bubble.style.background = '#99C2EC33'; // define a cor de fundo da bolha-  #8C2EC80'; // azul com 50% de transparênci
+
+bubble.style.border = '2px solid #99C2EC99'; // branco com ~80% de opacidade
+bubble.style.boxShadow = '0 0 8px #99C2EC1A'; // branco com ~60% de opacidade
+
+
+bubble.style.position = 'fixed'; // fixa a bolha na tela, independente do scroll
+bubble.style.top = '0px'; // posiciona no topo da tela
+bubble.style.left = '0px'; // posiciona à esquerda da tela
+bubble.style.pointerEvents = 'none'; // permite clicar através da bolha
+bubble.style.zIndex = '9999'; // coloca a bolha acima de quase tudo
+
+document.body.appendChild(bubble); // adiciona a bolha ao body e exibe na tela
+
+
+    // Posição inicial aleatória da bolha no eixo horizontal
+let x = Math.random() * (window.innerWidth - 40); // Deixar sempre o mesmo tamanho da bolinha
+
+// Posição inicial aleatória da bolha no eixo vertical
+let y = Math.random() * (window.innerHeight - 40); // Deixar sempre o mesmo tamanho da bolinha
+
+
+     // Velocidade
+   let vx = (Math.random() - 0.5) * 4; // Aumentar ou diminuir, altere a vaiável 2
+   let vy = (Math.random() - 0.5) * 4; // Aumentar ou diminuir, altere a vaiável 2
+
+
+     // Velocidade Atualiza a posição da bolha a cada frame
+    function update() {
+        x += vx;
+        y += vy;
  
+     // Velocidade Inverte a direção da bolha ao bater nas bordas da tel
+        if (x <= 0 || x >= window.innerWidth - 40) vx *= -1; // Deixar sempre o mesmo tamanho da bolinha
+        if (y <= 0 || y >= window.innerHeight - 40) vy *= -1; // Deixar sempre o mesmo tamanho da bolinha
+
+     // Velocidade Desenha a bolha na tela e continua a animação
+        bubble.style.transform = `translate(${x}px, ${y}px)`;
+        requestAnimationFrame(update);
+    }
+
+    update();
+});
+</script>
+
 </body>
 </html>
