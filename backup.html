@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Backup e recuperação</title>
 
+  <!-- ===== GERADOR DE QR CODE — BACKUP NOME + ID ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <!-- ===== GERAR PDF DO QR CODE ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -94,6 +100,10 @@
     justify-content: center;
 "></div>
 
+    <!-- ===== BAIXAR QR CODE — BACKUP NOME + ID ===== -->
+<button id="btnBaixarPDF" class="btn-principal" style="display:none;">
+  📄 Baixar QR em PDF
+</button>
 
 
     <button id="btnLerQR" class="btn-principal">
@@ -116,13 +126,14 @@
 
 
 
-<!-- ===== GERADOR DE QR CODE — BACKUP NOME + ID ===== -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!-- SCRIPT ABAIXO -->
 
- <!-- ===== Cód botão gerar RW code ===== -->
+ <!-- 1 ===== Cód botão gerar RW code ===== -->
 <script>
 document.getElementById("btnGerarQR").addEventListener("click", () => {
     const container = document.getElementById("qrContainer");
+
+document.getElementById("btnBaixarPDF").style.display = "block";
 
     // 🔁 Se já existe QR, remove (fecha)
     if (container.innerHTML.trim() !== "") {
@@ -140,6 +151,8 @@ document.getElementById("btnGerarQR").addEventListener("click", () => {
 
     const dados = JSON.stringify({ userName, userID });
 
+    document.getElementById("btnBaixarPDF").style.display = "none";
+
     new QRCode(container, {
         text: dados,
         width: 220,
@@ -149,7 +162,31 @@ document.getElementById("btnGerarQR").addEventListener("click", () => {
 </script>
 
 
-<!-- ===== LEITOR DE QR CODE — RECUPERAÇÃO NOME + ID ===== -->
+
+<!-- 2 ===== GERAR PDF DO QR CODE ===== -->
+
+<script>
+document.getElementById("btnBaixarPDF").addEventListener("click", () => {
+    const canvas = document.querySelector("#qrContainer canvas");
+    if (!canvas) {
+        alert("QR Code não encontrado.");
+        return;
+    }
+
+    const imgData = canvas.toDataURL("image/png");
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF();
+    pdf.text("QR de Recuperação", 20, 20);
+    pdf.addImage(imgData, "PNG", 30, 30, 150, 150);
+
+    pdf.save("qr-recuperacao.pdf");
+});
+</script>
+
+
+
+<!-- 3 ===== LEITOR DE QR CODE — RECUPERAÇÃO NOME + ID ===== -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <script>
@@ -193,6 +230,11 @@ document.getElementById("btnLerQR").addEventListener("click", () => {
 });
 </script>
 
+<!-- ===== GERAR  ===== -->
+
+
+
 
 </body>
 </html>
+
