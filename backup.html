@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Backup e recuperação</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      padding: 0px;
+      text-align: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+
+    .btn-principal {
+      padding: 12px 24px;
+      background: linear-gradient(to bottom, #02779e, #02779e);
+      border: 2px solid #5fa5b4;
+      color: white;
+      font-size: 18px;
+      width: 75%;
+      cursor: pointer;
+      border-radius: 20px;
+      margin: 15px auto;
+      display: block;
+    }
+
+    .explicacao {
+      font-size: 15px;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto 25px auto;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .botao-voltar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 20px;
+      height: 30px;
+      font-size: 24px;
+      color: #7f8c8d;
+      background: #f0f4f8;
+      border: 2px solid #f0f4f8;
+      border-radius: 5px;
+      padding: 5px 15px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BOTÃO VOLTAR -->
+<a href="index.html" class="botao-voltar">&gt;</a>
+
+  <div class="container">
+
+    <h3>Backup e recuperação</h3>
+
+    <p class="explicacao">
+      Este recurso permite recuperar seu <strong>nome e ID</strong> caso os dados do aplicativo sejam apagados.
+      <br><br>
+      O QR Code funciona como uma chave de recuperação pessoal.
+    </p>
+
+    <button id="btnGerarQR" class="btn-principal">
+      📱 Gerar QR de recuperação
+    </button>
+
+    <!-- ===== GERADOR DE QR CODE — BACKUP NOME + ID ===== -->
+<div id="qrContainer" style="
+    margin-top:20px;
+    display: flex;
+    justify-content: center;
+"></div>
+
+
+
+    <button id="btnLerQR" class="btn-principal">
+      📷 Recuperar com QR Code
+    </button>
+
+ <!-- ===== Recuperar com QR Code — BACKUP NOME + ID ===== -->
+    <div id="leitorQR" style="display:none; margin-top:20px;"></div>
+
+
+    <hr style="width: 75%; margin: 25px auto; border: 1px solid #ccc;">
+
+    <p class="explicacao">
+      <strong>Importante:</strong><br>
+      Guarde o QR Code em local seguro (print ou galeria).<br>
+      Ele permite restaurar seu nome e ID sem necessidade de login.
+    </p>
+
+  </div>
+
+
+
+<!-- ===== GERADOR DE QR CODE — BACKUP NOME + ID ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+ <!-- ===== Cód botão gerar RW code ===== -->
+<script>
+document.getElementById("btnGerarQR").addEventListener("click", () => {
+    const container = document.getElementById("qrContainer");
+
+    // 🔁 Se já existe QR, remove (fecha)
+    if (container.innerHTML.trim() !== "") {
+        container.innerHTML = "";
+        return;
+    }
+
+    const userName = localStorage.getItem("userName");
+    const userID = localStorage.getItem("userID");
+
+    if (!userName || !userID) {
+        alert("Nome ou ID não encontrados.");
+        return;
+    }
+
+    const dados = JSON.stringify({ userName, userID });
+
+    new QRCode(container, {
+        text: dados,
+        width: 220,
+        height: 220
+    });
+});
+</script>
+
+
+<!-- ===== LEITOR DE QR CODE — RECUPERAÇÃO NOME + ID ===== -->
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+document.getElementById("btnLerQR").addEventListener("click", () => {
+    const area = document.getElementById("leitorQR");
+
+    // toggle abrir / fechar câmera
+    if (area.style.display === "block") {
+        area.style.display = "none";
+        if (window.qrReader) {
+            window.qrReader.stop();
+        }
+        return;
+    }
+
+    area.style.display = "block";
+
+    window.qrReader = new Html5Qrcode("leitorQR");
+
+    qrReader.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 220 },
+        (texto) => {
+            try {
+                const dados = JSON.parse(texto);
+
+                if (dados.userName && dados.userID) {
+                    localStorage.setItem("userName", dados.userName);
+                    localStorage.setItem("userID", dados.userID);
+
+                    alert("Dados recuperados com sucesso!");
+                    location.reload();
+                } else {
+                    alert("QR inválido.");
+                }
+            } catch {
+                alert("QR inválido.");
+            }
+        }
+    );
+});
+</script>
+
+
+</body>
+</html>
