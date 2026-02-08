@@ -33,14 +33,14 @@
 
 
 
-  /* Botões principais — 90% largura + estilo padrão */
+  /* Botões principais — 75% largura + estilo padrão */
 .btn-principal {
   padding: 12px 24px;
   background: linear-gradient(to bottom, #02779e, #02779e);
   border: 2px solid #5fa5b4;
   color: white;
   font-size: 16px;
-  width: 90%;
+  width: 80%;
   text-decoration: none;
   cursor: pointer;
   border-radius: 20px;
@@ -81,25 +81,45 @@
     }
 
 
-.botao-voltar {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 20px;
-      height: 30px;
-      font-size: 24px;
-      color: #7f8c8d;
-      background: #f0f4f8;
-      border: 2px solid #f0f4f8;
-      border-radius: 5px;
-      padding: 5px 15px;
-     
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
+/* 🔙 BOTÃO VOLTAR PADRÃO DO APP */
+  .botao-voltar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 30px;
+    font-size: 24px;
+    color: #7f8c8d;
+    background: linear-gradient(to bottom, #f0f4f8, #f0f4f8);
+    border: 2px solid #f0f4f8;
+    border-radius: 5px;
+    padding: 5px 15px;
+  
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+  }
+
+  .botao-voltar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    pointer-events: none;
+  }
+
+  .botao-voltar:hover {
+    background: linear-gradient(to bottom, #0393bb, #0393bb);
+    border-color: #0393bb;
+  }
 
 
 
