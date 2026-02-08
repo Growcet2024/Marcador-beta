@@ -30,18 +30,46 @@
       min-height: 100vh;
     }
 
-    .btn-principal {
-      padding: 12px 24px;
-      background: linear-gradient(to bottom, #02779e, #02779e);
-      border: 2px solid #5fa5b4;
-      color: white;
-      font-size: 18px;
-      width: 75%;
-      cursor: pointer;
-      border-radius: 20px;
-      margin: 15px auto;
-      display: block;
-    }
+
+
+
+  /* Botões principais — 75% largura + estilo padrão */
+.btn-principal {
+  padding: 12px 24px;
+  background: linear-gradient(to bottom, #02779e, #02779e);
+  border: 2px solid #5fa5b4;
+  color: white;
+  font-size: 15px;
+  width: 75%;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  margin: 15px auto;
+  display: block;
+  transition: background 0.3s;
+}
+
+.btn-principal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 35%;
+  background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  pointer-events: none;
+}
+
+.btn-principal:hover {
+  background: linear-gradient(to bottom, #0393bb, #0393bb);
+}
+
+
+
 
     .explicacao {
       font-size: 15px;
@@ -52,7 +80,8 @@
       text-align: left;
     }
 
-    .botao-voltar {
+
+.botao-voltar {
       position: fixed;
       top: 20px;
       right: 20px;
@@ -71,6 +100,10 @@
       justify-content: center;
       z-index: 999;
     }
+
+
+
+
   </style>
 </head>
 
@@ -128,16 +161,16 @@
 
 <!-- SCRIPT ABAIXO -->
 
- <!-- 1 ===== Cód botão gerar RW code ===== -->
+ <!-- 1 ===== Cód botão gerar QR code ===== -->
 <script>
 document.getElementById("btnGerarQR").addEventListener("click", () => {
     const container = document.getElementById("qrContainer");
-
-document.getElementById("btnBaixarPDF").style.display = "block";
+    const btnPDF = document.getElementById("btnBaixarPDF");
 
     // 🔁 Se já existe QR, remove (fecha)
     if (container.innerHTML.trim() !== "") {
         container.innerHTML = "";
+        btnPDF.style.display = "none";
         return;
     }
 
@@ -151,15 +184,17 @@ document.getElementById("btnBaixarPDF").style.display = "block";
 
     const dados = JSON.stringify({ userName, userID });
 
-    document.getElementById("btnBaixarPDF").style.display = "none";
-
     new QRCode(container, {
         text: dados,
         width: 220,
         height: 220
     });
+
+    // ✅ Só mostra o botão PDF depois que o QR existir
+    btnPDF.style.display = "block";
 });
 </script>
+
 
 
 
@@ -167,18 +202,82 @@ document.getElementById("btnBaixarPDF").style.display = "block";
 
 <script>
 document.getElementById("btnBaixarPDF").addEventListener("click", () => {
-    const canvas = document.querySelector("#qrContainer canvas");
-    if (!canvas) {
+    const qrElement = document.querySelector("#qrContainer canvas, #qrContainer img");
+
+    if (!qrElement) {
         alert("QR Code não encontrado.");
         return;
     }
 
-    const imgData = canvas.toDataURL("image/png");
-    const { jsPDF } = window.jspdf;
+    let imgData;
 
+    if (qrElement.tagName === "CANVAS") {
+        imgData = qrElement.toDataURL("image/png");
+    } else {
+        imgData = qrElement.src;
+    }
+
+    const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
-    pdf.text("QR de Recuperação", 20, 20);
-    pdf.addImage(imgData, "PNG", 30, 30, 150, 150);
+
+    
+// Borda da página
+
+// Borda discreta
+pdf.setLineWidth(0.2);
+pdf.setDrawColor(180, 180, 180);
+pdf.rect(
+  10,
+  10,
+  pdf.internal.pageSize.getWidth() - 20,
+  pdf.internal.pageSize.getHeight() - 20
+);
+
+
+const userName = localStorage.getItem("userName");
+const userID = localStorage.getItem("userID");
+const hoje = new Date().toLocaleDateString("pt-BR");
+
+const pageWidth = pdf.internal.pageSize.getWidth();
+const centerX = pageWidth / 2;
+
+// Título
+pdf.setFontSize(18);
+pdf.setFont(undefined, "bold");
+pdf.text("Checkin+", centerX, 25, { align: "center" });
+
+// Conteúdo
+pdf.setFontSize(12);
+pdf.setFont(undefined, "normal");
+
+pdf.text("Recuperação de Dados", centerX, 38, { align: "center" });
+pdf.text(`Usuário: ${userName} (ID: ${userID})`, centerX, 48, { align: "center" });
+pdf.text(`Data: ${hoje}`, centerX, 58, { align: "center" });
+
+// QR centralizado
+const qrSize = 90;
+pdf.addImage(
+  imgData,
+  "PNG",
+  centerX - qrSize / 2,
+  75,
+  qrSize,
+  qrSize
+);
+
+
+// Informação abaixo do QR
+pdf.setFontSize(10);
+pdf.setTextColor(90, 90, 90);
+pdf.text(
+  "Informação: Escrever texto aqui ____________",
+  centerX,
+  75 + qrSize + 15,
+  { align: "center" }
+);
+
+
+
 
     pdf.save("qr-recuperacao.pdf");
 });
