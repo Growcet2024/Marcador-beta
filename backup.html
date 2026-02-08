@@ -69,8 +69,6 @@
 }
 
 
-
-
     .explicacao {
       font-size: 15px;
       color: #333;
@@ -172,9 +170,10 @@
     <p class="explicacao">
       <strong>Importante:</strong><br>
       Guarde o QR Code em local seguro (print ou galeria).<br>
-      Ele permite restaurar seu nome e ID sem necessidade de login.
-    </p>
-
+      Ele permite recuperar seu nome e ID caso você apague
+      o histórico de navegação ou os dados do site,
+      pois todas as informações ficam armazenadas
+      somente no celular e não na internet.
   </div>
 
 
@@ -287,16 +286,28 @@ pdf.addImage(
 
 
 // Informação abaixo do QR
+const infoY = 75 + qrSize + 15;
+
+// Título em negrito
 pdf.setFontSize(10);
+pdf.setFont(undefined, "bold");
 pdf.setTextColor(90, 90, 90);
+pdf.text("Informação:", centerX, infoY, { align: "center" });
+
+// Texto normal
+pdf.setFont(undefined, "normal");
 pdf.text(
-  "Informação: Escrever texto aqui ____________",
+  [
+    "Guarde o QR Code em local seguro (print ou galeria).",
+    "Ele permite recuperar seu nome e ID caso você apague",
+    "o histórico de navegação ou os dados do site,",
+    "pois todas as informações ficam armazenadas",
+    "somente no celular e não na internet."
+  ],
   centerX,
-  75 + qrSize + 15,
+  infoY + 8,
   { align: "center" }
 );
-
-
 
 
     pdf.save("qr-recuperacao.pdf");
@@ -356,4 +367,3 @@ document.getElementById("btnLerQR").addEventListener("click", () => {
 
 </body>
 </html>
-
