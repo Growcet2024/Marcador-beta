@@ -5,101 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre o Aplicativo</title>
 
-
     <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-  }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }
 
-  .container {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: left;
-    background: transparent;
-    min-height: 100vh;
-  }
+      .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: left;
+        background: transparent;
+        min-height: 100vh;
+      }
 
-  .titulo {
-    font-size: 24px;
-    color: #02779e;
-    margin-bottom: 20px;
-    text-align: left;
-  }
+      .titulo {
+        font-size: 24px;
+        color: #02779e;
+        margin-bottom: 20px;
+        text-align: left;
+      }
 
-  .texto {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    color: #333;
-    font-size: 15px;
-  }
+      .texto {
+        margin-bottom: 15px;
+        line-height: 1.6;
+        color: #333;
+        font-size: 15px;
+      }
 
-  /* 🔙 BOTÃO VOLTAR PADRÃO DO APP */
-  .botao-voltar {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 20px;
-    height: 30px;
-    font-size: 24px;
-    color: #7f8c8d;
-    background: linear-gradient(to bottom, #f0f4f8, #f0f4f8);
-    border: 2px solid #f0f4f8;
-    border-radius: 5px;
-    padding: 5px 15px;
-  
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 999;
-  }
+      .subtitulo {
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #02779e;
+      }
 
-  .botao-voltar::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    pointer-events: none;
-  }
+      .botao-voltar {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 20px;
+        height: 30px;
+        font-size: 24px;
+        color: #7f8c8d;
+        background: linear-gradient(to bottom, #f0f4f8, #f0f4f8);
+        border: 2px solid #f0f4f8;
+        border-radius: 5px;
+        padding: 5px 15px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+      }
 
-  .botao-voltar:hover {
-    background: linear-gradient(to bottom, #0393bb, #0393bb);
-    border-color: #0393bb;
-  }
-
-  
-</style>
-
-
-
+      .botao-voltar:hover {
+        background: linear-gradient(to bottom, #0393bb, #0393bb);
+        border-color: #0393bb;
+      }
+    </style>
 </head>
+
 <body>
+<div class="container">
 
-    <div class="container">
-        <h2 class="titulo">Sobre o Aplicativo</h2>
+    <h2 class="titulo"><svg width="20" height="20" viewBox="0 0 24 24" fill="#EA4335">
+  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5
+           c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+</svg>
+O que é o Checkin+?</h2>
 
-        <p class="texto"><strong>📌 Descrição:</strong> Este aplicativo permite que os usuários registrem sua presença em um local específico usando coordenadas geográficas.</p>
-        <p class="texto"><strong>🎯 Objetivo:</strong> Facilitar a comprovação de presença em reuniões, locais de trabalho, escola e outros compromissos importantes.</p>
-        <p class="texto"><strong>📲 Como Usar:</strong> Basta acessar o aplicativo, permitir a localização e registrar sua presença. O registro pode ser compartilhado via WhatsApp ou salvo em PDF.</p>
-        <p class="texto"><strong>📩 Desenvolvedor:</strong> Growcet
+    <p class="texto">
+        O <strong>Checkin+</strong> é um aplicativo de comprovação de presença, criado para facilitar o registro de localização no dia a dia.
+    </p>
 
-        <a href="index.html" class="botao-voltar">•••</a>
-    </div>
+    <p class="texto">
+        Com apenas um clique, você registra sua localização e gera uma declaração de comparecimento contendo nome, ID único, data, hora e coordenadas geográficas obtidas via GPS.
+    </p>
 
+    <p class="texto">
+        Uma solução prática, organizada e confiável para comprovar sua presença em compromissos importantes sempre que necessário.
+    </p>
+
+    <div class="subtitulo">Como usar</div>
+
+    <p class="texto">
+        Ao abrir o aplicativo, o mapa já é exibido com sua localização atual.  
+        No rodapé, insira seu nome e toque em salvar. Um ID único será gerado automaticamente.  
+        O nome pode ser alterado a qualquer momento, mas o ID permanece o mesmo.
+    </p>
+
+    <div class="subtitulo">Campo “Adicionar descrição”</div>
+
+    <p class="texto">
+        Permite incluir uma informação complementar ao salvar um registro.  
+        A descrição será registrada junto com os dados de localização.
+    </p>
+
+    <div class="subtitulo">Botões de chegada e saída</div>
+
+    <p class="texto">
+        Permitem registrar o horário de entrada e saída, comprovando o período de permanência em um local, semelhante a um relógio de ponto.
+        Basta selecionar os dois registros (chegada e saída) para gerar o período correspondente.
+    </p>
+
+    <p class="texto">
+        É possível gerar um documento em PDF para enviar pelo WhatsApp, baixar ou imprimir.
+    </p>
+
+    <div class="subtitulo">Botão Histórico</div>
+
+    <p class="texto">
+        Exibe todos os registros salvos. Em cada registro, ao tocar em <strong>“Mostrar opções”</strong>, são disponibilizadas as seguintes funções:
+    </p>
+
+    <p class="texto">
+        1. <strong>Enviar texto pelo WhatsApp</strong> – Envia os dados do registro em formato de texto.<br>
+        2. <strong>Mapa (Enviar / Baixar)</strong> – Gera um documento em PDF com o mapa para enviar, baixar ou imprimir.<br>
+        3. <strong>Declaração (Enviar / Baixar)</strong> – Gera um documento em PDF com a declaração para enviar, baixar ou imprimir.<br>
+        4. <strong>Google Maps</strong> – Abre a localização salva diretamente no Google Maps.<br>
+        5. <strong>Apagar</strong> – Remove o registro do histórico.
+    </p>
+
+    <div class="subtitulo">Como usar o documento em PDF</div>
+
+    <p class="texto">
+        1. Toque no botão para gerar o PDF (Mapa ou Declaração).<br>
+        2. Selecione a opção <strong>Abrir PDF</strong>.<br>
+        3. No canto superior direito, toque nos <strong>três pontos</strong>.<br>
+        4. Escolha a opção desejada: <strong>Enviar</strong> (compartilhar pelo WhatsApp), <strong>Baixar</strong> ou <strong>Imprimir</strong>.
+    </p>
+
+     <!-- ===== Linha divisória ===== -->
+    <hr style="width: 75%; margin: 25px auto; border: 1px solid #ccc;">
+
+    <a href="index.html" class="botao-voltar">•••</a>
+
+</div>
 </body>
 </html>
+
 
 
