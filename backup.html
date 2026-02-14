@@ -164,19 +164,18 @@
  <!-- ===== Recuperar com QR Code — BACKUP NOME + ID ===== -->
     <div id="leitorQR" style="display:none; margin-top:20px;"></div>
 
-
+ <!-- ===== Linha divisória ===== -->
     <hr style="width: 75%; margin: 25px auto; border: 1px solid #ccc;">
 
     <p class="explicacao">
       <strong>Importante:</strong><br>
-      Guarde o QR Code em local seguro (print ou galeria).<br>
-      Ele permite recuperar seu nome e ID caso você apague
-      o histórico de navegação ou os dados do site,
+      Baixe o QR Code ou tire print, guarde em outro aparelho ou no computador.<br>
+      Ele permite recuperar seu nome e ID caso os dados do site, que ficam em (Configurações de site → Dados armazenados), sejam apagados,
       pois todas as informações ficam armazenadas
       somente no celular e não na internet.
   </div>
 
-
+Ele permite recuperar seu nome e ID caso os dados do site, que ficam em Configurações do navegador → Dados armazenados, sejam apagados.
 
 <!-- SCRIPT ABAIXO -->
 
@@ -294,20 +293,25 @@ pdf.setFont(undefined, "bold");
 pdf.setTextColor(90, 90, 90);
 pdf.text("Informação:", centerX, infoY, { align: "center" });
 
+
 // Texto normal
 pdf.setFont(undefined, "normal");
 pdf.text(
   [
-    "Guarde o QR Code em local seguro (print ou galeria).",
-    "Ele permite recuperar seu nome e ID caso você apague",
-    "o histórico de navegação ou os dados do site,",
-    "pois todas as informações ficam armazenadas",
-    "somente no celular e não na internet."
+    
+  "Guarde o QR Code em local seguro, como em outro aparelho ou no computador.",
+  "Ele permite recuperar seu nome e ID caso os dados do site, que ficam",
+  "em (Configurações de site - Dados armazenados) sejam apagados,",
+  "pois todas as informações ficam armazenadas",
+  "somente no celular e não na internet."
+
   ],
   centerX,
   infoY + 8,
   { align: "center" }
 );
+
+
 
 
     pdf.save("qr-recuperacao.pdf");
@@ -367,3 +371,4 @@ document.getElementById("btnLerQR").addEventListener("click", () => {
 
 </body>
 </html>
+
