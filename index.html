@@ -1,2449 +1,2278 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <!-- Cabeçalho da Página -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcador de presença</title>
-
-<link rel="stylesheet" href="styles.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <!-- Carregando o Font Awesome Carrega ícones lápis-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Gerar Mapa local PDF-->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
-     <!-- Biblioteca QRCode (uma vez no projeto) -->
-
-<!-- Biblioteca QRCode MAPA -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-
-    <title>Marcador de presença</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <style>
-
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #02779eE6; /* cor do fundo fora do container */
-    color: #333;
-}
-
-
-        /* Estilos do Cabeçalho */
-header {
-    text-align: left;
-    padding: 5px 10px 50px 10px; /* padding-top: 5px; padding-right:10px; padding-bottom:50px; padding-left:10px */
-    background-color: #02779e; /* Cor do heder barra topo*/
-    color: #fdfefe; /* Cor titulo Checkin+*/
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-    box-shadow: 0 8px 8px #0000001A;
-
-     border-bottom: 20px solid #99c2ec; /* Linha inferior para separar o cabeçalho */
-}
-
-
-header h1 {
-    margin: 0;
-    font-size: 20px;
-}
-
-
-/* CSS COR CONTEIN PRINCIPAL*/
-.container {
-    max-width: 600px;          /* Limita a largura máxima da container para 600px */
-    width: calc(100% - 10px);  /* Subtrai 10px (5px à esquerda + 5px à direita) */
-    margin-left: 5px;          /* Margem de 5px à esquerda */
-    margin-right: 5px;         /* Margem de 5px à direita */
-    padding: 10px;
-    background-color: #f0f4f8;
-    box-shadow: 0 4px 8px #0000001A;
-    border-radius: 15px;
-    position: relative;
-    z-index: 2;
-    display: block;
-    box-sizing: border-box;
-}
-
-/* Centralização */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-
-/* CSS container fim */
-
-.container h2 {
-    font-size: 18px;
-    color: #000000;
-}
-
-   /*Controlar a distancio no topo*/
-.container {
-
-    /* margin-top: 150px;  Remover valor fixo */
-    position: relative;
-    z-index: 2;
-    padding: 10px;
-    max-width: 600px;
-    margin: auto;
-    background-color: #f0f4f8;
-    box-shadow: 0 4px 8px #0000001A;
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
-
-.container {
-    position: relative;
-    z-index: 2;
-}
-
-
-/* ABINHA SUPERIOR topo*/
-.container::before {
-    content: "";
-    position: absolute;
-    top: -20px;                 /* Quanto sobe no header */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;               /* Largura da meia-lua */
-    height: 19px;               /* Altura */
-    background:
-        linear-gradient(to bottom,
-            rgba(255,255,255,0.9),
-            rgba(255,255,255,0.4)
-        ),
-        #f0f4f8;
-    clip-path: ellipse(50% 100% at 50% 100%);
-    box-shadow:
-        0 2px 3px rgba(0,0,0,0.15),        /* Encaixe */
-        0 6px 10px rgba(0,0,0,0.25),       /* Profundidade */
-        inset 0 1px 1px rgba(255,255,255,0.8); /* Luz interna */
-    z-index: 3;
-    animation: moveAba 10s ease-in-out infinite alternate;
-}
-
-/* Animação para mover a aba (superior) */
-@keyframes moveAba {
-    0% {
-        transform: translateX(-50%) translateX(-30%); /* Começa na esquerda */
-    }
-    50% {
-        transform: translateX(-50%) translateX(30%);  /* Vai para a direita */
-    }
-    100% {
-        transform: translateX(-50%) translateX(-30%); /* Volta para a esquerda */
-    }
-}
-
-
-
-/* ABINHA INFERIOR topo*/
-.container::after {
-    content: "";
-    position: absolute;
-    top: 1px;                 /* Coloca a aba inferior logo abaixo da superior */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;              /* Mesma largura que a superior */
-    height: 19px;              /* Mesma altura que a superior */
-
-    clip-path: ellipse(50% 100% at 50% 0%); /* Formato espelhado */
-    box-shadow:
-        0 2px 3px rgba(0,0,0,0.15), 
-        0 6px 10px rgba(0,0,0,0.25), 
-        inset 0 1px 1px rgba(255,255,255,0.8); /* Mesma sombra da superior */
-
-    z-index: 2; /* Aba inferior abaixo da superior */
-    background-color: rgba(0, 0, 255, 0.3); /* Cor de fundo temporária para ajudar na visualização */
-    animation: moveAba 10s ease-in-out infinite alternate;
-}
-
-/* Animação para mover a aba (superior e inferior) */
-@keyframes moveAba {
-    0% {
-        transform: translateX(-50%) translateX(-30%); /* Começa na esquerda */
-    }
-    50% {
-        transform: translateX(-50%) translateX(30%);  /* Vai para a direita */
-    }
-    100% {
-        transform: translateX(-50%) translateX(-30%); /* Volta para a esquerda */
-    }
-}
-
-/* ABINHA INFERIOR COR*/
-.container::after {
-   
-    /* efeito material / relevo invertido */
-    background:
-        linear-gradient(to top,
-            rgba(255,255,255,0.85),
-            rgba(255,255,255,0.3)
-        ),
-        #f0f4f8;
-    z-index: 1;
-}
-
-
-
-/* ABINHA final */
-
-        /* Estilos do Mapa */
-        #map {
-            border-radius: 8px;
-        }
-
-
-        /* IMPUT - Área de Texto (Descrição) */
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px !important;  /* afastar o texto das bordas */
-            height: 40px;              /* ajuste a altura para manter o tamanho original */
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            resize: none;
-            font-size: 14px;
-            box-sizing: border-box;
-            background-color: #f0f7ff; /* 👈 Fundo secundário */
-        }
-
-
-/* =========================
-   Botões padronizados com efeito glossy e centralizados
-   ========================= */
-button {
-    width: 90%;                   /* Largura menor que 100% */
-    display: block;               /* Garante que margin auto funcione */
-    margin: 15px auto;            /* Centraliza horizontalmente + espaçamento vertical */
-    padding: 10px;                /* Mantém altura do botão */
-    border: 2px solid #5fa5b4;   /* Borda fina moderna */
-    border-radius: 25px;          /* Arredondado */
-    font-size: 16px;              /* Tamanho da fonte */
-    font-weight: bold;            /* Peso da fonte */
-    cursor: pointer;
-    position: relative;           /* Necessário para o efeito glossy */
-    overflow: hidden;             /* Brilho não vaza */
-    color: white;                 /* Cor do texto */
-    background: linear-gradient(to bottom, #02779e, #02779e); /* Gradiente base */
-    transition: background 0.3s, transform 0.2s;
-    box-sizing: border-box;
-}
-
-
-/* Brilho plástico no topo */
-button::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, #FFFFFF66, #FFFFFF00); /* Transparência para efeito glossy */
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    pointer-events: none;
-}
-
-/* Hover */
-button:hover {
-    background: linear-gradient(to bottom, #0393bb, #02779e); /* Gradiente mais claro ao passar o mouse */
-    transform: scale(1.02);
-}
-
-/* Clique */
-button:active {
-    transform: scale(0.98);
-}
-
-/* Histórico de botões (separados por cores para identificar ação) */
-.history-buttons button:nth-child(1) {
-    background: linear-gradient(to bottom, #02779e, #02779e); /* Verde WhatsApp */
-}
-
-.history-buttons button:nth-child(2) {
-    background: linear-gradient(to bottom, #02779e, #02779e); /* Laranja PDF */
-}
-
-.history-buttons button:nth-child(3) {
-    background: linear-gradient(to bottom, #02779e, #02779e); /* Vermelho Apagar */
-}
-
-
-        /* Estilos dos Campos de Coordenadas, Data/Hora e Endereço */
-        .field {
-            margin: 10px 0;
-        }
-
-        .field h2 {
-            font-size: 16px;
-            color: #333;
-        }
-
-       
-
-/* 1 - Mapa Popup transparente com efeito vidro (recomendado) Eu estou aqui */
-
-/* Fundo da caixa da popup */
-/* Caixa da popup */
-.leaflet-popup-content-wrapper {
-    background: #FFFFFF99 !important;
-    backdrop-filter: blur(6px);
-    color: #000000;
-    border-radius: 6px;
-    max-width: 160px;
-    padding: 2px 2px; /* isso sozinho não resolve */
-}
-
-/* Conteúdo da popup */
-.leaflet-popup-content {
-    margin: 0;      /* remove margens extras */
-    padding: 4px;   /* reduz o espaço interno do texto */
-    font-size: 14px;
-}
-
-
-/* Triângulo apontando para o marcador */
-.leaflet-popup-tip {
-    background: #FFFFFF99 !important;  /* branco com 25% de opacidade */
-    backdrop-filter: blur(6px);
-}
-
-
-
-<!-- CSS HISTORICO-->
-
-#/* Estilos do Container do Histórico */
-#history-container {
-    padding: 10px;
-    margin: 10px auto 0 auto; /* topo, auto, baixo, auto */
-    max-width: 600px;
-    background-color: #f0f4f8;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-}
-
-/* Cada registro da lista */
-.record {
-    background-color: #f0f4f8;
-    border: 2px solid #ddd;
-    padding: 25px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Botões dentro do histórico */
-.history-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.history-buttons button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    margin: 0 auto;
-}
-
-.history-buttons button i {
-    margin-right: 8px;
-    font-size: 18px;
-}
-
-
-
-/* Input do Nome (caixa de digitação) */
-#user-name {
-    display: none;
-    width: 100%;
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 14px;
-    background-color: #f0f7ff; /* azul bem suave */
-    box-sizing: border-box;
-    display: block;
-}
-
-
-
-/* Toggle switch BOOLEANO*/
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 46px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background-color: #ccc;
-    transition: .3s;
-    border-radius: 24px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #99c2ec;
-}
-
-input:checked + .slider:before {
-    transform: translateX(22px);
-}
-
-.toggle-container {
-    display: flex;
-    align-items: center; /* alinha verticalmente */
-    gap: 10px;           /* espaço entre botão e texto */
-    margin-bottom: 20px; /* espaço abaixo do toggle */
-}
-
-
-/* Toggle switch BOOLEANO*/
-
-
-/* CSS menu */
-/* Ícone do Menu Hambúrguer */
-.menu-hamburguer {
-    font-size: 30px;
-    cursor: pointer;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100; /* Aumentamos para ficar sobre o mapa */
-    color: #f0f4f8; /* Os três traços */
-    background: #ffffff00  ; /* Cor fundo 3 tracinhos menu f0f4f8 */
-    border-radius: 5px;
-    padding: 5px 10px;
-   // box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); //
-}
-
-/* Menu Deslizante */
-.menu-lateral {
-    width: 250px;
-    height: 100%;
-    background: linear-gradient(to right, #00000066, #00000033);  /* Cor fundo lateral direita */
-    color: white;
-    position: fixed;
-    top: 0;
-    right: -250px; /* Escondido inicialmente */
-    transition: right 0.3s ease;
-    z-index: 99; /* Aumentamos para ficar sobre o mapa */
-    padding-top: 60px;
-}
-
-/* Estilo da Lista do Menu */
-.menu-lateral ul {
-    list-style: none;
-    padding: 0;
-}
-
-.menu-lateral ul li {
-    padding: 15px;
-    border-bottom: 1px solid #444;
-}
-
-.menu-lateral ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-}
-
-.menu-lateral ul li a:hover {
-    background: #444;
-}
-
-#map {
-    position: relative;
-    z-index: 1; /* Mantém o mapa abaixo do menu */
-
-
-<!-- Estilos CSS -->
-
-
-    
-    </style>
-
-    <!-- seu conteúdo HTML aqui -->
-
-
-    <!-- Controlar a distancio no topo -->
-<script>
-
-window.addEventListener('load', function() {
-    const header = document.querySelector('header');
-    const container = document.querySelector('.container');
-
-    const ajuste = -35; // valor negativo faz o container subir sobre o header
-    container.style.marginTop = (header.offsetHeight + ajuste) + 'px';
-});
-
-</script>
-
-
-
-<span class="menu-hamburguer">•••</span>
-<div class="menu-lateral">
-    <ul>
-        <li><a href="sobre.html">Sobre</a></li>
-        <li><a href="informações.html">Informações importates</a></li>
-        <li><a href="backup.html">Backup e recuperação</a></li>
-
-    </ul>
-</div>
-
-<script>
-const menuIcon = document.querySelector(".menu-hamburguer");
-const menuLateral = document.querySelector(".menu-lateral");
-
-let touchStartX = 0;
-
-// Clique no ícone abre/fecha
-menuIcon.addEventListener("click", () => {
-    if (menuLateral.style.right === "0px") {
-        menuLateral.style.right = "-250px";
-    } else {
-        menuLateral.style.right = "0px";
-    }
-});
-
-// Detectar toque para arrastar
-menuLateral.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-});
-
-menuLateral.addEventListener("touchend", (e) => {
-    let touchEndX = e.changedTouches[0].clientX;
-    let diffX = touchEndX - touchStartX;
-
-    if (diffX > 50) { // arrastou mais de 50px para a direita
-        menuLateral.style.right = "-250px"; // fecha
-    }
-});
-</script>
-
-
-
-<script>
-    /* Variáveis Globais */
-    let currentLatitude = "-";
-    let currentLongitude = "-";
-    let userName = "Usuário Logado";
-
-    /* Funções JavaScript */
-
-
-
-    // fUNÇÃO USUÁRIO ID
-    
- // BLOCO- 1
-// Função para gerar um ID único com data de criação + parte aleatória
-// Formato: YYYYMMDD-XXXXXX  (ex: 20250324-K8F9A2)
-
-function generateRandomID() {
-    const now = new Date();
-
-    const year  = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day   = String(now.getDate()).padStart(2, '0');
-
-    const datePart = `${year}${month}${day}`;
-
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let randomPart = '';
-    for (let i = 0; i < 6; i++) {
-        randomPart += characters.charAt(
-            Math.floor(Math.random() * characters.length)
-        );
-    }
-
-    return `${datePart}-${randomPart}`;
-}
-
-
-
-// BLOCO-2
-function checkUserName() {
-    const savedUserName = localStorage.getItem("userName");
-    const savedUserID = localStorage.getItem("userID");
-
-    if (savedUserName && savedUserID) {
-
-        // Mostra dados do usuário
-        document.getElementById("user-name").style.display = "none";
-        document.getElementById("user-name-display").style.display = "inline";
-        document.getElementById("user-name-display").innerText =
-            `Usuário: ${savedUserName} (ID: ${savedUserID})`;
-
-        // Botões
-        document.getElementById("save-name-button").style.display = "none";
-        document.getElementById("edit-name-button").style.display = "inline";
-
-        // 🔒 ID NÃO É EDITÁVEL (garantia de segurança)
-        const editIdBtn = document.getElementById("edit-id-button");
-        if (editIdBtn) editIdBtn.style.display = "none";
-
-    } else {
-
-        // Primeiro acesso (sem nome salvo)
-        document.getElementById("user-name").style.display = "inline";
-        document.getElementById("save-name-button").style.display = "inline";
-        document.getElementById("edit-name-button").style.display = "none";
-
-        const editIdBtn = document.getElementById("edit-id-button");
-        if (editIdBtn) editIdBtn.style.display = "none";
-    }
-}
-
-
-
-// BLOCO- 3
-// Função para salvar o nome do usuário e gerar um ID único FIXO (com data)
-
-function saveUserName() {
-    const userName = document.getElementById("user-name").value.trim();
-
-    if (!userName) {
-        alert("Por favor, digite um nome.");
-        return;
-    }
-
-    // Verifica se já existe um ID salvo
-    let userID = localStorage.getItem("userID");
-
-    if (!userID) {
-        // Gera data no formato YYYYMMDD
-        const now = new Date();
-        const yyyy = now.getFullYear();
-        const mm = String(now.getMonth() + 1).padStart(2, "0");
-        const dd = String(now.getDate()).padStart(2, "0");
-        const datePart = `${yyyy}${mm}${dd}`;
-
-        // Gera sufixo aleatório de 5 caracteres
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        let suffix = "";
-        for (let i = 0; i < 5; i++) {
-            suffix += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-
-        userID = `${datePart}-${suffix}`;
-
-
-        // 🔒 Salva o ID UMA ÚNICA VEZ
-        localStorage.setItem("userID", userID);
-    }
-
-    // Atualiza apenas o nome (ID permanece intacto)
-    localStorage.setItem("userName", userName);
-
-    // Atualiza a interface
-    checkUserName();
-}
-
-
-// BLOCO- 4 Função para permitir editar o nome do usuário
-function editUserName() {
-    document.getElementById("user-name").style.display = "inline";
-    document.getElementById("save-name-button").style.display = "inline";
-    document.getElementById("user-name-display").style.display = "none";
-    document.getElementById("edit-name-button").style.display = "none";
-    document.getElementById("user-name").value = localStorage.getItem("userName");
-}
-
-  // fim Função usuário
-
-
-
-    // Função para obter o endereço a partir das coordenadas
-    function getAddressFromCoordinates(latitude, longitude) {
-        const apiUrl = `https://us1.locationiq.com/v1/reverse?key=pk.73c7ec951f7e0c38e842f740a1a63917&lat=${latitude}&lon=${longitude}&format=json`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const roadName = data.address.road || "N/A";
-                const address = `Local: ${roadName},
-                                 Bairro: ${data.address.residential || "N/A"},
-                                 Região: ${data.address.suburb || "N/A"},
-                                 Cidade: ${data.address.city || "N/A"},
-                                 Estado: ${data.address.state || "N/A"},
-                                 CEP: ${data.address.postcode ? data.address.postcode.substring(0, 5) : "N/A"},
-                                 País: ${data.address.country || "N/A"}`;
-
-                document.getElementById("road-name").innerText = `Local: ${roadName}`;
-                document.getElementById("address").innerText = address;
-            })
-            .catch(error => {
-                console.error("Erro ao obter endereço:", error);
-                document.getElementById("road-name").innerText = "Erro ao obter nome da rua.";
-                document.getElementById("address").innerText = "Erro ao obter endereço.";
-            });
-    }
-
-
-// Bloco=2 = Alteração feita: A função updateMap foi modificada para usar Leaflet com OpenStreetMap
-function updateMap(lat, lon) {
-            // Inicializando o mapa com OpenStreetMap usando Leaflet
-            const map = L.map('map').setView([lat, lon], 15); // Alteração: agora usa o Leaflet
-
-            // Camada de OpenStreetMap
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            // Adicionando marcador no mapa
-            L.marker([lat, lon]).addTo(map)
-                .bindPopup('Você está aqui!')
-                .openPopup();
-        }
-             // Bloco= 2 fim
-
-
-
-
-
-
-
-
-// 1 ===== BLOCO BASE — INDEXEDDB (INFRA) =====
-const DB_NAME = "CheckinDB";
-const DB_VERSION = 1;
-const STORE_NAME = "presenceRecords";
-
-let db = null;
-
-
-// 2 ===== 🔒 proteção =====
-
-async function ensureDB() {
-    if (db && db.objectStoreNames.contains(STORE_NAME)) {
-        return db;
-    }
-    db = null;
-    return await initDB();
-}
-
-
-
-function initDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-        request.onupgradeneeded = (event) => {
-            const database = event.target.result;
-
-
-            if (!database.objectStoreNames.contains(STORE_NAME)) {
-                database.createObjectStore(STORE_NAME, {
-                    keyPath: "id",
-                    autoIncrement: true
-                });
-            }
-        };
-
-
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            resolve(db);
-        };
-
-
-
-    // 1 🔒 proteção para evitar DB "morto" após erro ou reload
-db.onclose = () => {
-    db = null;
-};
-
-db.onerror = () => {
-    db = null;
-};
-
-
-
-
-// ===== Notificação armazenamento cheio =====
-        request.onerror = (event) => {
-    const err = event.target.error;
-
-    if (err && err.name === "QuotaExceededError") {
-        const msg = document.getElementById("saveMessage");
-        if (msg) msg.innerText = "Armazenamento cheio. Limpe os dados do site.";
-        msg.style.textAlign = "center";
-        msg.style.color = "red";
-    }
-    // Cor da mensagem 👈
-
-    reject(err);
-};
-});
-}
-
-
-
-
-// 1 ===== BLOCO BASE — INDEXEDDB (INFRA) =====
-
-
-// Inicializa o IndexedDB ao carregar o app (necessário)
-document.addEventListener("DOMContentLoaded", () => {
-    initDB();
-});
-
-
-
-// 3 ===== LEITURA INDEXEDDB (TESTE) =====
-
-async function getAllRecordsFromDB() {
-const database = await ensureDB();
-// 3 ===== not bug=====
-
-    return new Promise((resolve, reject) => {
-        if (!db) {
-            reject("DB não inicializado");
-            return;
-        }
-
-
-// 4 ===== not bug====
-
-      const tx = database.transaction(STORE_NAME, "readonly");
-        const store = tx.objectStore(STORE_NAME);
-        const request = store.getAll();
-
-
-        request.onsuccess = () => {
-            resolve(request.result);
-        };
-
-        request.onerror = () => {
-            reject(request.error);
-        };
-    });
-}
-
-
-// 3 ===== LEITURA INDEXEDDB (TESTE) =====
-
-
-// 4 ===== HISTÓRICO VIA INDEXEDDB =====
-async function getHistoryRecords() {
-    try {
-        const records = await getAllRecordsFromDB();
-        return records || [];
-    } catch (e) {
-        console.error("Erro ao ler histórico do IndexedDB", e);
-        return [];
-    }
-}
-// 4 ===== HISTÓRICO VIA INDEXEDDB =====
-
-
-
-    // Função para salvar o registro 👈
-    async function saveRecord() {
-
-     // Notificação armazenamento cheio 👈
-        const msg = document.getElementById("saveMessage");
-
-     if (msg) msg.innerText = "";
-
-if (msg) {
-    msg.innerText = "";
-    msg.style.color = "";
-}
- // Notificação armazenamento cheio 👈
-
-        const database = await ensureDB();
-        // 5 ===== not bug=====
-
-    const coordinates = document.getElementById("coordinates").innerText;
-    const address = document.getElementById("address").innerText;
-    const timestamp = document.getElementById("timestamp").innerText;
-
-
-   // Agora recupera o nome e o ID do usuário salvo no localStorage
-const userInput = localStorage.getItem("userName") || "Usuário";  
-const userID = localStorage.getItem("userID") || "Sem ID";  // Recupera o ID ou usa um valor padrão
-const description = document.getElementById("description").value || "Nenhuma descrição fornecida.";
-
-
-const record = {
-    userName: userInput,
-    userID: userID,  // Aqui estamos incluindo o ID no registro
-    coordinates,
-    address,
-    description,
-    timestamp,
-};
-
-
-// Captura do mapa atual em Base64- indeBD
-const mapElement = document.getElementById("map");
-const canvas = await html2canvas(mapElement, { useCORS: true, scale: 2 });
-record.mapImage = canvas.toDataURL("image/png");
-record.mapWidth = canvas.width;
-record.mapHeight = canvas.height;
-// Captura do mapa atual em Base64- indeBD
-
-
-
-// 2 ===== SALVAR TAMBÉM NO INDEXEDDB inicio =====
-       
-{
-const tx = database.transaction(STORE_NAME, "readwrite");
- // 6 ===== not bug===== apagar if (db) ==
-
-    const store = tx.objectStore(STORE_NAME);
-    store.add(record);
-}
-
-
-//  ===== SALVAR TAMBÉM NO INDEXEDDB  =====
-
-    const saveButton = document.querySelector("button[onclick='saveRecord()']");
-    saveButton.innerText = "Registro salvo com sucesso!";
-    setTimeout(() => {
-        saveButton.innerText = "Salvar Registro";
-    }, 2000);
-}
-
-
-
-
-
-
-
-
-
-
-
-// ===== IMPORTANTE NÃO APAGAR ===== 👈
-function parseCoords(coordString) {
-    // coordString exemplo: "Latitude: -23.6766 Longitude: -46.1234"
-    const match = coordString.match(/Latitude:\s*([-0-9.]+)\s*Longitude:\s*([-0-9.]+)/);
-    if (!match) return null;  // Retorna null se não encontrar
-    return `${match[1]},${match[2]}`;  // Retorna "lat,lon"
-}
-// ===== IMPORTANTE NÃO APAGAR ===== 👈
-
-
-
-   // Bloco= 1 inicio  Carregando mapa com atrazo projeto 42
-              
-   // Função para carregar a localização
-function trackLocation() {
-    // Exibe o GIF de carregamento assim que começamos a buscar a localização
-    showLoading();
-
-    // Esconde o mapa antes de começar
-    document.getElementById("map").style.display = 'none';
-
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                currentLatitude = position.coords.latitude;
-                currentLongitude = position.coords.longitude;
-
-                const timestamp = new Date().toLocaleString();
-
-                document.getElementById("coordinates").innerText =
-                    `Latitude: ${currentLatitude}\nLongitude: ${currentLongitude}`;
-                document.getElementById("timestamp").innerText = timestamp;
-
-                getAddressFromCoordinates(currentLatitude, currentLongitude);
-
-
-                // Agora, exibe o mapa
-                document.getElementById("map").style.display = 'block';
-
-                // Inicializa o mapa com as coordenadas obtidas
-                map = L.map('map').setView([currentLatitude, currentLongitude], 15);
-
-
-
-              
-                // Ajuste para o mapa abrir no firebase
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    crossOrigin: true
-}).addTo(map);
-
-
-// Adiciona o marcador e a popup Mapa
-            
-const userName = localStorage.getItem("userName") || "Usuário";
-
-// Função para converter metros em pixels baseado no zoom do mapa
-function metersToPixels(meters, lat, map) {
-    const pointC = map.latLngToContainerPoint([lat, 0]);
-    const pointX = map.latLngToContainerPoint([lat, meters / 111320]); // 1 grau ~ 111.32 km
-    return Math.abs(pointX.x - pointC.x);
-}
-
-// Obtem a posição do usuário
-navigator.geolocation.getCurrentPosition((position) => {
-    const currentLatitude = position.coords.latitude;
-    const currentLongitude = position.coords.longitude;
-    let gpsAccuracy = position.coords.accuracy;
-
-    // Limita o raio do círculo para não ficar muito grande- tamanho
-    if (gpsAccuracy > 19) gpsAccuracy = 19; // Tamanho do circulo
-
-    // --- Pin HTML tamanho ---
-    const htmlPin = L.divIcon({
-        html: `<div style="
-            width: 5px;
-            height: 5px;
-            background: #007BFF;
-            border-radius: 50%;
-            border: 2px solid #0056b3;
-        "></div>`,
-        className: '',
-        iconSize: [12, 12],
-        iconAnchor: [6, 6]
-    });
-
-
-   L.marker([currentLatitude, currentLongitude], { icon: htmlPin })
-    .addTo(map)
-    .bindPopup(`
-        <div style="text-align: center;">
-            Eu estou aqui 😊<br>
-            <strong>${userName}</strong>
-        </div>
-    `)
-    .openPopup();
-
-
-    // --- Círculo de precisão HTML ---
-    function addAccuracyCircle() {
-        const pixelRadius = metersToPixels(gpsAccuracy, currentLatitude, map);
-
-        // Ajuste para centralizar o círculo e evitar deslocamento
-        const htmlCircle = L.divIcon({
-            html: `<div style="
-                width: ${pixelRadius*3.4}px;
-                height: ${pixelRadius*3.4}px;
-                background: #007BFF2E;
-                border: 1px solid #007BFF;
-                border-radius: 50%;
-
-                transform: translate(-${pixelRadius}px, -${pixelRadius}px);
-
-                position: absolute;
-            "></div>`,
-            className: '',
-            iconSize: [pixelRadius*2, pixelRadius*2],
-            iconAnchor: [pixelRadius, pixelRadius]
-        });
-
-        // Remove círculo antigo se houver
-        if (window.accuracyMarker) map.removeLayer(window.accuracyMarker);
-
-        window.accuracyMarker = L.marker([currentLatitude, currentLongitude], { icon: htmlCircle }).addTo(map);
-    }
-
-    // Inicializa o círculo
-    addAccuracyCircle();
-
-    // Atualiza o círculo ao mudar o zoom
-    map.on('zoomend', addAccuracyCircle);
-
-    // Centraliza o mapa na posição do usuário
-    map.setView([currentLatitude, currentLongitude], 16);
-});
-
-
-                // Corrige o redimensionamento do mapa após a exibição
-                map.invalidateSize();
-
-                // Esconde o GIF de carregamento após o mapa ser exibido
-                hideLoading();
-            },
-            (error) => {
-                console.error("Erro ao obter localização:", error);
-                document.getElementById("coordinates").innerText = "Erro ao obter localização.";
-                playSound("error-sound.mp3");
-
-                // Esconde o GIF de carregamento em caso de erro
-                hideLoading();
-            }
-        );
-    } else {
-        alert("Geolocalização não é suportada neste navegador.");
-        hideLoading(); // Garante que o GIF seja escondido em caso de erro
-    }
-}
-
-
-// Função para exibir o GIF de carregamento
-function showLoading() {
-    document.getElementById("loadingImage").style.display = 'block';
-}
-
-// Função para esconder o GIF de carregamento
-function hideLoading() {
-    document.getElementById("loadingImage").style.display = 'none';
-}
-
-// Chama a função trackLocation quando a página for carregada
-window.onload = function () {
-    trackLocation();
-};
-
-
-// Função para exibir o GIF de carregamento
-function showLoading() {
-    document.getElementById("loadingImage").style.display = 'block'; // Exibe o GIF de carregamento
-}
-
-// Função para esconder o GIF de carregamento
-function hideLoading() {
-    document.getElementById("loadingImage").style.display = 'none'; // Esconde o GIF de carregamento
-}
-
-// Chama a função trackLocation quando a página for carregada
-window.onload = function () {
-    trackLocation();
-};
-
-
-// Força atualização do GPS ao carregar a página
-window.addEventListener('load', () => {
-    if (navigator.geolocation) {
-        const watchID = navigator.geolocation.watchPosition(
-            (position) => {
-                console.log("GPS atualizado:");
-                console.log("Latitude:", position.coords.latitude);
-                console.log("Longitude:", position.coords.longitude);
-
-                // Para de assistir após a primeira atualização
-                navigator.geolocation.clearWatch(watchID);
-            },
-            (error) => {
-                console.error("Erro ao atualizar GPS:", error);
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
-    } else {
-        console.error("Geolocalização não é suportada neste navegador.");
-    }
-});
-
-
-// Função para verificar se a localização está ativa
-function verificarLocalizacaoAtiva() {
-    if (navigator.geolocation) {
-        const watchID = navigator.geolocation.watchPosition(
-            (position) => {
-                console.log("Localização ativa");
-                document.getElementById("alerta-gps").style.display = "none"; // Esconde o alerta
-                navigator.geolocation.clearWatch(watchID); // Para de assistir
-            },
-            (error) => {
-                if (error.code === error.PERMISSION_DENIED || error.code === error.POSITION_UNAVAILABLE) {
-                    console.warn("Localização desativada ou indisponível.");
-                    document.getElementById("alerta-gps").style.display = "block"; // Mostra o alerta
-                }
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
-    } else {
-        console.error("Geolocalização não é suportada neste navegador.");
-    }
-}
-
-// Chama a função ao carregar a página
-window.addEventListener('load', verificarLocalizacaoAtiva);
-
- // Bloco= 1 fim
-// Bloco mapa na tela fim
-
-
-
-    // Função para tocar um som
-    function playSound(soundFile) {
-        const audio = new Audio(soundFile);
-        audio.play();
-    }
-
-    // Chamada da função trackLocation ao carregar a página
-    window.onload = function () {
-        checkUserName();  // Verificar e carregar o nome do usuário salvo
-        trackLocation();   // Rastrear a localização do usuário
-    };
-
-</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odonto Agenda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== CORES DO APP (mude aqui para afetar tudo que usa essas variáveis) ===== */
+  :root{
+    --bg: #F1F5F2;
+    --surface: #FFFFFF;
+    --ink: #1B2A26;
+    --ink-soft: #5C6E68;
+    --teal: #1E7FBF;
+    --teal-soft: #D8E9F5;
+    --amber: #B8863B;
+    --amber-soft: #F3E7D2;
+    --clay: #8C5A3C;
+    --clay-soft: #EFE2D4;
+    --plum: #74617F;
+    --plum-soft: #E7E1EC;
+    --olive: #6E7A4C;
+    --olive-soft: #E7EBDB;
+    --line: #DCE3DF;
+    --danger: #A2483A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  input, textarea, select{
+    -webkit-user-select:text;
+    user-select:text;
+  }
+
+  /* ===== FEEDBACK DE TOQUE (escurece levemente ao tocar em qualquer botão/card) ===== */
+  button:active{ filter:brightness(0.9); }
+  .card:active{ filter:brightness(0.96); }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:20px 20px 90px;
+  }
+
+  /* Perfil */
+  .profile-bar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:20px;
+    cursor:pointer;
+  }
+  .avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--teal-soft);
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    font-size:18px;
+    flex-shrink:0;
+    overflow:hidden;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .profile-info{ min-width:0; }
+  .profile-name{
+    margin:0;
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .profile-id{
+    margin:2px 0 0;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+
+  /* ===== BANNER DA CLÍNICA (16:9, clicável) ===== */
+  .estab-banner{
+    width:100%;
+    aspect-ratio:16 / 9;
+    border-radius:14px;
+    background:var(--teal-soft);
+    border:1px solid var(--teal);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    margin-bottom:20px;
+    overflow:hidden;
+    position:relative;
+  }
+  .estab-banner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .estab-dica{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:6px 0;
+  }
+  #estabBannerVazio{
+    color:var(--teal);
+    font-size:13px;
+    font-weight:600;
+    text-align:center;
+    padding:0 16px;
+  }
+
+  /* ===== TÍTULO "AGENDA MÉDICA" (topo da tela) ===== */
+  .app-title{
+    font-family:'Lora', serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--teal);
+    text-align:left;
+    margin:0 0 16px;
+  }
+  .app-signature{
+    font-family:'Lora', serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--ink-soft);
+    text-align:left;
+    margin:8px 0 16px;
+  }
+
+  /* ===== BOTÃO "← VOLTAR" (aparece só dentro da tela de um familiar) ===== */
+  .familiar-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .back-btn{
+    background:none;
+    border:none;
+    color:var(--teal);
+    font-size:14px;
+    font-family:'IBM Plex Sans', sans-serif;
+    cursor:pointer;
+    padding:0;
+  }
+  .familiar-nome-atual{
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    flex:1;
+  }
+
+  /* ===== RÓTULO "FAMÍLIA:" (linha acima dos chips de familiares) ===== */
+  .family-label{
+    font-size:16px;
+    color:var(--ink-soft);
+    font-weight:600;
+    margin:0;
+  }
+  .family-label-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+
+  /* ===== BOTÃO "COMO USAR" (mesma linha do rótulo "Família:") ===== */
+  .how-to-btn{
+    background:none;
+    border:none;
+    font-size:16px;
+    font-weight:600;
+    color:var(--teal);
+    font-family:'IBM Plex Sans', sans-serif;
+    cursor:pointer;
+    padding:0;
+  }
+
+  /* ===== FILEIRA DE CHIPS DE FAMILIARES (rolável horizontalmente) ===== */
+  .people-row{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    white-space:nowrap;
+    margin-bottom:20px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .people-row::-webkit-scrollbar{ display:none; }
+
+  /* Estilo base de cada chip (nome do familiar) */
+  .person-chip{
+    flex-shrink:0;
+    padding:8px 16px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    font-size:13px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  /* Chip do familiar/titular selecionado no momento */
+  .person-chip.active{
+    background:var(--teal-soft);
+    border-color:var(--teal);
+    color:var(--teal);
+    font-weight:600;
+  }
+  /* Só o sinal "+" de adicionar familiar (tamanho independente dos nomes) */
+  .person-chip.add{
+    color:var(--teal);
+    font-weight:700;
+    font-size:20px;
+    border-style:dashed;
+  }
+
+  header{ margin-bottom:22px; }
+  header h2.app-subtitle{
+    font-family:'Lora', serif;
+    font-weight:600;
+    font-size:17px;
+    color:var(--teal);
+    margin:0 0 4px;
+  }
+  header p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+  /* Frase de destaque "App funciona sem internet" — ajuste o font-size aqui à vontade */
+  .offline-badge{
+    margin:6px 0 0;
+    font-weight:700;
+    font-size:13px;
+    color:var(--teal);
+  }
+
+  /* ===== ABAS (Próximos / Concluídos / Pendentes / Prioridades) ===== */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    border:none;
+    background:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+    padding:10px 4px;
+    margin-right:14px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    position:relative;
+    top:1px;
+    flex-shrink:0;
+  }
+  .tab.active{
+    color:var(--teal);
+    border-bottom:2px solid var(--teal);
+    font-weight:500;
+  }
+
+  /* ===== CARD DE CADA COMPROMISSO NA LISTA ===== */
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .card.done{ opacity:0.55; }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .card-title{
+    font-weight:600;
+    font-size:16px;
+    margin:0 0 2px;
+  }
+  .card-sub{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  /* Etiqueta colorida do tipo (Consulta/Exame/Outros) dentro do card */
+  .badge{
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+    white-space:nowrap;
+    font-weight:500;
+  }
+  .badge-servico{ background:var(--teal-soft); color:var(--teal); }
+  .card-num{
+    margin:5px 0 0;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+
+  .card-date{
+    margin-top:10px;
+    font-size:14px;
+    color:var(--ink);
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+  }
+  .card-date strong{ font-family:'Lora', serif; }
+  .card-notes{
+    margin-top:8px;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.4;
+  }
+  /* ===== MENU DE AÇÕES (abre ao tocar num compromisso) ===== */
+  .card{ cursor:pointer; }
+  .action-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .action-btn{
+    width:100%;
+    text-align:left;
+    padding:14px 16px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .action-btn.primary{ color:var(--teal); border-color:var(--teal); }
+  .action-btn.danger{ color:var(--danger); border-color:var(--danger); }
+
+  .empty{
+    text-align:center;
+    padding:48px 20px;
+    color:var(--ink-soft);
+  }
+  .empty p{ margin:6px 0 0; font-size:14px; }
+
+  .fab-group{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+  }
+  .fab, .fab-secondary{
+    border:none;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(30,74,68,0.3);
+  }
+  .fab{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:var(--teal);
+    color:#fff;
+    font-size:28px;
+    line-height:56px;
+    text-align:center;
+  }
+  .fab-secondary{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    color:var(--teal);
+    border:1px solid var(--line);
+    font-size:18px;
+    line-height:42px;
+    text-align:center;
+  }
+
+  /* ===== ESTRUTURA GERAL DE TODOS OS MODAIS (fundo escuro + painel branco) ===== */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(27,42,38,0.4);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:10;
+  }
+  .sheet{
+    background:var(--surface);
+    width:100%;
+    max-width:640px;
+    border-radius:16px 16px 0 0;
+    padding:24px 20px 28px;
+    max-height:88vh;
+    overflow-y:auto;
+  }
+  .sheet h2{
+    font-family:'Lora', serif;
+    font-size:20px;
+    color:var(--teal);
+    margin:0 0 18px;
+  }
+  .field{ margin-bottom:14px; }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    background:var(--bg);
+  }
+  .field textarea{ resize:vertical; min-height:56px; }
+  .row2{ display:flex; gap:10px; }
+  .row2 .field{ flex:1; }
+
+  /* ===== SELETOR DE HORA (dropdowns hora/minuto, dentro do formulário) ===== */
+  .time-picker{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .time-picker select{
+    flex:1;
+    text-align:center;
+  }
+  .time-picker span{ color:var(--ink-soft); font-weight:600; }
+
+  /* ===== BOTÕES DE TIPO DE SERVIÇO (editáveis) NO FORMULÁRIO ===== */
+  .type-toggle{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .type-toggle button{
+    flex:1 1 30%;
+    padding:10px 4px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .type-toggle button.active.tipo1{ background:var(--teal-soft); border-color:var(--teal); color:var(--teal); }
+  .type-toggle button.active.tipo2{ background:var(--amber-soft); border-color:var(--amber); color:var(--amber); }
+  .type-toggle button.active.tipo3{ background:var(--clay-soft); border-color:var(--clay); color:var(--clay); }
+  .type-toggle button.active.tipo4{ background:var(--plum-soft); border-color:var(--plum); color:var(--plum); }
+  .type-toggle button.active.tipo5{ background:var(--olive-soft); border-color:var(--olive); color:var(--olive); }
+
+  .sheet-actions{
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+  }
+  .sheet-actions button{
+    flex:1;
+    padding:12px;
+    border-radius:8px;
+    border:none;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+  }
+  .btn-cancel{ background:var(--bg); color:var(--ink-soft); }
+  .btn-save{ background:var(--teal); color:#fff; }
+
+  /* ===== TELA DE CALENDÁRIO ===== */
+  .calendar-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .calendar-header h2{
+    margin:0;
+    font-family:'Lora', serif;
+    font-size:18px;
+    color:var(--teal);
+  }
+  .cal-nav{
+    background:none;
+    border:none;
+    font-size:22px;
+    color:var(--teal);
+    cursor:pointer;
+    padding:4px 12px;
+  }
+  .calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7, minmax(0, 1fr));
+    grid-auto-rows:38px;
+    gap:3px;
+  }
+  .cal-weekday{
+    font-size:11px;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:4px 0;
+    font-weight:600;
+  }
+  .cal-day{
+    height:38px;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    font-size:12px;
+    color:var(--ink);
+    cursor:pointer;
+    background:var(--bg);
+  }
+  .cal-day.empty{ background:none; cursor:default; }
+  .cal-day.today{ border:1px solid var(--teal); font-weight:700; }
+  .cal-dots{
+    display:flex;
+    gap:2px;
+    margin-top:2px;
+    min-height:5px;
+  }
+  .cal-dot{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+  }
+  .cal-day-item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .cal-day-item:last-child{ border-bottom:none; }
+  .cal-day-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-top:4px;
+    flex-shrink:0;
+  }
+
+  /* ===== TEXTO DA TELA "COMO USAR" ===== */
+  .how-to-content{
+    max-height:60vh;
+    overflow-y:auto;
+    margin-bottom:16px;
+  }
+  .how-to-content p{
+    font-size:14px;
+    color:var(--ink);
+    line-height:1.5;
+    margin:0 0 16px;
+  }
+  .how-to-content strong{ color:var(--teal); }
+
+  /* ===== TOAST (mensagem rápida que aparece e some sozinha) ===== */
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:100px;
+    transform:translateX(-50%);
+    background:var(--teal);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:13px;
+    z-index:20;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease;
+  }
+  .toast.show{ opacity:1; }
+
+  /* ===== EDITOR DE FOTO DE PERFIL (usado no titular e nos familiares) ===== */
+  .avatar-edit{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .avatar-large{
+    width:88px;
+    height:88px;
+    border-radius:50%;
+    background:var(--teal-soft);
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:600;
+    font-size:30px;
+    overflow:hidden;
+  }
+  .avatar-large img{ width:100%; height:100%; object-fit:cover; }
+  .btn-photo{
+    font-size:13px;
+    color:var(--teal);
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .profile-id-preview{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:-6px 0 16px;
+  }
+</style>
 </head>
 <body>
+<div class="wrap">
 
+  <h1 class="app-title" id="appTitle">Odonto Agenda</h1>
 
+  <div class="estab-banner" id="estabBanner">
+    <span id="estabBannerVazio">Toque para cadastrar sua clínica</span>
+    <img id="estabBannerImg" style="display:none;">
+  </div>
+  <p class="app-signature" id="appSignature" style="display:none;">Odonto Agenda</p>
 
+  <div class="familiar-bar" id="familiarBar" style="display:none;">
+    <button class="back-btn" id="btnVoltar">← Voltar</button>
+    <span class="familiar-nome-atual" id="familiarNomeAtual"></span>
+    <button class="how-to-btn" id="btnEditarPerfilFamiliar">Editar perfil</button>
+  </div>
 
-    <!-- Cabeçalho Tela principal-->
-    <header>
+  <header>
+    <h2 class="app-subtitle">Meus Atendimentos</h2>
+    <p>Consultas e procedimentos odontológicos, em um só lugar</p>
+    <p class="offline-badge">App funciona sem internet</p>
+  </header>
 
-  <h1 style="text-align: left; font-size: 22px; margin-top: 20px; margin-bottom: 10px;">
-    Checkin+
-  </h1>
+  <div class="family-section" id="familySection">
+    <div class="family-label-row">
+      <p class="family-label">Família:</p>
+      <button class="how-to-btn" id="btnGear" title="Menu">⚙️</button>
+    </div>
+    <div class="people-row" id="peopleRow">
+      <button class="person-chip add" id="addPersonBtn">+</button>
+    </div>
+  </div>
 
-    </header>
+  <div class="tabs">
+    <button class="tab active" data-tab="proximos">Próximos</button>
+    <button class="tab" data-tab="concluidos">Concluídos</button>
+    <button class="tab" data-tab="pendentes">Pendentes</button>
+    <button class="tab" data-tab="especiais">Prioridades</button>
+  </div>
 
-    <!-- Inicio conteiner=1 principal -->
-    <!-- Container Principal -->
-    <div class="container">
-
-
-       <h2 style="width: 90%; margin: 15px auto; text-align: left; font-size: 15px; color: #000;">
-  Marcador de presença
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="#EA4335"
-       style="vertical-align: middle; margin-left:4px;">
-    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13
-             c0-3.87-3.13-7-7-7zm0 9.5
-             c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5
-             S13.38 11.5 12 11.5z"/>
-  </svg>
-</h2>
-
-
-        <!-- Nome da Rua -->
-        <h2 id="road-name" style="width: 90%; margin: 10px auto; text-align: left; font-size: 15px; color: #000;">
-        Rua: Local Carregando!
-        </h2>
-
-        <!-- Boco Mapa tipo iFrame -->
-          <!-- Exibindo o GIF de carregamento antes de carregar o mapa -->
- <div id="loadingImage" style="text-align: center;">
-    <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Carregando..." style="width: 100px; height: 100px;">
+  <div id="list"></div>
 </div>
 
-    <!-- Local do mapa OpenStreetMap -->
-        <div id="map" style="width: 100%; height: 300px;"></div>
+<div class="fab-group">
+  <button class="fab-secondary" id="fabShare" aria-label="Compartilhar como imagem">⇪</button>
+  <button class="fab" id="fabAdd" aria-label="Adicionar compromisso">+</button>
+</div>
 
-
-    <!-- Borda em volta conteudo -->
-           <div class="info-container" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-top: 20px; margin-bottom: 20px;">
-
-    <!-- Atualizar página -->
-    <a href="index.html" class="btn-voltar">Atualizar mapa 🔄</a>
-
-     <!-- Alerta ativar localização -->
-    <div id="alerta-gps" style="display: none; background-color: #ffffff; color: #000; padding: 10px; text-align: center; font-weight: bold;">
-        ⚠️ Ative a localização
-    </div>
-
-    <!-- Coordenadas -->
+<!-- Modal de compromisso -->
+<div class="overlay" id="overlay" style="display:none;">
+  <div class="sheet">
+    <h2 id="sheetTitle">Novo compromisso</h2>
     <div class="field">
-        <h2>Coordenadas</h2>
-        <p id="coordinates">Latitude: -, Longitude: -</p>
+      <label for="fTipoServico">Procedimento</label>
+      <input id="fTipoServico" placeholder="Ex: Limpeza, Canal, Restauração...">
     </div>
-
-    <!-- Data e Hora -->
     <div class="field">
-        <h2>Data e Hora</h2>
-        <p id="timestamp">Local</p>
+      <label for="fTitulo">Profissional</label>
+      <input id="fTitulo" placeholder="Ex: Dr. Souza">
     </div>
-
-    <!-- Endereço -->
-   <div class="field" style="margin-bottom: 0;">
-    <h2>Endereço</h2>
-   <p id="address" style="margin-bottom: 0;">Local</p>
-     </div>
-</div>
-
-
-  <!-- Movendo o campo de descrição e o botão "Salvar Registro" acima do botão Compartilhar -->
-        <div class="description-container">
-            <textarea id="description" placeholder="Adicione uma descrição (opcional)"></textarea>
-            <button class="button" onclick="saveRecord()">Salvar Registro</button>
-        </div>
-        
-        <!--Notificação armazenamento cheio-->
-        <div id="saveMessage" style="margin-top:8px; font-size:14px;"></div>
-
-
-        <!-- Declaração de comparecimento na tela -->
-
-    <p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 14px; color: #000;">
-  Já precisou provar ao chefe que foi ao médico?<br>
-  Precisa provar sua presença e permanência em um local?<br>
-  Vai precisar provar aos pais que está na escola?<br>
-
-<hr style="width: 75%; margin: 10px auto; border: 1px solid #ccc;">
-
-<p class="copyright" style="width: 91%; margin: 10px auto; text-align: left; font-size: 14px; color: #000;">
-  Com o <strong>Checkin+</strong>, você registra sua presença com apenas um clique.  
-  O app gera um comprovante de chegada e saída, e uma declaração de comparecimento com nome, ID, data, hora e localização — uma prova incontestável, em texto ou PDF, pronta para enviar, baixar ou imprimir.
-</p>
-
-
-        <!-- Chegada / Saida -->
-        <button class="button" onclick="openArrivalDeparture()">Chegada / Saída</button>
-
-        <!-- Botão para Exibir o Histórico dentro do mesmo container -->
-        <button class="button" onclick="toggleHistory()">Histórico de Presença</button>
-
-
-
-<!-- PARTE DO HISTÓRICO -->
-<!-- Inicio conteine=2 histórico -->
-<!-- Container para Exibir o Histórico de Presença -->
-<div id="history-container" style="display: none;">
-    <h3><center>Meu histórico</h3>
-    <div id="records-list" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; padding: 10px;">
-        <!-- Lista de registros será carregada aqui -->
+    <div class="field">
+      <label>Data</label>
+      <div class="time-picker">
+        <select id="fDia"></select>
+        <span>/</span>
+        <select id="fMes"></select>
+        <span>/</span>
+        <select id="fAno"></select>
+      </div>
     </div>
-</div>
-<!-- Fim conteine=2 histórico -->
-
-
-
-<!-- BLOCO Input NOME USUÁRIO -->
-<div style="padding: 10px; max-width: 600px; margin: auto; margin-top: 20px;">
-
-    <!-- Input do Nome (usado só quando NÃO existe nome salvo ou ao editar) -->
-    <input type="text" id="user-name" placeholder="Digite seu nome">
-
-    <!-- Nome exibido + ícone editar -->
-    <div style="display: flex; align-items: center; justify-content: space-between; width: 95%; margin: 10px auto 0;">
-
-        <!-- Nome + ID exibidos -->
-        <span id="user-name-display" style="font-weight: bold; display: none;"></span>
-
-        <!-- Ícone editar nome -->
-        <i id="edit-name-button"
-           onclick="editUserName()"
-           class="fas fa-pencil-alt"
-           style="font-size: 18px; color: #02779e; cursor: pointer; display: none;">
-        </i>
-
+    <div class="field">
+      <label>Hora</label>
+      <div class="time-picker">
+        <select id="fHoraH"></select>
+        <span>:</span>
+        <select id="fHoraM"></select>
+      </div>
     </div>
-
-    <!-- Botão Salvar Nome -->
-    <button id="save-name-button"
-            onclick="saveUserName()"
-            class="button"
-            style="width: 95%; padding: 10px; margin: 10px; border-radius: 15px; background-color: #28a749;">
-        Salvar
-    </button>
-
-</div>
-      <!-- Fim conteúdo conteiner principal -->
-
-
-
-
-      <!-- Início conteúdo conteiner histórico -->
-<script>
-    <!-- Inicio conteúdo histórico -->
-    // Função para alternar a visibilidade do histórico
-
-
-    //IndexBD 
-            async function toggleHistory() {
-    const historyContainer = document.getElementById("history-container");
-    const records = await getHistoryRecords();
-
-
-            if (historyContainer.style.display === "none") {
-                historyContainer.style.display = "block";
-                const recordsList = document.getElementById("records-list");
-                recordsList.innerHTML = ""; // Limpar a lista antes de adicionar novamente
-
-
-// Ordenar os registros de forma decrescente (mais recente primeiro)
-records.reverse();  // Aqui é onde você inverte a ordem dos registros
-
-
-// Adicionar os registros parte ver na tela do app
-records.forEach((record, index) => {
-
-
-// Contagem de registros
-const numeroRegistro = records.length - index;
-
-
-
-                    const recordDiv = document.createElement("div");
-                    recordDiv.classList.add("record");
-                    recordDiv.innerHTML = `
-
-                    <p><strong>Registro da localização nº ${numeroRegistro}</strong></p>
-
-
-<div><strong>Usuário:</strong> ${record.userName}</div>
-<div><strong>ID:</strong> ${record.userID}</div>
-<div><strong>Data/Hora:</strong> ${record.timestamp}</div>                        
-<div><strong>Descrição:</strong> ${record.description}</div>
-<br> <!-- Pula uma linha depois da data -->
-
-<div><strong>Coordenadas:</strong> <span class="coords">${record.coordinates}</span></div>
-
-<div><strong>Endereço:</strong> ${record.address}</div>
-
-<br> <!-- Pula uma linha depois da data -->
-    <!-- Aqui está o booleano visível -->
-
-   <div class="toggle-container">
-    <label class="switch">
-        <input type="checkbox" class="toggle-btn" onchange="toggleButtonsVisibility(${index})">
-        <span class="slider"></span>
-    </label>
-   <span><strong>Mostrar ações</strong></span>
-
-</div>
-
-
-<div class="history-buttons">
-                  
-<!-- Botões histórico -->
-<div class="history-buttons">
-
-
-    <!-- Enviar texto WhatsApp -->
-    <button class="share-btn" onclick="shareLocationHistory(${index})">
-        Enviar texto WhatsApp
-    </button>
-
-    <!-- Mapa PDF -->
-    <button class="button" onclick="generateMapPDFHistory(${index})">
-        Mapa - Enviar / baixar
-    </button>
-
-    <!-- Declaração PDF -->
-    <button class="pdf-btn" onclick="generatePDFHistory(${index})">
-        Declaração - Enviar / baixar
-    </button>
-
- <!-- Alteração: Botão para abrir o local no Google Maps -->
-   <button class="button" onclick="openGoogleMaps('${parseCoords(record.coordinates)}')">Google Maps</button>
-
-    <!-- Delete -->
-<button class="delete-btn" onclick="deleteRecord(${index})">
-        Apagar
-    </button>
-
-
-</div>
-
-                       
-                    `;
-                    recordsList.appendChild(recordDiv);
-                    recordDiv.querySelector(".history-buttons").style.display = "none";
-
-                });
-            } else {
-                historyContainer.style.display = "none";
-            }
-        }
-    
-
-
-
-// 6 ===== DELETE REGISTRO NO INDEXEDDB COM CONFIRMAÇÃO =====
-window.deleteRecord = async function(index) {
-    const confirmar = confirm("Tem certeza que deseja apagar este registro?");
-    if (!confirmar) return;
-
-    try {
-        // Recupera todos os registros
-        const records = await getAllRecordsFromDB();
-
-        if (!records || records.length === 0) return;
-
-        // Corrige a inversão entre lista exibida e array real
-        const originalIndex = records.length - 1 - index;
-        const recordToDelete = records[originalIndex];
-
-        if (!recordToDelete) return;
-
-        // Abre transação de escrita
-        const tx = db.transaction(STORE_NAME, "readwrite");
-        const store = tx.objectStore(STORE_NAME);
-
-        // Deleta pelo id
-        store.delete(recordToDelete.id);
-
-        // Recarrega a página após deletar
-        tx.oncomplete = () => {
-            location.reload();
-        };
-    } catch (e) {
-        console.error("Erro ao deletar registro do IndexedDB", e);
-    }
-};
-// 6 ===== DELETE REGISTRO NO INDEXEDDB COM CONFIRMAÇÃO =====
-
-
-
-     // Bloco= 3 = novo bloco
-   
-   // Função para abrir a coordenada do registro no Google Maps
-function openGoogleMaps(coords) {
-    // coords deve estar no formato "latitude,longitude"
-    const url = `https://www.google.com/maps?q=${coords}`;
-    window.open(url, "_blank");
-}
-
-     // Bloco= 3 = fim novo bloco
-
-
-   // FUNÇÃO Boolean 
-function toggleButtonsVisibility(index) {
-    const records = document.querySelectorAll(".record");
-    const buttons = records[index].querySelector(".history-buttons");
-
-    const checkbox = records[index].querySelector(".toggle-btn");
-
-    if (checkbox.checked) {
-        buttons.style.display = "block";
-    } else {
-        buttons.style.display = "none";
-    }
-}
-
-   // FUNÇÃO Boolean 
-
-
-
-
-// =========================
-// FUNÇÃO COMPARTILHER TEXTO NO WHATSAPP
-// =========================
-     
-// Função para compartilhar no WhatsApp Texto a partir do histórico
-    async function shareLocationHistory(index) {
-    const records = await getAllRecordsFromDB() || [];
-
-
-    // Ordenar os registros de forma decrescente (mais recente primeiro)
-    records.reverse();
-
-    const record = records[index];  // Pega o registro com o índice passado
-
-
-    // 🔽 COLE EXATAMENTE AQUI
-  const coordsLimpa = record.coordinates
-    .match(/-?\d+(\.\d+)?/g)
-    .join(",");
-   
-
-    // Obtenção do nome e ID fixos
-    const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
-    const userID = localStorage.getItem("userID");  // ID fixo
-
-
- // conferir se pode apagar
-console.log("Timestamp salvo no registro:", record.timestamp);
-
-
-// Descrição frase no zap
-
-const title = "Checkin+";
-const additionalMessage = ""; 
-const message = `*${title}*
-Registro da localização: 
-
-Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
-
-Data/hora local: ${record.timestamp}
-Descrição: ${record.description}
-
-${record.coordinates}
-${record.address}
-
-Google Mapas
-https://maps.google.com/?q=${coordsLimpa}
-A precisão da localização no Google Maps pode variar em um raio de 50 metros.
-
-Aplicativo disponível no Google Play`;
-
-// FUNÇÃO 
-
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-}
-
-// FUNÇÃO - Declaração TEXTO Wwhatsapp Checkin+ HISTORICO- fim
-
-
-
-// =========================
-// FUNDO GERAR PDF 1
-// =========================
-
-// Função DECLARAÇÃO PDF a partir do histórico (2ª parte) inicio
-
-async function generatePDFHistory(index) {
-
-    const records = await getAllRecordsFromDB() || [];
-
-    // Ordenar os registros de forma decrescente (mais recente primeiro)
-    records.reverse();
-
-    const record = records[index];
-
-
-// 🔽 COLE EXATAMENTE AQUI
-// Extrair somente números das coordenadas
-const coordsLimpa = record.coordinates
-  .match(/-?\d+(\.\d+)?/g)
-  .join(",");
-
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-
-// =========================
-// FUNDO PDF 1 PUBLIC if
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  doc.addImage(
-    "fundo-pdf.png",
-    "png",
-    0,
-    0,
-    doc.internal.pageSize.width,
-    doc.internal.pageSize.height
-  );
-}
-// =========================
-// FUNDO PDF 1 PUBLIC if
-// =========================
-
-
-// =========================
-// LOGO NO PDF 1 PUBLIC if
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  doc.addImage(
-    "logo-pdf.png",
-    "PNG",
-    177,
-    15,
-    22,
-    22
-  );
-}
-// =========================
-// LOGO NO PDF 1 PUBLIC if
-
-
-// =========================
-// GERAR QR CODE BASE64 (AJUSTADO)
-// =========================
-const qrCanvas = document.createElement("canvas");
-
-await QRCode.toCanvas(
-  qrCanvas,
-  `https://maps.google.com/?q=${coordsLimpa}`,
-  { width: 300 } // tamanho do QR Code
-);
-
-const qrBase64 = qrCanvas.toDataURL("image/png");
-
-// Adicionar QR Code ao PDF 1
-doc.addImage(qrBase64, "PNG", 175, 90, 25, 25);
-
-// =========================
-// GERAR QR CODE BASE64 (AJUSTADO)
-// =========================
-
-
-// =========================
-// MARCA D'ÁGUA (segura) DECLARAÇÃO
-// =========================
-doc.saveGraphicsState();
-doc.setGState(doc.GState({ opacity: 0.15 })); // transparência
-doc.setFont("helvetica", "bold");
-doc.setFontSize(20);
-doc.setTextColor("#02779e"); // cinza claro
-doc.text(
-    "Declaração de\nComparecimento",
-    90, 200,               // X e Y, ajuste conforme necessidade visual
-    { align: "left", angle: 45 }
-);
-doc.restoreGraphicsState();
-// =========================
-// MARCA D'ÁGUA (segura) DECLARAÇÃO
-// =========================
-
-
-    // Definir as margens
-    const margin = 10;  // 20mm = 2cm
-    const textX = margin + 0;  // Afastamento de 5mm da margem esquerda
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-
-    // Ajustando a área útil do documento (sem contar as margens)
-    const contentWidth = pageWidth - 2 * margin;
-    const contentHeight = pageHeight - 2 * margin;
-
-    // Desenhando a margem (borda de 2cm ao redor)
- 
-
-    // Obtenção do nome e ID fixos
-    const userName = localStorage.getItem("userName") || "Usuário";  // Nome fixo
-    const userID = localStorage.getItem("userID");  // ID fixo
-
-
-// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- 
-const title = "Checkin+";
-const additionalMessage = " ";
-const message = `Declaração de comparecimento: 
-
-Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
-
-Data/hora local: ${record.timestamp}
-Descrição: ${record.description}
-
-${record.coordinates}
-${record.address}
-
-Link e QR Code da localização:
-https://maps.google.com/?q=${coordsLimpa}
-
-A precisão da localização no Google Maps pode variar em um raio de 50 metros
-
-Aplicativo disponível no Google Play`;
-
-
-// FUNÇÃO - Declaração PDF Checkin+ HISTORICO- fim
-
-    // Título do PDF
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(title, textX, margin + 10);  // Afastamento de 5mm da margem esquerda
-
-    // Corpo do texto (mensagem principal)
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-
-
-doc.text(message, textX, margin + 15, { maxWidth: contentWidth - 10 });
-
-
-
-  // Mensagem adicional (em menor tamanho)
-// Calculando a posição vertical do link
-const linkYPosition = margin + 103;  // Aqui é onde o link do Google Maps está sendo colocado
-
-// Mensagem adicional (em menor tamanho)
-doc.setFontSize(12);  // Tamanho pequeno para a frase
-doc.setFont("helvetica", "normal");  // Fonte normal
-
-// Ajuste da posição Y para a frase ficar abaixo do link
-const additionalMessageY = linkYPosition + 8.5;  // Adicionando 10mm de espaçamento entre o link e a frase: Aprecisão da localização....
-
-doc.text(additionalMessage, textX, additionalMessageY, { maxWidth: contentWidth });
-
-
-    // Salvar o PDF gerado
-doc.save(
-  userName + "_Checkin+_Declaração_" +
-  String(new Date().getDate()).padStart(2, "0") + "-" +
-  String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
-  new Date().getFullYear() + "_" +
-  String(new Date().getHours()).padStart(2, "0") + "-" +
-  String(new Date().getMinutes()).padStart(2, "0") + "-" +
-  String(new Date().getSeconds()).padStart(2, "0") +
-  ".pdf"
-);
-
-}
-
-// Função para gerar PDF a partir do histórico (2ª parte) fim 
-
-
-
-// =========================
-// FUNDO GERAR PDF 2 MAPA
-// =========================
-
-// MAPA - Função COMPLETA para gerar o PDF do mapa + declaração (HISTÓRICO)
-async function generateMapPDFHistory(index) {
-    const { jsPDF } = window.jspdf;
-
-
-    // Recuperar Lê os registros salvos
-const records = await getAllRecordsFromDB() || [];
-
-
-    // Corrigir índice por causa do reverse()
-    const originalIndex = records.length - 1 - index;
-    const record = records[originalIndex];
-
-
-
-// 🔽 COLE EXATAMENTE AQUI
-// Extrair somente números das coordenadas
-const coordsLimpa = record.coordinates
-  .match(/-?\d+(\.\d+)?/g)
-  .join(",");
-
-
-
-    if (!record) {
-        alert("Registro não encontrado.");
-        return;
-    }
-
-
-    // Captura o mapa indexBD
-    // Usa a imagem do mapa salva no registro
-if (!record.mapImage) {
-    alert("Imagem do mapa não encontrada no registro.");
-    return;
-}
-
-const imgData = record.mapImage;
-    // Captura o mapa indexBD
-
-
-    // Criar PDF
-    const pdf = new jsPDF("p", "mm", "a4");
-
-
-
-// =========================
-// FUNDO DA PÁGINA MAPA PUBLIC if
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  pdf.addImage(
-    "fundo-pdf.png",
-    "png",
-    0,
-    0,
-    pdf.internal.pageSize.width,
-    pdf.internal.pageSize.height
-  );
-}
-// FUNDO DA PÁGINA MAPA
-
-
-
- const pageWidth = pdf.internal.pageSize.getWidth();
- const pageHeight = pdf.internal.pageSize.getHeight();
-
-    // Captura o mapa indexBD
-   const margin = 10;
-const mapLeftMargin = 12;
-
-const imgWidth  = 186; // Largura
-const imgHeight = 130; // Altura
-let y = 12;   // margem do topo
-
-
-    // Captura o mapa indexBD
-
-
-    // Adiciona o mapa
-    pdf.addImage(imgData, "PNG", mapLeftMargin, y, imgWidth, imgHeight);
-    y += imgHeight + 8;
-
-
-
-// =========================
-// LOGO DA PÁGINA MAPA PUBLIC (condicional)
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  pdf.addImage(
-    "logo-pdf.png", // imagem na pasta public
-    "PNG",          // tipo correto
-    177,            // X (ajuste - X move para esquerda e direita)
-    15,            // Y (ajuste - y vertical sobe - desse)
-    22,             // largura
-    22              // altura
-  );
-}
-
-// =========================
-// LOGO NO PDF 3 (MAPA) – PUBLIC if
-
-
-
-    // DADOS DO REGISTRO (HISTÓRICO)
-    const userName = record.userName || "Usuário";
-    const userID = record.userID || "Sem ID";
-    const timestamp = record.timestamp;
-    const description = record.description || "Nenhuma observação registrada.";
-    const coordinates = record.coordinates;
-    const addressElement = record.address;
-
-    // TÍTULO
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(14);
-    pdf.text("Checkin+", margin + 5, y);
-    y += 1;
-
-    // SUBTÍTULOS
-    pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(12);
-   
-    y += 4;
-
-    pdf.text("Registro da localização", margin + 5, y);
-    y += 8;
-
-    // TEXTO
-    pdf.setFontSize(12);
-
-    const text =
-`Eu estou aqui,
-Usuário: ${userName} (ID: ${userID})
-
-Data/Hora: ${timestamp}
-Descrição: ${description}
-
-${coordinates}
-${addressElement}
-
-Link e QR Code da localização:
-https://maps.google.com/?q=${coordsLimpa}
-A precisão da localização pode variar em um raio de até 50 metros.
-
-Aplicativo disponível no Google Play`;
-
-pdf.text(text, margin + 5, y, { maxWidth: pageWidth - 2 * margin - 5 });
-
-   
-   // =========================
-// QR CODE MAPA (PADRÃO 1º PDF)
-// =========================
-// BLOCO 1 — GERAR QR CODE (FUNCIONAL)
-const qrCanvas = document.createElement("canvas");
-
-
-await QRCode.toCanvas(
-    qrCanvas,
-    `https://maps.google.com/?q=${coordsLimpa}`,
-    { width: 300 }
-);
-
-
-const qrBase64 = qrCanvas.toDataURL("image/png");
-
-// Adicionar QR Code ao PDF Mapa
-pdf.addImage(qrBase64, "PNG", 175, 237, 25, 25);
-// =========================
-// QR CODE MAPA (PADRÃO 1º PDF)
-// =========================
-   
-    // Borda da página
-    
-// =========================
-// MARCA D'ÁGUA (segura) // MAPA- Historico
-// =========================
-pdf.saveGraphicsState();
-
-pdf.setFont("helvetica", "bold");
-pdf.setFontSize(20);
-pdf.setTextColor("#c9e0e8"); // cinza claro
-pdf.text(
-    "Registro da\nlocolização",
-    100, 220,               // X e Y, ajuste conforme necessidade visual
-    { align: "left", angle: 45 }
-);
-pdf.restoreGraphicsState();
-
-
-    // Salvar PDF
-    pdf.save(`Checkin+_Mapa_${timestamp}.pdf`);
-}
-
-// MAPA- Função COMPLETA para gerar o PDF do mapa > fim
-
-
-
-
-
-
-
-
-
-
-// =========================
-// FUNDO GERAR PDF 3 CHEGADA E SAIDA
-// =========================
-<!-- Função chegada e saída início -->
-
-  </script>
-  <!-- Modal -->
-
-<div id="arrival-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
-    background:rgba(0,0,0,0.6); z-index:999; overflow:auto; padding:40px 10px; box-sizing:border-box;">
-
-
-<div style="background:#f0f4f8; padding:20px; width:100%; max-width:400px; 
-
-    min-height:75vh; /* ajusta altura do pop-up */
- margin:50px auto; /* mesma distância do topo e da parte inferior */
-    border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.3); box-sizing:border-box;">
-
-
-    <h3>Chegada / Saída</h3>
-    Selecione dois registros
-    <div id="arrival-list" style="max-height:calc(75vh - 120px); overflow-y:auto; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;"></div>
-    
-    <div style="display:flex; justify-content:space-between;">
-      <button id="generate-pdf-btn" style="display:none;" onclick="generateArrivalDeparturePDF()">Gerar PDF</button>
-      <button onclick="closeArrivalDeparture()">Fechar</button>
+    <div class="field">
+      <label for="fLocal">Especialidade</label>
+      <input id="fLocal" placeholder="Ex: Ortodontia, Endodontia">
+    </div>
+    <div class="field">
+      <label for="fNotas">Observações (opcional)</label>
+      <textarea id="fNotas" placeholder="Ex: Trazer radiografia anterior"></textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="btnCancel">Cancelar</button>
+      <button class="btn-save" id="btnSave">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal de perfil -->
+<div class="overlay" id="profileOverlay" style="display:none;">
+  <div class="sheet">
+    <div id="profileMainView">
+      <h2>Seu perfil</h2>
+      <div class="avatar-edit">
+        <div class="avatar-large" id="avatarLargeWrap">
+          <img id="avatarLargeImg" style="display:none">
+          <span id="avatarLargeInitial">?</span>
+        </div>
+        <label class="btn-photo" for="fFoto">Escolher foto</label>
+        <input type="file" id="fFoto" accept="image/*" style="display:none">
+      </div>
+      <div class="field">
+        <label for="fNome">Nome</label>
+        <input id="fNome" placeholder="Seu nome">
+      </div>
+      <p class="profile-id-preview" id="profileIdPreview"></p>
+      <button class="action-btn danger" id="btnDeleteFamiliar" style="display:none; margin-bottom:16px;">Excluir familiar</button>
+      <div class="sheet-actions">
+        <button class="btn-cancel" id="btnProfileCancel">Cancelar</button>
+        <button class="btn-save" id="btnProfileSave">Salvar</button>
+      </div>
+    </div>
+    <div id="profileDeleteConfirmView" style="display:none;">
+      <h2 id="profileDeleteTitle">Excluir familiar?</h2>
+      <p style="color:var(--ink-soft); font-size:14px; margin:0 0 20px;">Isso vai excluir o cadastro e todos os agendamentos dessa pessoa. Deseja continuar?</p>
+      <div class="sheet-actions">
+        <button class="btn-cancel" id="btnDeleteFamiliarCancel">Cancelar</button>
+        <button class="btn-save" style="background:var(--danger);" id="btnDeleteFamiliarConfirm">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Menu da engrenagem -->
+<div class="overlay" id="gearMenuOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Menu</h2>
+    <div class="action-list">
+      <button class="action-btn primary" id="gearCalendario">Calendário</button>
+      <button class="action-btn" id="gearComoUsar">Como usar</button>
+      <button class="action-btn" id="gearDiaSemana">Dia da semana</button>
+      <button class="action-btn" id="gearBackup">Backup</button>
+    </div>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnGearCancel">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela de visualização do estabelecimento -->
+<div class="overlay" id="estabInfoOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Sua clínica</h2>
+    <div class="estab-banner" id="estabInfoBannerWrap" style="cursor:default; margin-bottom:16px;">
+      <span id="estabInfoBannerVazio">Sem banner cadastrado</span>
+      <img id="estabInfoBannerImg" style="display:none;">
+    </div>
+    <p style="margin:0 0 4px; font-weight:600; font-size:16px;" id="estabInfoNome"></p>
+    <p style="margin:0 0 4px; font-size:13px; color:var(--ink-soft);" id="estabInfoEndereco"></p>
+    <p style="margin:0 0 16px; font-size:13px; color:var(--ink-soft);" id="estabInfoTelefone"></p>
+    <div class="action-list">
+      <button class="action-btn primary" id="btnEstabEditar">Editar</button>
+      <button class="action-btn" id="btnEstabCompartilhar">Compartilhar</button>
+    </div>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnEstabInfoClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela Estabelecimento (edição) -->
+<div class="overlay" id="estabelecimentoOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Editar clínica</h2>
+    <div class="field">
+      <label>Banner (proporção 16:9) - Tamanho 1280x720.</label>
+      <p class="estab-dica" id="estabDicaAcima">Coloque: Nome, Rua, CEP e Telefone.</p>
+      <div class="estab-banner" id="estabBannerEditWrap" style="margin-top:6px;">
+        <span id="estabBannerEditVazio">Toque para escolher o banner</span>
+        <img id="estabBannerEditImg" style="display:none;">
+      </div>
+      <input type="file" id="fEstabLogo" accept="image/*" style="display:none">
+      <p class="estab-dica" id="estabDicaAbaixo">Preencha os dados abaixo. Veja informações no banner.</p>
+    </div>
+    <div class="field">
+      <label for="fEstabNome">Nome da clínica</label>
+      <input id="fEstabNome" placeholder="Ex: Clínica Sorriso">
+    </div>
+    <div class="field">
+      <label for="fEstabEndereco">Endereço</label>
+      <input id="fEstabEndereco" placeholder="Rua ou Avenida e número">
+    </div>
+    <div class="field">
+      <label for="fEstabCep">CEP</label>
+      <input id="fEstabCep" inputmode="numeric" placeholder="00000-000">
+    </div>
+    <div class="field">
+      <label for="fEstabTelefone">Telefone</label>
+      <input id="fEstabTelefone" type="tel" placeholder="(00) 00000-0000">
+    </div>
+    <div class="field">
+      <label for="fEstabCor">Cor da clínica (código hexadecimal)</label>
+      <div class="time-picker">
+        <input id="fEstabCorPicker" type="color" style="flex:0 0 44px; height:40px; padding:2px; cursor:pointer;">
+        <input id="fEstabCor" placeholder="#1E7FBF" style="flex:1;">
+      </div>
+      <button class="how-to-btn" id="btnRestaurarCor" style="margin-top:8px; font-size:12px;">Restaurar cor padrão</button>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="btnEstabCancel">Cancelar</button>
+      <button class="btn-save" id="btnEstabSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela Dia da semana -->
+<div class="overlay" id="weekdayOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Dia da semana</h2>
+    <div class="field">
+      <label>Digite uma data</label>
+      <div class="time-picker">
+        <select id="wdDia"></select>
+        <span>/</span>
+        <select id="wdMes"></select>
+        <span>/</span>
+        <select id="wdAno"></select>
+      </div>
+    </div>
+    <button class="action-btn primary" id="btnConsultarDia">Consultar</button>
+    <p id="wdResultado" style="text-align:center; font-size:16px; font-weight:600; color:var(--teal); margin:16px 0 0; min-height:22px;"></p>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnWeekdayClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela de Calendário -->
+<div class="overlay" id="calendarOverlay" style="display:none;">
+  <div class="sheet">
+    <div class="calendar-header">
+      <button class="cal-nav" id="calPrev">‹</button>
+      <h2 id="calMonthLabel">Mês</h2>
+      <button class="cal-nav" id="calNext">›</button>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnCalendarClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal do dia selecionado no calendário -->
+<div class="overlay" id="calendarDayOverlay" style="display:none;">
+  <div class="sheet">
+    <h2 id="calDayTitle">Compromissos do dia</h2>
+    <div id="calDayList"></div>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnCalendarDayClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tela de Backup -->
+<div class="overlay" id="backupOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Backup</h2>
+    <div class="how-to-content">
+      <p><strong>Por que fazer backup?</strong><br>Seus dados ficam guardados só neste celular. Se você trocar de aparelho, formatar, ou desinstalar o app, tudo pode se perder — o backup evita isso.</p>
+      <p><strong>Como exportar</strong><br>Toque em "Exportar". Um arquivo será gerado com todos os seus compromissos, perfil e familiares cadastrados. Escolha para onde enviá-lo (Google Drive, e-mail para você mesmo, ou qualquer serviço de nuvem).</p>
+      <p><strong>Como restaurar</strong><br>No celular novo (ou depois de reinstalar o app), toque em "Importar" e selecione o arquivo de backup salvo. Todos os seus dados voltam exatamente como estavam.</p>
+      <p><strong>Recebeu o arquivo pelo WhatsApp?</strong><br>Salve-o no Google Drive (ou na pasta Downloads) antes de importar — assim ele fica fácil de encontrar, e o mais importante: seu backup fica protegido na nuvem, disponível mesmo que o celular seja perdido, quebrado ou formatado.</p>
+      <p><strong>Quando fazer</strong><br>Sempre que fizer alterações importantes, e principalmente antes de trocar ou formatar o celular.</p>
+    </div>
+    <div class="action-list">
+      <button class="action-btn primary" id="btnExportar">Exportar backup</button>
+      <button class="action-btn" id="btnImportar">Importar backup</button>
+      <input type="file" id="fImportarArquivo" accept="application/json" style="display:none;">
+    </div>
+    <div class="sheet-actions" style="margin-top:16px;">
+      <button class="btn-cancel" id="btnBackupClose">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Como usar -->
+<div class="overlay" id="howToOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Como usar o Odonto Agenda</h2>
+    <div class="how-to-content">
+      <p><strong>Funciona offline</strong><br>Este app funciona 100% offline: você pode cadastrar, editar e consultar seus compromissos mesmo sem internet. A conexão só é necessária para abrir o app pela primeira vez e para enviar/receber backups.</p>
+      <p><strong>Adicionar um atendimento</strong><br>Toque no botão "+" e preencha título, tipo de serviço, data, hora e local. Salve e pronto.</p>
+      <p><strong>Organizando com as abas</strong><br>
+      • Próximos: o que ainda está por vir<br>
+      • Pendentes: passou da data e ainda não foi concluído<br>
+      • Prioridades: os que você marcou como importantes<br>
+      • Concluídos: o que já foi resolvido</p>
+      <p><strong>Ações rápidas</strong><br>Toque em qualquer compromisso para marcar como concluído, dar prioridade, editar, compartilhar ou excluir.</p>
+      <p><strong>Compartilhar</strong><br>Gere uma imagem pronta para enviar ou imprimir — de um compromisso só ou de todos de uma vez.</p>
+      <p><strong>Perfil</strong><br>Toque na sua foto/nome no topo para editar seus dados.</p>
+      <p><strong>Família</strong><br>Toque no "+" ao lado de "Família" para cadastrar parentes. Cada um tem sua própria lista de compromissos, separada da sua.</p>
+      <p><strong>Calendário</strong><br>Na engrenagem (⚙️), toque em "Calendário" para ver todos os compromissos organizados por mês. Cada pessoa da família tem uma cor própria nas bolinhas — toque em um dia para ver os detalhes.</p>
+      <p><strong>Backup</strong><br>Na engrenagem (⚙️), toque em "Backup" para exportar ou restaurar seus dados.</p>
+      <p style="text-align:center; color:var(--ink-soft); font-size:12px; margin-top:24px;">Desenvolvedor: GrowCet</p>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="btnHowToClose" style="flex:none; width:100%;">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de novo familiar -->
+<div class="overlay" id="familyOverlay" style="display:none;">
+  <div class="sheet">
+    <h2>Novo familiar</h2>
+    <div class="avatar-edit">
+      <div class="avatar-large" id="famAvatarLargeWrap">
+        <img id="famAvatarLargeImg" style="display:none">
+        <span id="famAvatarLargeInitial">?</span>
+      </div>
+      <label class="btn-photo" for="fFamFoto">Escolher foto</label>
+      <input type="file" id="fFamFoto" accept="image/*" style="display:none">
+    </div>
+    <div class="field">
+      <label for="fFamNome">Nome</label>
+      <input id="fFamNome" placeholder="Nome do familiar">
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="btnFamCancel">Cancelar</button>
+      <button class="btn-save" id="btnFamSave">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de ações do card -->
+<div class="overlay" id="actionOverlay" style="display:none;">
+  <div class="sheet">
+    <div id="actionMainView">
+      <h2 id="actionSheetTitle">Compromisso</h2>
+      <div class="action-list">
+        <button class="action-btn primary" id="actBtnDone"></button>
+        <button class="action-btn" id="actBtnEspecial"></button>
+        <button class="action-btn" id="actBtnEdit">Editar</button>
+        <button class="action-btn" id="actBtnShare">Compartilhar</button>
+        <button class="action-btn danger" id="actBtnDelete">Excluir</button>
+      </div>
+      <div class="sheet-actions" style="margin-top:16px;">
+        <button class="btn-cancel" id="btnActionCancel">Fechar</button>
+      </div>
+    </div>
+    <div id="actionConfirmView" style="display:none;">
+      <h2>Excluir compromisso?</h2>
+      <p style="color:var(--ink-soft); font-size:14px; margin:0 0 20px;">Deseja excluir agendamento?</p>
+      <div class="sheet-actions">
+        <button class="btn-cancel" id="btnDeleteCancel">Cancelar</button>
+        <button class="btn-save" style="background:var(--danger);" id="btnDeleteConfirm">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de compartilhamento individual -->
+<div class="toast" id="toast"></div>
+
 <script>
+  /* ---------- IndexedDB ---------- */
+  const DB_NAME = 'odontoAgendaDB';
+  const DB_VERSION = 4;
+  let dbInstance = null;
 
-let selected = [];
-let reversedRecords = [];
+  function openDB(){
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if(!db.objectStoreNames.contains('compromissos')){
+          db.createObjectStore('compromissos', { keyPath: 'id' });
+        }
+        if(!db.objectStoreNames.contains('perfil')){
+          db.createObjectStore('perfil', { keyPath: 'id' });
+        }
+        if(!db.objectStoreNames.contains('familiares')){
+          db.createObjectStore('familiares', { keyPath: 'id' });
+        }
+        if(!db.objectStoreNames.contains('config')){
+          db.createObjectStore('config', { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = (e) => reject(e.target.error);
+    });
+  }
 
-/* ===============================
-   ABRIR CHEGADA / SAÍDA
-================================ */
+  function dbGetAll(store){
+    return new Promise((resolve, reject) => {
+      const tx = dbInstance.transaction(store, 'readonly');
+      const req = tx.objectStore(store).getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
 
+  function dbGet(store, key){
+    return new Promise((resolve, reject) => {
+      const tx = dbInstance.transaction(store, 'readonly');
+      const req = tx.objectStore(store).get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
 
-<!-- indeBD-->
-async function openArrivalDeparture() {
-const records = await getAllRecordsFromDB() || [];
+  function dbPut(store, value){
+    return new Promise((resolve, reject) => {
+      const tx = dbInstance.transaction(store, 'readwrite');
+      tx.objectStore(store).put(value);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
 
+  function dbDelete(store, key){
+    return new Promise((resolve, reject) => {
+      const tx = dbInstance.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(key);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
 
-    if (records.length < 2) {
-        alert("É necessário pelo menos 2 registros.");
-        return;
+  /* ---------- Estado ---------- */
+  let items = [];
+  let perfil = null;
+  let familiares = [];
+  let currentPersonId = 'titular';
+  let currentTab = 'proximos';
+  let editingId = null;
+
+  const listEl = document.getElementById('list');
+  const overlay = document.getElementById('overlay');
+  const profileOverlay = document.getElementById('profileOverlay');
+
+  /* ---------- Utilitários ---------- */
+  function formatDate(dateStr){
+    if(!dateStr) return '';
+    const [y,m,d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
+  }
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  function tipoLabel(tipo){
+    return tipo || 'Procedimento';
+  }
+  function generateUserId(){
+    const d = new Date();
+    const dataParte = String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+    const aleatorio = Math.random().toString(36).slice(2, 6);
+    return dataParte + aleatorio;
+  }
+  function diaSemana(dateStr){
+    const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const [y,m,d] = dateStr.split('-').map(Number);
+    return dias[new Date(y, m - 1, d).getDay()];
+  }
+  function isPastDate(dateStr){
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+    const [y,m,d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d) < hoje;
+  }
+
+  /* ---------- Renderização de compromissos ---------- */
+  function render(){
+    let filtered;
+    let emptyMsg = '';
+    const doPessoa = items.filter(it => (it.pessoaId || 'titular') === currentPersonId);
+
+    if(currentTab === 'proximos'){
+      filtered = doPessoa.filter(it => !it.done && !isPastDate(it.data));
+      emptyMsg = 'Nenhum compromisso marcado ainda. Toque em + para adicionar.';
+    } else if(currentTab === 'concluidos'){
+      filtered = doPessoa.filter(it => it.done);
+      emptyMsg = 'Nenhum compromisso concluído ainda.';
+    } else if(currentTab === 'pendentes'){
+      filtered = doPessoa.filter(it => !it.done && isPastDate(it.data));
+      emptyMsg = 'Nenhuma pendência. Tudo em dia!';
+    } else if(currentTab === 'especiais'){
+      filtered = doPessoa.filter(it => it.especial);
+      emptyMsg = 'Nenhum compromisso marcado como prioridade ainda.';
     }
 
-    reversedRecords = [...records].reverse();
-    selected = [];
-
-    const list = document.getElementById("arrival-list");
-    list.innerHTML = "";
-
-    document.getElementById("generate-pdf-btn").style.display = "none";
-
-
-    reversedRecords.forEach((record, index) => {
-        const div = document.createElement("div");
-        div.innerText = `${record.timestamp} - ${record.description}`;
-        div.style.cursor = "pointer";
-        div.style.padding = "6px";
-        div.style.borderBottom = "1px solid #ccc";
-
-     // Linha única
-        div.style.whiteSpace = "nowrap";
-div.style.overflow = "hidden";
-div.style.textOverflow = "ellipsis";
-
-
-        // Clique para selecionar/desmarcar
-        div.onclick = () => {
-            if (selected.includes(index)) {
-                selected = selected.filter(i => i !== index);
-                div.style.background = "";
-            } else {
-                if (selected.length >= 2) return;
-                selected.push(index);
-                div.style.background = "#d1f7d6";
-            }
-
-            document.getElementById("generate-pdf-btn").style.display = (selected.length === 2) ? "inline-block" : "none";
-        };
-
-        list.appendChild(div);
+    filtered.sort((a,b) => {
+      const da = new Date(a.data + 'T' + (a.hora || '00:00'));
+      const db_ = new Date(b.data + 'T' + (b.hora || '00:00'));
+      return currentTab === 'concluidos' ? db_ - da : da - db_;
     });
 
-    // Mostra o overlay
-    document.getElementById("arrival-overlay").style.display = "block";
+    if(filtered.length === 0){
+      listEl.innerHTML = `<div class="empty"><p>${emptyMsg}</p></div>`;
+      return;
+    }
 
-    document.body.style.overflow = "hidden";
-}
+    listEl.innerHTML = filtered.map((it, idx) => `
+      <div class="card ${it.done ? 'done' : ''}" onclick="openActionSheet('${it.id}')">
+        <div class="card-top">
+          <div>
+            <p class="card-title">${it.especial ? '★ ' : ''}${escapeHtml(tipoLabel(it.tipo))}</p>
+            <p class="card-sub">${escapeHtml(it.titulo)}</p>
+          </div>
+          <p class="card-num">${filtered.length - idx}</p>
+        </div>
+        <div class="card-date"><strong>${diaSemana(it.data)}, ${formatDate(it.data)}</strong>${it.hora ? ' às ' + it.hora : ''}</div>
+        ${it.local ? `<p class="card-sub" style="margin-top:6px;">${escapeHtml(it.local)}</p>` : ''}
+        ${it.notas ? `<div class="card-notes">${escapeHtml(it.notas)}</div>` : ''}
+      </div>
+    `).join('');
+  }
 
+  window.markDone = async function(id){
+    const it = items.find(i => i.id === id);
+    if(it){ it.done = true; await dbPut('compromissos', it); render(); }
+  };
+  window.markPending = async function(id){
+    const it = items.find(i => i.id === id);
+    if(it){ it.done = false; await dbPut('compromissos', it); render(); }
+  };
+  window.removeItem = async function(id){
+    items = items.filter(i => i.id !== id);
+    await dbDelete('compromissos', id);
+    cancelarNotificacao(id);
+    render();
+  };
+  window.toggleEspecial = async function(id){
+    const it = items.find(i => i.id === id);
+    if(it){ it.especial = !it.especial; await dbPut('compromissos', it); render(); }
+  };
 
+  /* ---------- Menu de ações do card ---------- */
+  const actionOverlay = document.getElementById('actionOverlay');
+  const actionMainView = document.getElementById('actionMainView');
+  const actionConfirmView = document.getElementById('actionConfirmView');
+  let actionItemId = null;
 
-/* ===============================
-   FECHAR
-================================ */
-function closeArrivalDeparture() {
-    document.getElementById("arrival-overlay").style.display = "none";
+  function closeActionOverlay(){
+    actionOverlay.style.display = 'none';
+    actionMainView.style.display = 'block';
+    actionConfirmView.style.display = 'none';
+  }
 
-    document.body.style.overflow = "";
-}
+  window.openActionSheet = function(id){
+    const it = items.find(i => i.id === id);
+    if(!it) return;
+    actionItemId = id;
+    document.getElementById('actionSheetTitle').textContent = it.titulo;
+    document.getElementById('actBtnDone').textContent = it.done ? 'Reabrir' : 'Marcar concluído';
+    document.getElementById('actBtnEspecial').textContent = it.especial ? 'Remover prioridade' : 'Marcar prioridade';
+    actionMainView.style.display = 'block';
+    actionConfirmView.style.display = 'none';
+    actionOverlay.style.display = 'flex';
+  };
 
+  document.getElementById('btnActionCancel').addEventListener('click', closeActionOverlay);
+  actionOverlay.addEventListener('click', (e) => { if(e.target === actionOverlay) closeActionOverlay(); });
 
+  document.getElementById('actBtnDone').addEventListener('click', async () => {
+    const it = items.find(i => i.id === actionItemId);
+    if(it){ it.done = !it.done; await dbPut('compromissos', it); }
+    closeActionOverlay();
+    render();
+  });
+  document.getElementById('actBtnEspecial').addEventListener('click', async () => {
+    const it = items.find(i => i.id === actionItemId);
+    if(it){ it.especial = !it.especial; await dbPut('compromissos', it); }
+    closeActionOverlay();
+    render();
+  });
+  document.getElementById('actBtnEdit').addEventListener('click', () => {
+    closeActionOverlay();
+    editItem(actionItemId);
+  });
+  document.getElementById('actBtnShare').addEventListener('click', () => {
+    closeActionOverlay();
+    shareItem(actionItemId);
+  });
+  document.getElementById('actBtnDelete').addEventListener('click', () => {
+    actionMainView.style.display = 'none';
+    actionConfirmView.style.display = 'block';
+  });
+  document.getElementById('btnDeleteCancel').addEventListener('click', () => {
+    actionMainView.style.display = 'block';
+    actionConfirmView.style.display = 'none';
+  });
+  document.getElementById('btnDeleteConfirm').addEventListener('click', () => {
+    closeActionOverlay();
+    removeItem(actionItemId);
+  });
+  window.editItem = function(id){
+    const it = items.find(i => i.id === id);
+    if(!it) return;
+    editingId = id;
+    document.getElementById('sheetTitle').textContent = 'Editar compromisso';
+    document.getElementById('fTipoServico').value = it.tipo || '';
+    document.getElementById('fTitulo').value = it.titulo;
+    setDataSelects(it.data);
+    const [h, m] = (it.hora || '08:00').split(':');
+    document.getElementById('fHoraH').value = h;
+    document.getElementById('fHoraM').value = m;
+    document.getElementById('fLocal').value = it.local || '';
+    document.getElementById('fNotas').value = it.notas || '';
+    overlay.style.display = 'flex';
+  };
 
-/* ===============================
-   UTILIDADES
-================================ */
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTab = btn.dataset.tab;
+      render();
+    });
+  });
 
+  /* ---------- Seletor de hora próprio ---------- */
+  function fillTimeSelects(){
+    const selH = document.getElementById('fHoraH');
+    const selM = document.getElementById('fHoraM');
+    selH.innerHTML = '';
+    selM.innerHTML = '';
+    for(let h = 0; h < 24; h++){
+      const v = String(h).padStart(2, '0');
+      selH.innerHTML += `<option value="${v}">${v}</option>`;
+    }
+    for(let m = 0; m < 60; m += 5){
+      const v = String(m).padStart(2, '0');
+      selM.innerHTML += `<option value="${v}">${v}</option>`;
+    }
+  }
 
-function parseDateBR(dateStr) {
-    if (!dateStr) return null;
+  function fillDateSelects(){
+    const selDia = document.getElementById('fDia');
+    const selMes = document.getElementById('fMes');
+    const selAno = document.getElementById('fAno');
+    selDia.innerHTML = '';
+    selMes.innerHTML = '';
+    selAno.innerHTML = '';
+    for(let d = 1; d <= 31; d++){
+      const v = String(d).padStart(2, '0');
+      selDia.innerHTML += `<option value="${v}">${v}</option>`;
+    }
+    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    meses.forEach((nome, i) => {
+      const v = String(i + 1).padStart(2, '0');
+      selMes.innerHTML += `<option value="${v}">${nome}</option>`;
+    });
+    const anoAtual = new Date().getFullYear();
+    for(let a = anoAtual - 1; a <= anoAtual + 5; a++){
+      selAno.innerHTML += `<option value="${a}">${a}</option>`;
+    }
+  }
 
-    // Extrai números: dia, mês, ano, hora, minuto, segundo
-    const parts = dateStr.match(/\d+/g);
+  function getDataSelecionada(){
+    const dia = document.getElementById('fDia').value;
+    const mes = document.getElementById('fMes').value;
+    const ano = document.getElementById('fAno').value;
+    return `${ano}-${mes}-${dia}`;
+  }
 
-    if (!parts || parts.length < 3) return null;
+  function setDataSelects(dataStr){
+    const hoje = new Date();
+    const [ano, mes, dia] = (dataStr || '').split('-');
+    document.getElementById('fDia').value = dia || String(hoje.getDate()).padStart(2,'0');
+    document.getElementById('fMes').value = mes || String(hoje.getMonth()+1).padStart(2,'0');
+    document.getElementById('fAno').value = ano || String(hoje.getFullYear());
+  }
 
-    const [d, m, y, h = 0, min = 0, s = 0] = parts.map(Number);
+  function openNewSheet(){
+    editingId = null;
+    document.getElementById('sheetTitle').textContent = 'Novo compromisso';
+    document.getElementById('fTipoServico').value = '';
+    document.getElementById('fTitulo').value = '';
+    setDataSelects(null);
+    document.getElementById('fHoraH').value = '08';
+    document.getElementById('fHoraM').value = '00';
+    document.getElementById('fLocal').value = '';
+    document.getElementById('fNotas').value = '';
+    overlay.style.display = 'flex';
+  }
 
-    return new Date(y, m - 1, d, h, min, s);
-}
+  document.getElementById('fabAdd').addEventListener('click', openNewSheet);
+  document.getElementById('btnCancel').addEventListener('click', () => { overlay.style.display = 'none'; });
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.style.display = 'none'; });
 
+  document.getElementById('btnSave').addEventListener('click', async () => {
+    const titulo = document.getElementById('fTitulo').value.trim();
+    const data = getDataSelecionada();
+    if(!titulo || !data){
+      showToast('Preencha ao menos o título e a data.');
+      return;
+    }
+    const hora = document.getElementById('fHoraH').value + ':' + document.getElementById('fHoraM').value;
+    const payload = {
+      titulo,
+      data,
+      hora,
+      local: document.getElementById('fLocal').value.trim(),
+      notas: document.getElementById('fNotas').value.trim(),
+      tipo: document.getElementById('fTipoServico').value.trim() || 'Procedimento',
+    };
+    if(editingId){
+      const it = items.find(i => i.id === editingId);
+      Object.assign(it, payload);
+      await dbPut('compromissos', it);
+      agendarNotificacao(it);
+    } else {
+      const novo = { id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), done:false, pessoaId: currentPersonId, ...payload };
+      items.push(novo);
+      await dbPut('compromissos', novo);
+      agendarNotificacao(novo);
+    }
+    overlay.style.display = 'none';
+    render();
+  });
 
-function formatCoordinates(coords) {
-    const matches = coords?.match(/-?\d+\.?\d*/g);
-    return matches && matches.length >= 2 ? `${matches[0]},${matches[1]}` : "";
-}
+  /* ---------- Perfil (sensível ao contexto: titular ou familiar) ---------- */
+  let novaFotoBase64 = null;
 
+  function getPerfilAtual(){
+    return currentPersonId === 'titular' ? perfil : familiares.find(f => f.id === currentPersonId);
+  }
 
-/* ===============================
-   GERAR PDF
-================================ */
+  function renderProfileBar(){
+    const chip = document.getElementById('perfilChip');
+    if(chip && currentPersonId === 'titular'){
+      chip.textContent = 'Perfil';
+    }
+  }
 
+  function abrirPerfilPessoal(){
+    novaFotoBase64 = null;
+    const p = getPerfilAtual();
+    const nomeAtual = p ? p.nome || '' : '';
+    document.getElementById('fNome').value = nomeAtual;
 
-async function generateArrivalDeparturePDF() {
+    const previewImg = document.getElementById('avatarLargeImg');
+    const previewInitial = document.getElementById('avatarLargeInitial');
+    if(p && p.foto){
+      previewImg.src = p.foto;
+      previewImg.style.display = 'block';
+      previewInitial.style.display = 'none';
+    } else {
+      previewImg.style.display = 'none';
+      previewInitial.style.display = 'block';
+      previewInitial.textContent = nomeAtual ? nomeAtual.trim().charAt(0).toUpperCase() : '?';
+    }
 
+    document.getElementById('profileIdPreview').textContent = p && p.userId
+      ? 'ID: ' + p.userId
+      : 'Um ID único será gerado ao salvar';
 
+    document.getElementById('btnDeleteFamiliar').style.display = currentPersonId === 'titular' ? 'none' : 'block';
+    document.getElementById('profileMainView').style.display = 'block';
+    document.getElementById('profileDeleteConfirmView').style.display = 'none';
+    profileOverlay.style.display = 'flex';
+  }
+  document.getElementById('btnEditarPerfilFamiliar').addEventListener('click', abrirPerfilPessoal);
 
-    if (selected.length !== 2) {
-        alert("Selecione dois registros.");
+  document.getElementById('btnProfileCancel').addEventListener('click', () => { profileOverlay.style.display = 'none'; });
+  profileOverlay.addEventListener('click', (e) => { if(e.target === profileOverlay) profileOverlay.style.display = 'none'; });
+
+  document.getElementById('btnDeleteFamiliar').addEventListener('click', () => {
+    const p = getPerfilAtual();
+    document.getElementById('profileDeleteTitle').textContent = 'Excluir ' + (p ? p.nome : 'familiar') + '?';
+    document.getElementById('profileMainView').style.display = 'none';
+    document.getElementById('profileDeleteConfirmView').style.display = 'block';
+  });
+  document.getElementById('btnDeleteFamiliarCancel').addEventListener('click', () => {
+    document.getElementById('profileMainView').style.display = 'block';
+    document.getElementById('profileDeleteConfirmView').style.display = 'none';
+  });
+  document.getElementById('btnDeleteFamiliarConfirm').addEventListener('click', async () => {
+    const idParaExcluir = currentPersonId;
+    familiares = familiares.filter(f => f.id !== idParaExcluir);
+    await dbDelete('familiares', idParaExcluir);
+    const compromissosDoFamiliar = items.filter(it => it.pessoaId === idParaExcluir);
+    for(const it of compromissosDoFamiliar){
+      await dbDelete('compromissos', it.id);
+    }
+    items = items.filter(it => it.pessoaId !== idParaExcluir);
+    profileOverlay.style.display = 'none';
+    renderPeopleRow();
+    switchPerson('titular');
+  });
+
+  document.getElementById('fFoto').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      novaFotoBase64 = reader.result;
+      const previewImg = document.getElementById('avatarLargeImg');
+      const previewInitial = document.getElementById('avatarLargeInitial');
+      previewImg.src = novaFotoBase64;
+      previewImg.style.display = 'block';
+      previewInitial.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('btnProfileSave').addEventListener('click', async () => {
+    const nome = document.getElementById('fNome').value.trim();
+    if(!nome){
+      showToast('Informe um nome.');
+      return;
+    }
+    if(currentPersonId === 'titular'){
+      if(!perfil){
+        perfil = { id: 1, nome, foto: null, userId: generateUserId() };
+      } else {
+        perfil.nome = nome;
+        if(!perfil.userId) perfil.userId = generateUserId();
+      }
+      if(novaFotoBase64) perfil.foto = novaFotoBase64;
+      await dbPut('perfil', perfil);
+    } else {
+      const fam = familiares.find(f => f.id === currentPersonId);
+      if(fam){
+        fam.nome = nome;
+        if(novaFotoBase64) fam.foto = novaFotoBase64;
+        await dbPut('familiares', fam);
+        renderPeopleRow();
+      }
+    }
+    renderProfileBar();
+    profileOverlay.style.display = 'none';
+  });
+
+  /* ---------- Dia da semana (consulta simples, sem calendário visual) ---------- */
+  const weekdayOverlay = document.getElementById('weekdayOverlay');
+  const diasSemanaCompletos = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+
+  function fillWeekdaySelects(){
+    const selDia = document.getElementById('wdDia');
+    const selMes = document.getElementById('wdMes');
+    const selAno = document.getElementById('wdAno');
+    selDia.innerHTML = '';
+    selMes.innerHTML = '';
+    selAno.innerHTML = '';
+    for(let d = 1; d <= 31; d++){
+      const v = String(d).padStart(2, '0');
+      selDia.innerHTML += `<option value="${v}">${v}</option>`;
+    }
+    const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    meses.forEach((nome, i) => {
+      const v = String(i + 1).padStart(2, '0');
+      selMes.innerHTML += `<option value="${v}">${nome}</option>`;
+    });
+    const anoAtual = new Date().getFullYear();
+    for(let a = anoAtual + 5; a >= anoAtual - 120; a--){
+      selAno.innerHTML += `<option value="${a}">${a}</option>`;
+    }
+    selAno.value = String(anoAtual);
+  }
+
+  document.getElementById('gearDiaSemana').addEventListener('click', () => {
+    gearMenuOverlay.style.display = 'none';
+    document.getElementById('wdResultado').textContent = '';
+    weekdayOverlay.style.display = 'flex';
+  });
+
+  document.getElementById('btnConsultarDia').addEventListener('click', () => {
+    const dia = document.getElementById('wdDia').value;
+    const mes = document.getElementById('wdMes').value;
+    const ano = document.getElementById('wdAno').value;
+    const dataStr = `${ano}-${mes}-${dia}`;
+    const nomeDia = diasSemanaCompletos[new Date(Number(ano), Number(mes) - 1, Number(dia)).getDay()];
+    document.getElementById('wdResultado').textContent = `${dia}/${mes}/${ano} caiu numa ${nomeDia}`;
+  });
+
+  document.getElementById('btnWeekdayClose').addEventListener('click', () => { weekdayOverlay.style.display = 'none'; });
+  weekdayOverlay.addEventListener('click', (e) => { if(e.target === weekdayOverlay) weekdayOverlay.style.display = 'none'; });
+
+  /* ---------- Calendário geral da família ---------- */
+  const calendarOverlay = document.getElementById('calendarOverlay');
+  const calendarDayOverlay = document.getElementById('calendarDayOverlay');
+  const familyColors = ['#6B5B7A', '#3D6B77', '#A98B4E', '#5C7A63', '#8A6F5C'];
+  let calYear, calMonth;
+
+  const CO_PADRAO = '#1E7FBF';
+  function corPrimaria(){
+    return (estabelecimento && estabelecimento.corHex) ? estabelecimento.corHex : CO_PADRAO;
+  }
+  function aplicarCorPersonalizada(){
+    document.documentElement.style.setProperty('--teal', corPrimaria());
+    document.documentElement.style.setProperty('--teal-soft', hexParaClaro(corPrimaria()));
+  }
+  function hexParaClaro(hex){
+    hex = (hex || '').replace('#', '');
+    if(hex.length !== 6) return '#D8E9F5';
+    const r = parseInt(hex.slice(0,2), 16);
+    const g = parseInt(hex.slice(2,4), 16);
+    const b = parseInt(hex.slice(4,6), 16);
+    const clarear = (v) => Math.round(v + (255 - v) * 0.82);
+    return `rgb(${clarear(r)}, ${clarear(g)}, ${clarear(b)})`;
+  }
+
+  function getPersonColor(pessoaId){
+    if(!pessoaId || pessoaId === 'titular') return corPrimaria();
+    const idx = familiares.findIndex(f => f.id === pessoaId);
+    return idx >= 0 ? familyColors[idx % familyColors.length] : '#8A8A8A';
+  }
+
+  function getPersonName(pessoaId){
+    if(!pessoaId || pessoaId === 'titular') return (perfil && perfil.nome) ? perfil.nome : 'Eu';
+    const f = familiares.find(f => f.id === pessoaId);
+    return f ? f.nome : 'Familiar';
+  }
+
+  function renderCalendar(){
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    document.getElementById('calMonthLabel').textContent = meses[calMonth] + ' ' + calYear;
+
+    const primeiroDia = new Date(calYear, calMonth, 1);
+    const inicioSemana = primeiroDia.getDay();
+    const diasNoMes = new Date(calYear, calMonth + 1, 0).getDate();
+    const diasSemanaLabels = ['D','S','T','Q','Q','S','S'];
+
+    let html = diasSemanaLabels.map(d => `<div class="cal-weekday">${d}</div>`).join('');
+    for(let i = 0; i < inicioSemana; i++){
+      html += '<div class="cal-day empty"></div>';
+    }
+
+    const hoje = new Date();
+    const hojeStr = hoje.getFullYear() + '-' + String(hoje.getMonth()+1).padStart(2,'0') + '-' + String(hoje.getDate()).padStart(2,'0');
+
+    for(let dia = 1; dia <= diasNoMes; dia++){
+      const dataStr = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(dia).padStart(2,'0');
+      const itensDoDia = items.filter(it => it.data === dataStr);
+      const pessoasUnicas = [...new Set(itensDoDia.map(it => it.pessoaId || 'titular'))];
+      const dots = pessoasUnicas.slice(0, 4).map(pid => `<span class="cal-dot" style="background:${getPersonColor(pid)}"></span>`).join('');
+      const isToday = dataStr === hojeStr;
+      html += `<div class="cal-day${isToday ? ' today' : ''}" onclick="openCalendarDay('${dataStr}')">
+        <span>${dia}</span>
+        <div class="cal-dots">${dots}</div>
+      </div>`;
+    }
+
+    document.getElementById('calendarGrid').innerHTML = html;
+  }
+
+  function openCalendar(){
+    const hoje = new Date();
+    calYear = hoje.getFullYear();
+    calMonth = hoje.getMonth();
+    renderCalendar();
+    calendarOverlay.style.display = 'flex';
+  }
+
+  document.getElementById('calPrev').addEventListener('click', () => {
+    calMonth--;
+    if(calMonth < 0){ calMonth = 11; calYear--; }
+    renderCalendar();
+  });
+  document.getElementById('calNext').addEventListener('click', () => {
+    calMonth++;
+    if(calMonth > 11){ calMonth = 0; calYear++; }
+    renderCalendar();
+  });
+  document.getElementById('btnCalendarClose').addEventListener('click', () => { calendarOverlay.style.display = 'none'; });
+  calendarOverlay.addEventListener('click', (e) => { if(e.target === calendarOverlay) calendarOverlay.style.display = 'none'; });
+
+  window.openCalendarDay = function(dataStr){
+    const itensDoDia = items.filter(it => it.data === dataStr).sort((a,b) => (a.hora||'').localeCompare(b.hora||''));
+    document.getElementById('calDayTitle').textContent = diaSemana(dataStr) + ', ' + formatDate(dataStr);
+    const listEl = document.getElementById('calDayList');
+    if(itensDoDia.length === 0){
+      listEl.innerHTML = '<p style="color:var(--ink-soft); font-size:14px;">Nenhum compromisso nesse dia.</p>';
+    } else {
+      listEl.innerHTML = itensDoDia.map(it => `
+        <div class="cal-day-item">
+          <span class="cal-day-dot" style="background:${getPersonColor(it.pessoaId || 'titular')}"></span>
+          <div>
+            <p style="margin:0; font-weight:600; font-size:14px;">${escapeHtml(it.titulo)}</p>
+            <p style="margin:2px 0 0; font-size:12px; color:var(--ink-soft);">${getPersonName(it.pessoaId || 'titular')} — ${tipoLabel(it.tipo)}${it.hora ? ' — ' + it.hora : ''}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    calendarDayOverlay.style.display = 'flex';
+  };
+
+  document.getElementById('btnCalendarDayClose').addEventListener('click', () => { calendarDayOverlay.style.display = 'none'; });
+  calendarDayOverlay.addEventListener('click', (e) => { if(e.target === calendarDayOverlay) calendarDayOverlay.style.display = 'none'; });
+
+  /* ---------- Menu da engrenagem, Como usar e Backup ---------- */
+  const howToOverlay = document.getElementById('howToOverlay');
+  const gearMenuOverlay = document.getElementById('gearMenuOverlay');
+  const backupOverlay = document.getElementById('backupOverlay');
+
+  document.getElementById('btnGear').addEventListener('click', () => { gearMenuOverlay.style.display = 'flex'; });
+  document.getElementById('btnGearCancel').addEventListener('click', () => { gearMenuOverlay.style.display = 'none'; });
+  gearMenuOverlay.addEventListener('click', (e) => { if(e.target === gearMenuOverlay) gearMenuOverlay.style.display = 'none'; });
+
+  document.getElementById('gearCalendario').addEventListener('click', () => {
+    gearMenuOverlay.style.display = 'none';
+    openCalendar();
+  });
+
+  /* ---------- Estabelecimento (banner, info, edição, cor personalizada) ---------- */
+  const estabelecimentoOverlay = document.getElementById('estabelecimentoOverlay');
+  const estabInfoOverlay = document.getElementById('estabInfoOverlay');
+  let estabelecimento = null;
+  let novoLogoBase64 = null;
+
+  function renderBanner(){
+    const vazio = document.getElementById('estabBannerVazio');
+    const img = document.getElementById('estabBannerImg');
+    if(estabelecimento && estabelecimento.logo){
+      img.src = estabelecimento.logo;
+      img.style.display = 'block';
+      vazio.style.display = 'none';
+    } else {
+      img.style.display = 'none';
+      vazio.style.display = 'block';
+    }
+
+    const titleEl = document.getElementById('appTitle');
+    const signatureEl = document.getElementById('appSignature');
+    if(estabelecimento && estabelecimento.nome){
+      titleEl.textContent = estabelecimento.nome;
+      signatureEl.style.display = 'block';
+    } else {
+      titleEl.textContent = 'Odonto Agenda';
+      signatureEl.style.display = 'none';
+    }
+  }
+
+  document.getElementById('estabBanner').addEventListener('click', () => {
+    if(estabelecimento && estabelecimento.nome){
+      abrirEstabInfo();
+    } else {
+      abrirEstabEdicao();
+    }
+  });
+
+  function linkGoogleMaps(){
+    const partes = [estabelecimento.endereco, estabelecimento.cep].filter(Boolean).join(', ');
+    if(!partes) return '';
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(partes);
+  }
+
+  function abrirEstabInfo(){
+    const vazio = document.getElementById('estabInfoBannerVazio');
+    const img = document.getElementById('estabInfoBannerImg');
+    if(estabelecimento && estabelecimento.logo){
+      img.src = estabelecimento.logo;
+      img.style.display = 'block';
+      vazio.style.display = 'none';
+    } else {
+      img.style.display = 'none';
+      vazio.style.display = 'block';
+    }
+    document.getElementById('estabInfoNome').textContent = estabelecimento.nome || '';
+    const linkMaps = linkGoogleMaps();
+    const enderecoEl = document.getElementById('estabInfoEndereco');
+    const enderecoTexto = [estabelecimento.endereco, estabelecimento.cep].filter(Boolean).join(' — ');
+    enderecoEl.innerHTML = linkMaps
+      ? `<a href="${linkMaps}" target="_blank" style="color:var(--teal);">${escapeHtml(enderecoTexto)} · ver no mapa</a>`
+      : escapeHtml(enderecoTexto);
+    document.getElementById('estabInfoTelefone').textContent = estabelecimento.telefone || '';
+    estabInfoOverlay.style.display = 'flex';
+  }
+  document.getElementById('btnEstabInfoClose').addEventListener('click', () => { estabInfoOverlay.style.display = 'none'; });
+  estabInfoOverlay.addEventListener('click', (e) => { if(e.target === estabInfoOverlay) estabInfoOverlay.style.display = 'none'; });
+
+  document.getElementById('btnEstabEditar').addEventListener('click', () => {
+    estabInfoOverlay.style.display = 'none';
+    abrirEstabEdicao();
+  });
+
+  document.getElementById('btnEstabCompartilhar').addEventListener('click', async () => {
+    const canvas = document.createElement('canvas');
+    const largura = 720;
+    const alturaBanner = Math.round(largura * 9 / 16);
+    const alturaTexto = 140;
+    canvas.width = largura;
+    canvas.height = alturaBanner + alturaTexto;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if(estabelecimento && estabelecimento.logo){
+      const img = document.getElementById('estabInfoBannerImg');
+      ctx.drawImage(img, 0, 0, largura, alturaBanner);
+    } else {
+      ctx.fillStyle = hexParaClaro(corPrimaria());
+      ctx.fillRect(0, 0, largura, alturaBanner);
+    }
+
+    ctx.fillStyle = '#1B2A26';
+    ctx.font = '600 22px Arial';
+    ctx.fillText(estabelecimento.nome || '', 24, alturaBanner + 32);
+    ctx.fillStyle = corPrimaria();
+    ctx.font = '15px Arial';
+    let yTexto = alturaBanner + 58;
+    if(estabelecimento.endereco){
+      ctx.fillText(estabelecimento.endereco, 24, yTexto);
+      yTexto += 24;
+    }
+    if(estabelecimento.cep){
+      ctx.fillText('CEP: ' + estabelecimento.cep, 24, yTexto);
+      yTexto += 24;
+    }
+    if(estabelecimento.telefone){
+      ctx.fillText('Tel: ' + estabelecimento.telefone, 24, yTexto);
+    }
+
+    canvas.toBlob(async (blob) => {
+      const nomeArquivo = 'clinica-' + (estabelecimento.nome || 'odonto-agenda').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.png';
+      const arquivo = new File([blob], nomeArquivo, { type: 'image/png' });
+      const linkMaps = linkGoogleMaps();
+      const textoCompartilhar = linkMaps ? ('Localização: ' + linkMaps) : '';
+      if(navigator.canShare && navigator.canShare({ files: [arquivo] })){
+        try {
+          await navigator.share({ files: [arquivo], title: estabelecimento.nome || 'Odonto Agenda', text: textoCompartilhar });
+          return;
+        } catch(e){ /* cai no download */ }
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeArquivo;
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 'image/png');
+  });
+
+  function abrirEstabEdicao(){
+    gearMenuOverlay.style.display = 'none';
+    novoLogoBase64 = null;
+    document.getElementById('fEstabNome').value = estabelecimento ? estabelecimento.nome || '' : '';
+    document.getElementById('fEstabEndereco').value = estabelecimento ? estabelecimento.endereco || '' : '';
+    document.getElementById('fEstabCep').value = estabelecimento ? estabelecimento.cep || '' : '';
+    document.getElementById('fEstabTelefone').value = estabelecimento ? estabelecimento.telefone || '' : '';
+    document.getElementById('fEstabCor').value = corPrimaria();
+    document.getElementById('fEstabCorPicker').value = corPrimaria();
+
+    const jaTemCadastro = !!(estabelecimento && estabelecimento.nome);
+    document.getElementById('estabDicaAcima').style.display = jaTemCadastro ? 'none' : 'block';
+    document.getElementById('estabDicaAbaixo').style.display = jaTemCadastro ? 'none' : 'block';
+
+    const previewImg = document.getElementById('estabBannerEditImg');
+    const previewVazio = document.getElementById('estabBannerEditVazio');
+    if(estabelecimento && estabelecimento.logo){
+      previewImg.src = estabelecimento.logo;
+      previewImg.style.display = 'block';
+      previewVazio.style.display = 'none';
+    } else {
+      previewImg.style.display = 'none';
+      previewVazio.style.display = 'block';
+    }
+    estabelecimentoOverlay.style.display = 'flex';
+  }
+  document.getElementById('btnEstabCancel').addEventListener('click', () => { estabelecimentoOverlay.style.display = 'none'; });
+  estabelecimentoOverlay.addEventListener('click', (e) => { if(e.target === estabelecimentoOverlay) estabelecimentoOverlay.style.display = 'none'; });
+
+  document.getElementById('estabBannerEditWrap').addEventListener('click', () => {
+    document.getElementById('fEstabLogo').click();
+  });
+  document.getElementById('fEstabLogo').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      novoLogoBase64 = reader.result;
+      const previewImg = document.getElementById('estabBannerEditImg');
+      const previewVazio = document.getElementById('estabBannerEditVazio');
+      previewImg.src = novoLogoBase64;
+      previewImg.style.display = 'block';
+      previewVazio.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('fEstabCorPicker').addEventListener('input', (e) => {
+    document.getElementById('fEstabCor').value = e.target.value;
+  });
+  document.getElementById('fEstabCor').addEventListener('input', (e) => {
+    if(/^#[0-9A-Fa-f]{6}$/.test(e.target.value)){
+      document.getElementById('fEstabCorPicker').value = e.target.value;
+    }
+  });
+  document.getElementById('btnRestaurarCor').addEventListener('click', () => {
+    document.getElementById('fEstabCor').value = CO_PADRAO;
+    document.getElementById('fEstabCorPicker').value = CO_PADRAO;
+  });
+
+  document.getElementById('btnEstabSave').addEventListener('click', async () => {
+    let corDigitada = document.getElementById('fEstabCor').value.trim();
+    if(!/^#[0-9A-Fa-f]{6}$/.test(corDigitada)) corDigitada = CO_PADRAO;
+
+    estabelecimento = {
+      nome: document.getElementById('fEstabNome').value.trim(),
+      endereco: document.getElementById('fEstabEndereco').value.trim(),
+      cep: document.getElementById('fEstabCep').value.trim(),
+      telefone: document.getElementById('fEstabTelefone').value.trim(),
+      logo: novoLogoBase64 || (estabelecimento ? estabelecimento.logo : null),
+      corHex: corDigitada,
+    };
+    await dbPut('config', { ...estabelecimento, id: 'estabelecimento' });
+    aplicarCorPersonalizada();
+    renderBanner();
+    estabelecimentoOverlay.style.display = 'none';
+    showToast('Dados do estabelecimento salvos.');
+  });
+
+  document.getElementById('gearComoUsar').addEventListener('click', () => {
+    gearMenuOverlay.style.display = 'none';
+    howToOverlay.style.display = 'flex';
+  });
+  document.getElementById('btnHowToClose').addEventListener('click', () => { howToOverlay.style.display = 'none'; });
+  howToOverlay.addEventListener('click', (e) => { if(e.target === howToOverlay) howToOverlay.style.display = 'none'; });
+
+  document.getElementById('gearBackup').addEventListener('click', () => {
+    gearMenuOverlay.style.display = 'none';
+    backupOverlay.style.display = 'flex';
+  });
+  document.getElementById('btnBackupClose').addEventListener('click', () => { backupOverlay.style.display = 'none'; });
+  backupOverlay.addEventListener('click', (e) => { if(e.target === backupOverlay) backupOverlay.style.display = 'none'; });
+
+  function nomeArquivoBackup(){
+    const d = new Date();
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const ano = d.getFullYear();
+    return `${dia}-${mes}-${ano}-agenda-medica-backup.json`;
+  }
+
+  document.getElementById('btnExportar').addEventListener('click', async () => {
+    const dadosBackup = {
+      versaoBackup: 2,
+      exportadoEm: new Date().toISOString(),
+      compromissos: items,
+      perfil: perfil,
+      familiares: familiares,
+      estabelecimento: estabelecimento,
+    };
+    const conteudo = JSON.stringify(dadosBackup, null, 2);
+    const nomeArquivo = nomeArquivoBackup();
+    const blob = new Blob([conteudo], { type: 'application/json' });
+    const arquivo = new File([blob], nomeArquivo, { type: 'application/json' });
+
+    if(navigator.canShare && navigator.canShare({ files: [arquivo] })){
+      try {
+        await navigator.share({ files: [arquivo], title: 'Backup Odonto Agenda' });
+        backupOverlay.style.display = 'none';
+        showToast('Backup exportado com sucesso.');
         return;
+      } catch(e){ /* usuário cancelou, cai no download */ }
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomeArquivo;
+    a.click();
+    URL.revokeObjectURL(url);
+    backupOverlay.style.display = 'none';
+    showToast('Backup exportado com sucesso.');
+  });
+
+  document.getElementById('btnImportar').addEventListener('click', () => {
+    document.getElementById('fImportarArquivo').click();
+  });
+
+  document.getElementById('fImportarArquivo').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const dados = JSON.parse(reader.result);
+        if(!dados || !Array.isArray(dados.compromissos)){
+          showToast('Arquivo de backup inválido.');
+          return;
+        }
+
+        for(const it of items){ await dbDelete('compromissos', it.id); }
+        for(const f of familiares){ await dbDelete('familiares', f.id); }
+
+        for(const it of dados.compromissos){ await dbPut('compromissos', it); }
+        for(const f of (dados.familiares || [])){ await dbPut('familiares', f); }
+        if(dados.perfil){ await dbPut('perfil', dados.perfil); }
+        if(dados.estabelecimento){ await dbPut('config', { ...dados.estabelecimento, id: 'estabelecimento' }); }
+
+        items = dados.compromissos;
+        familiares = dados.familiares || [];
+        perfil = dados.perfil || null;
+        if(dados.estabelecimento) estabelecimento = dados.estabelecimento;
+        currentPersonId = 'titular';
+        familySection.style.display = 'block';
+        btnVoltar.style.display = 'none';
+
+        aplicarCorPersonalizada();
+        renderBanner();
+        renderPeopleRow();
+        renderProfileBar();
+        render();
+        backupOverlay.style.display = 'none';
+        showToast('Backup restaurado com sucesso.');
+      } catch(err){
+        showToast('Não foi possível ler esse arquivo.');
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  /* ---------- Família (chips + cadastro + troca de contexto) ---------- */
+  const familyOverlay = document.getElementById('familyOverlay');
+  const familySection = document.getElementById('familySection');
+  const peopleRow = document.getElementById('peopleRow');
+  const btnVoltar = document.getElementById('btnVoltar');
+  let novaFotoFamiliarBase64 = null;
+
+  function renderPeopleRow(){
+    peopleRow.innerHTML = '<button class="person-chip add" id="addPersonBtn">+</button><button class="person-chip" id="perfilChip">Perfil</button>';
+    familiares.forEach(f => {
+      const btn = document.createElement('button');
+      btn.className = 'person-chip' + (currentPersonId === f.id ? ' active' : '');
+      btn.textContent = f.nome;
+      btn.addEventListener('click', () => switchPerson(f.id));
+      peopleRow.appendChild(btn);
+    });
+    document.getElementById('addPersonBtn').addEventListener('click', openFamilyOverlay);
+    document.getElementById('perfilChip').addEventListener('click', abrirPerfilPessoal);
+  }
+
+  function switchPerson(id){
+    currentPersonId = id;
+    const nomeEl = document.getElementById('familiarNomeAtual');
+    const familiarBar = document.getElementById('familiarBar');
+    if(id === 'titular'){
+      familySection.style.display = 'block';
+      familiarBar.style.display = 'none';
+    } else {
+      familySection.style.display = 'none';
+      const f = familiares.find(f => f.id === id);
+      nomeEl.textContent = f ? f.nome : '';
+      familiarBar.style.display = 'flex';
+    }
+    currentTab = 'proximos';
+    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === 'proximos'));
+    renderProfileBar();
+    render();
+  }
+
+  btnVoltar.addEventListener('click', () => switchPerson('titular'));
+
+  function openFamilyOverlay(){
+    novaFotoFamiliarBase64 = null;
+    document.getElementById('fFamNome').value = '';
+    document.getElementById('famAvatarLargeImg').style.display = 'none';
+    document.getElementById('famAvatarLargeInitial').style.display = 'block';
+    document.getElementById('famAvatarLargeInitial').textContent = '?';
+    familyOverlay.style.display = 'flex';
+  }
+
+  document.getElementById('btnFamCancel').addEventListener('click', () => { familyOverlay.style.display = 'none'; });
+  familyOverlay.addEventListener('click', (e) => { if(e.target === familyOverlay) familyOverlay.style.display = 'none'; });
+
+  document.getElementById('fFamFoto').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      novaFotoFamiliarBase64 = reader.result;
+      const previewImg = document.getElementById('famAvatarLargeImg');
+      const previewInitial = document.getElementById('famAvatarLargeInitial');
+      previewImg.src = novaFotoFamiliarBase64;
+      previewImg.style.display = 'block';
+      previewInitial.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('btnFamSave').addEventListener('click', async () => {
+    const nome = document.getElementById('fFamNome').value.trim();
+    if(!nome){
+      showToast('Informe um nome.');
+      return;
+    }
+    const novoFamiliar = {
+      id: 'fam-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      nome,
+      foto: novaFotoFamiliarBase64 || null,
+      userId: generateUserId(),
+    };
+    familiares.push(novoFamiliar);
+    await dbPut('familiares', novoFamiliar);
+    renderPeopleRow();
+    familyOverlay.style.display = 'none';
+  });
+
+  /* ---------- Compartilhar como PNG (formato A4, com paginação) ---------- */
+  function showToast(msg){
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  const PAGE_W = 794;   // A4 a 96dpi
+  const PAGE_H = 1123;
+  const MARGIN = 40;
+  const ROW_H = 100;
+
+  // Logo: se existir o arquivo imagem/logo.png, ele é usado.
+  // Se não existir, desenharLogo() desenha um ícone provisório no lugar.
+  // Quando a logo oficial estiver pronta, basta colocar o arquivo em imagem/logo.png — nada aqui precisa mudar.
+  let logoImg = null;
+  function carregarLogo(){
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => { logoImg = img; resolve(); };
+      img.onerror = () => { logoImg = null; resolve(); };
+      img.src = 'imagem/logo.png';
+    });
+  }
+
+  function desenharLogo(ctx){
+    const tam = 56;
+    const x = PAGE_W - MARGIN - tam;
+    const y = MARGIN - 20;
+
+    if(logoImg){
+      ctx.drawImage(logoImg, x, y, tam, tam);
+      return;
     }
 
-    const rec1 = reversedRecords[selected[0]];
-    const rec2 = reversedRecords[selected[1]];
-
-    const chegada = parseDateBR(rec1.timestamp) < parseDateBR(rec2.timestamp) ? rec1 : rec2;
-    const saida   = chegada === rec1 ? rec2 : rec1;
-
-    const start = parseDateBR(chegada.timestamp);
-    const end   = parseDateBR(saida.timestamp);
-    const diff  = end - start;
-
-    // Calcula dias, horas e minutos
-    const minutos = Math.floor(diff / 60000) % 60;
-    const horas   = Math.floor(diff / 3600000) % 24;
-    const dias    = Math.floor(diff / 86400000);
-
-    // =========================
-    // MONTA TEMPO TOTAL DE PERMANÊNCIA
-    // Mostra apenas unidades existentes, evitando 0 dias ou 0 horas
-    // =========================
-
-    let tempoParts = [];
-    if (dias > 0) tempoParts.push(`${dias} ${dias === 1 ? "dia" : "dias"}`);
-    if (horas > 0) tempoParts.push(`${horas} ${horas === 1 ? "hora" : "horas"}`);
-    tempoParts.push(`${minutos} ${minutos === 1 ? "minuto" : "minutos"}`); // sempre mostra minutos
-    const tempo = tempoParts.join(", ");
-
-    // Formata coordenadas com fallback caso estejam vazias
-    const chegadaCoords = formatCoordinates(chegada.coordinates) || "0,0";
-    const saidaCoords   = formatCoordinates(saida.coordinates) || "0,0";
-
-
-const { jsPDF } = window.jspdf;
-const doc = new jsPDF();
-
-
-
-// =========================
-// FUNDO PDF 1 CHEGADA E SAÍDA PUBLIC if
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  doc.addImage(
-    "fundo-pdf.png",
-    "png",
-    0,
-    0,
-    doc.internal.pageSize.width,
-    doc.internal.pageSize.height
-  );
-}
-// =========================
-// FUNDO PDF 1 CHEGADA E SAÍDA PUBLIC if
-// =========================
-
-// =========================
-// LOGO NO PDF 1 PUBLIC if
-// =========================
-if (typeof window !== "undefined" && location.protocol !== "file:") {
-  doc.addImage(
-    "logo-pdf.png",
-    "PNG",
-    177,
-    15,
-    22,
-    22
-  );
-}
-// =========================
-// LOGO NO PDF 1 PUBLIC if
-// =========================
-
-
-// =========================
-// Título e subtítulo
-// =========================
-doc.setFont("helvetica", "bold");
-doc.setFontSize(16);
-doc.text("Checkin+", 10, 20);
-
-doc.setFont("helvetica", "normal");
-doc.setFontSize(12);
-doc.text("Comprovante de chegada e saída", 10, 25);
-
-
-
-// =========================
-// Conteúdo antes de CHEGADA- 1
-// =========================
-const textoAntesChegada = `
-Usuário: ${chegada.userName}
-ID: ${chegada.userID}
-`;
-
-// Escreve o conteúdo antes de CHEGADA
-doc.setFont("helvetica", "normal");
-doc.setFontSize(12);
-doc.text(textoAntesChegada, 10, 30);
-
-// =========================
-// CHEGADA com bolinha verde
-// =========================
-let y = 22 + textoAntesChegada.split('\n').length * 7; // calcula Y logo após o texto anterior
-doc.setFillColor(0, 200, 0); // verde
-doc.circle(11, y - 2, 1.5, 'F'); // bolinha preenchida
-doc.text(" CHEGADA", 13, y); // texto logo após a bolinha
-
-
-// =========================
-// Conteúdo entre CHEGADA e SAÍDA
-// =========================
-const textoEntre = `
-Data/Hora: ${chegada.timestamp}
-Descrição: ${chegada.description}
-
-${chegada.coordinates || ""}
-${chegada.address || ""}
-Link e QR Code da localização:
-https://maps.google.com/?q=${chegadaCoords}
-`;
-
-// Escreve o conteúdo logo após CHEGADA
-y += 1; // pequeno espaço para separar da palavra CHEGADA
-doc.text(textoEntre, 10, y, { maxWidth: 180 });
-
-
-
-// =========================
-// GERAR QR CODES (CHEGADA E SAÍDA) - AJUSTADO
-// =========================
-const qrCanvasChegada = document.createElement("canvas");
-await QRCode.toCanvas(
-  qrCanvasChegada,
-  `https://maps.google.com/?q=${chegadaCoords}`,
-  { width: 300 }
-);
-const qrChegada = qrCanvasChegada.toDataURL("image/png");
-
-const qrCanvasSaida = document.createElement("canvas");
-await QRCode.toCanvas(
-  qrCanvasSaida,
-  `https://maps.google.com/?q=${saidaCoords}`,
-  { width: 300 }
-);
-const qrSaida = qrCanvasSaida.toDataURL("image/png");
-
-// Adiciona os QR Codes no PDF
-doc.addImage(qrChegada, "PNG", 175, 93, 25, 25);
-doc.addImage(qrSaida,   "PNG", 175, 192, 25, 25);
-
-
-
-// =========================
-// SAÍDA com bolinha azul
-// =========================
-y += textoEntre.split('\n').length * 6; // calcula Y para SAÍDA
-doc.setFillColor(0, 0, 200); // azul
-doc.circle(11, y - 2, 1.5, 'F'); // bolinha azul preenchida
-doc.text(" SAÍDA", 13, y); // texto logo após a bolinha
-
-// =========================
-// Conteúdo depois de SAÍDA
-// =========================
-const textoDepoisSaida = `
-Data/Hora: ${saida.timestamp}
-Descrição: ${saida.description}
-
-${saida.coordinates || ""}
-${saida.address || ""}
-Link e QR Code da localização:
-https://maps.google.com/?q=${saidaCoords}
-
-Tempo total de permanência:
-${tempo}
-
-Documento gerado em ${new Date().toLocaleString()}
-Aplicativo disponível no Google Play
-`;
-
-// Escreve o restante do conteúdo
-y += 1; // pequeno espaço
-doc.text(textoDepoisSaida, 10, y, { maxWidth: 180 });
-
-
-
-// =========================
-// MARCA D'ÁGUA (segura) CHEGADA E SAÍDA
-// =========================
-doc.saveGraphicsState();
-doc.setGState(doc.GState({ opacity: 0.15 })); // transparência
-doc.setFont("helvetica", "bold");
-doc.setFontSize(20);
-
-doc.setTextColor("#02779e"); // cinza claro ("#C8C8C8");
-
-doc.text(
-    "Comprovante de\nChegada e Saída",
-  90, 160,
-  { align: "left", angle: 45 }
-
-);
-doc.restoreGraphicsState();
-
-
-
-// =========================
-// Salvar PDF
-// =========================
-doc.save("Checkin+_Chegada_Saida.pdf");
-
-closeArrivalDeparture();
-
-}
-
-</script>
-
-
-
-
-<!-- CRIAR BOLHA -->
-
-      
-<script>
-window.addEventListener("load", function () {
-   // Criar a bolha
-const bubble = document.createElement('div'); // cria uma div nova via JavaScript
-
-bubble.style.width = '40px'; // define tamanho da bolha
-bubble.style.height = '40px'; // define tamanho da bolha
-bubble.style.borderRadius = '50%'; // deixa a div redonda (círculo)
-
-bubble.style.background = '#99C2EC33'; // define a cor de fundo da bolha-  #8C2EC80'; // azul com 50% de transparênci
-
-bubble.style.border = '2px solid #99C2EC99'; // branco com ~80% de opacidade
-bubble.style.boxShadow = '0 0 8px #99C2EC1A'; // branco com ~60% de opacidade
-
-
-bubble.style.position = 'fixed'; // fixa a bolha na tela, independente do scroll
-bubble.style.top = '0px'; // posiciona no topo da tela
-bubble.style.left = '0px'; // posiciona à esquerda da tela
-bubble.style.pointerEvents = 'none'; // permite clicar através da bolha
-bubble.style.zIndex = '9999'; // coloca a bolha acima de quase tudo
-
-document.body.appendChild(bubble); // adiciona a bolha ao body e exibe na tela
-
-
-    // Posição inicial aleatória da bolha no eixo horizontal
-let x = Math.random() * (window.innerWidth - 40); // Deixar sempre o mesmo tamanho da bolinha
-
-// Posição inicial aleatória da bolha no eixo vertical
-let y = Math.random() * (window.innerHeight - 40); // Deixar sempre o mesmo tamanho da bolinha
-
-
-     // Velocidade
-   let vx = (Math.random() - 0.5) * 4; // Aumentar ou diminuir, altere a vaiável 2
-   let vy = (Math.random() - 0.5) * 4; // Aumentar ou diminuir, altere a vaiável 2
-
-
-     // Velocidade Atualiza a posição da bolha a cada frame
-    function update() {
-        x += vx;
-        y += vy;
- 
-     // Velocidade Inverte a direção da bolha ao bater nas bordas da tel
-        if (x <= 0 || x >= window.innerWidth - 40) vx *= -1; // Deixar sempre o mesmo tamanho da bolinha
-        if (y <= 0 || y >= window.innerHeight - 40) vy *= -1; // Deixar sempre o mesmo tamanho da bolinha
-
-     // Velocidade Desenha a bolha na tela e continua a animação
-        bubble.style.transform = `translate(${x}px, ${y}px)`;
-        requestAnimationFrame(update);
+    // Ícone provisório: cruz médica em círculo
+    const cx = x + tam / 2;
+    const cy = y + tam / 2;
+    ctx.fillStyle = hexParaClaro(corPrimaria());
+    ctx.beginPath();
+    ctx.arc(cx, cy, tam / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = corPrimaria();
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = corPrimaria();
+    const braco = tam * 0.16;
+    const comp = tam * 0.5;
+    ctx.fillRect(cx - braco / 2, cy - comp / 2, braco, comp);
+    ctx.fillRect(cx - comp / 2, cy - braco / 2, comp, braco);
+  }
+
+  function drawItemRow(ctx, it, x, y, width){
+    const h = ROW_H - 14;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(x, y, width, h);
+    ctx.strokeStyle = '#DCE3DF';
+    ctx.strokeRect(x, y, width, h);
+
+    ctx.fillStyle = '#1B2A26';
+    ctx.font = '600 18px Arial';
+    ctx.fillText((it.especial ? '★ ' : '') + it.titulo, x + 16, y + 28);
+
+    ctx.fillStyle = '#5C6E68';
+    ctx.font = '14px Arial';
+    ctx.fillText(it.local || '', x + 16, y + 50);
+
+    ctx.fillStyle = corPrimaria();
+    ctx.font = '600 15px Arial';
+    const dataTxt = diaSemana(it.data) + ', ' + formatDate(it.data) + (it.hora ? ' às ' + it.hora : '');
+    ctx.fillText(dataTxt + '   [' + tipoLabel(it.tipo) + ']', x + 16, y + 72);
+  }
+
+  function buildPages(itemsList, titulo){
+    const pages = [];
+    let idx = 0;
+    do {
+      const canvas = document.createElement('canvas');
+      canvas.width = PAGE_W;
+      canvas.height = PAGE_H;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, PAGE_W, PAGE_H);
+
+      let y = MARGIN;
+      desenharLogo(ctx);
+      ctx.fillStyle = corPrimaria();
+      ctx.font = '600 26px Georgia, serif';
+      ctx.fillText('Odonto Agenda', MARGIN, y);
+      y += 30;
+
+      const pAtual = getPerfilAtual();
+      if(pAtual && pAtual.nome){
+        ctx.fillStyle = '#1B2A26';
+        ctx.font = '600 16px Arial';
+        ctx.fillText(pAtual.nome + (pAtual.userId ? '  ·  ID: ' + pAtual.userId : ''), MARGIN, y);
+        y += 22;
+      }
+
+      ctx.fillStyle = '#5C6E68';
+      ctx.font = '13px Arial';
+      ctx.fillText(titulo, MARGIN, y);
+      y += 26;
+
+      const limiteY = PAGE_H - MARGIN - 30;
+      while(idx < itemsList.length && (y + ROW_H) <= limiteY){
+        drawItemRow(ctx, itemsList[idx], MARGIN, y, PAGE_W - MARGIN * 2);
+        y += ROW_H;
+        idx++;
+      }
+
+      ctx.fillStyle = '#5C6E68';
+      ctx.font = '12px Arial';
+      ctx.fillText('Página ' + (pages.length + 1), PAGE_W - MARGIN - 70, PAGE_H - 20);
+
+      pages.push(canvas);
+    } while(idx < itemsList.length);
+    return pages;
+  }
+
+  async function shareCanvases(canvasList, baseName){
+    const blobs = await Promise.all(canvasList.map(c => new Promise(res => c.toBlob(res, 'image/png'))));
+    const files = blobs.map((b, i) => new File([b], `${baseName}-pagina-${i + 1}.png`, { type: 'image/png' }));
+
+    if(navigator.canShare && navigator.canShare({ files })){
+      try {
+        await navigator.share({ files, title: baseName });
+        return;
+      } catch(e){ /* usuário cancelou, cai no download */ }
     }
+    files.forEach((f, i) => {
+      setTimeout(() => {
+        const url = URL.createObjectURL(f);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = f.name;
+        a.click();
+        URL.revokeObjectURL(url);
+      }, i * 300);
+    });
+  }
 
-    update();
-});
+  document.getElementById('fabShare').addEventListener('click', async () => {
+    const proximos = items.filter(i => !i.done).sort((a,b) => new Date(a.data+'T'+(a.hora||'00:00')) - new Date(b.data+'T'+(b.hora||'00:00')));
+    if(proximos.length === 0){
+      showToast('Não há compromissos para compartilhar.');
+      return;
+    }
+    const pages = buildPages(proximos, 'Meus Atendimentos');
+    await shareCanvases(pages, 'meus-compromissos');
+  });
+
+  window.shareItem = async function(id){
+    const it = items.find(i => i.id === id);
+    if(!it) return;
+    const pages = buildPages([it], 'Compromisso');
+    const nomeArquivo = 'compromisso-' + it.titulo.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    await shareCanvases(pages, nomeArquivo);
+  };
+
+  /* ==================================================================
+     ===== INÍCIO — BLOCO DE NOTIFICAÇÕES (só ativa em app Android nativo) =====
+     ==================================================================
+     Este bloco NÃO faz nada rodando no navegador ou como PWA — nesse caso
+     window.AndroidNotificacoes não existe, e as funções abaixo simplesmente
+     não fazem nada (sem erro, sem interferir no resto do app).
+
+     Ele só "acorda" quando o app estiver empacotado como app Android nativo
+     (via Android Studio), com uma ponte de código Java/Kotlin que exponha
+     window.AndroidNotificacoes com os métodos:
+       - agendarNotificacao(id, titulo, corpo, timestampEmMilissegundos)
+       - cancelarNotificacao(id)
+     Essa ponte usa o AlarmManager do Android para disparar a notificação
+     no horário certo, mesmo com o app fechado.
+
+     Nada nesse bloco precisa ser alterado no restante do código — ele é
+     chamado automaticamente ao salvar e ao excluir um compromisso. */
+
+  function agendarNotificacao(it){
+    if(typeof window.AndroidNotificacoes === 'undefined') return;
+    try {
+      const dataHora = new Date(it.data + 'T' + (it.hora || '08:00') + ':00');
+      const umDiaAntes = new Date(dataHora.getTime() - 24 * 60 * 60 * 1000);
+      if(umDiaAntes.getTime() <= Date.now()) return; // já passou, não agenda
+
+      const titulo = 'Odonto Agenda';
+      const corpo = it.titulo + (it.hora ? ' às ' + it.hora : '') + (it.local ? ' — ' + it.local : '');
+      window.AndroidNotificacoes.agendarNotificacao(it.id, titulo, corpo, umDiaAntes.getTime());
+    } catch(e){
+      console.warn('Não foi possível agendar notificação:', e);
+    }
+  }
+
+  function cancelarNotificacao(id){
+    if(typeof window.AndroidNotificacoes === 'undefined') return;
+    try {
+      window.AndroidNotificacoes.cancelarNotificacao(id);
+    } catch(e){ /* silencioso */ }
+  }
+  /* ===== FIM — BLOCO DE NOTIFICAÇÕES ===== */
+
+  /* ---------- Inicialização ---------- */
+  async function init(){
+    fillTimeSelects();
+    fillDateSelects();
+    fillWeekdaySelects();
+    carregarLogo();
+    dbInstance = await openDB();
+    items = await dbGetAll('compromissos');
+    perfil = await dbGet('perfil', 1) || null;
+    familiares = await dbGetAll('familiares');
+
+    const estabConfig = await dbGet('config', 'estabelecimento');
+    if(estabConfig) estabelecimento = estabConfig;
+    aplicarCorPersonalizada();
+    renderBanner();
+
+    renderPeopleRow();
+    renderProfileBar();
+    render();
+  }
+  init();
 </script>
-
 </body>
 </html>
-
