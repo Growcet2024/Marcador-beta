@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<!-- MEU CONSUMO (Álcool ou Gasolina) | VERSÃO 13 -->
+<!-- DIÁRIO DO AUTO (Álcool ou Gasolina) | VERSÃO 16 -->
+<!-- ===== NOME DO APP: AJUSTES PARA TROCAR O NOME =====
+     TOTAL DE LUGARES PARA AJUSTAR O NOME: 16
+     Para achar todos, busque (Ctrl+F) por: AJUSTAR NOME
+     Cada lugar tem um comentário numerado na linha de cima (1 de 16, 2 de 16...).
+     Onde aparece NÃO TROCAR, deixe como está: são nomes internos do app (banco de dados e marca do backup).
+     Nome atual: Diário do Auto
+     ===== -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Meu consumo</title>
+<!-- AJUSTAR NOME 1 de 16: título da página (aba do navegador). Troque o texto entre as marcas title na linha abaixo. -->
+<title>Diário do Auto</title>
 <style>
 /* ===== CORES (tudo em hexadecimal) ===== */
 :root{
@@ -197,7 +205,8 @@ label:first-child{margin-top:0}
   <section>
     <h1>
       <svg class="icone-bomba" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 21h12"/><path d="M4 9.5h10"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9.8a2 2 0 0 0-.6-1.4L18.5 5"/></svg>
-      Meu consumo
+      <!-- AJUSTAR NOME 2 de 16: título da tela inicial. Troque o texto na linha abaixo. -->
+      Diário do Auto
     </h1>
     <div class="linha">
       <button id="btnLinhaPerfil" class="perfil-btn" aria-label="Abrir perfil">
@@ -244,7 +253,7 @@ label:first-child{margin-top:0}
     <div class="espaco-medidor"></div>
 
     <!-- ===== FRASE DO FINAL (abaixo do medidor): troque o texto da linha abaixo ===== -->
-    <p class="frase-final">Mais que cálculo: o App Meu Consumo organiza seus abastecimentos e a manutenção do carro, tudo no seu celular.</p>
+    <p class="frase-final">Mais que cálculo: anote e acompanhe todos os seus gastos mensais com combustível e manutenção do seu veículo.</p>
     <!-- ===== FIM DA FRASE DO FINAL ===== -->
   </section>
 </main>
@@ -271,7 +280,7 @@ label:first-child{margin-top:0}
         <button class="item" data-ir="carro">Meu carro <span>›</span></button>
         <button class="item" data-ir="fundo">Imagem de fundo <span>›</span></button>
         <button class="item" data-ir="backup">Backup <span>›</span></button>
-        <button class="item" data-ir="enviar">Enviar app <span>›</span></button>
+        <button class="item" data-ir="enviar">Indicar aos amigos <span>›</span></button>
       </div>
 
       <!-- Consumo mensal -->
@@ -309,14 +318,16 @@ label:first-child{margin-top:0}
         <div id="mLista"></div>
       </div>
 
-      <!-- Enviar app -->
+      <!-- Indicar aos amigos (aba) -->
       <div id="vEnviar" class="vista uso oculto">
         <h3>Gratidão e partilha</h3>
-        <p>Se o App Meu consumo tem ajudado você a organizar os gastos com combustível, mês a mês, que tal dar essa mesma chance a quem você gosta?</p>
+        <!-- AJUSTAR NOME 3 de 16: texto da aba Indicar aos amigos. Troque o nome na linha abaixo. -->
+        <p>Se o App Diário do Auto tem ajudado você a organizar os gastos com combustível, mês a mês, que tal dar essa mesma chance a quem você gosta?</p>
         <p>Quem controla o que gasta, dorme mais tranquilo.</p>
         <p>E no posto, o app ainda calcula na hora se compensa abastecer com álcool ou gasolina, ajudando você a economizar a cada abastecimento.</p>
         <p>Envie o banner abaixo.</p>
-        <img id="bannerImg" alt="Banner do app Meu consumo" style="width:100%;border-radius:12px;margin-top:12px;border:1px solid var(--borda)">
+        <!-- AJUSTAR NOME 4 de 16: descrição (alt) da imagem do banner. Troque o nome na linha abaixo. -->
+        <img id="bannerImg" alt="Banner do app Diário do Auto" style="width:100%;border-radius:12px;margin-top:12px;border:1px solid var(--borda)">
         <button id="btnBanner" class="btn">Enviar banner</button>
       </div>
 
@@ -398,7 +409,15 @@ label:first-child{margin-top:0}
 <div id="toast" class="toast"></div>
 
 <script>
-/* MEU CONSUMO | VERSÃO 13 */
+/* DIÁRIO DO AUTO | VERSÃO 16 */
+
+/* ===== MODO ANDROID =====
+   Deixe false para usar no NAVEGADOR (web app), como está agora.
+   Quando o app Android tiver a função shareFiles, troque por true.
+   Vale para os 4 envios: banner, A4 do Consumo mensal, A4 da Manutenção e backup.
+   (As instruções completas estão no BLOCO ANDROID, logo acima da função bShare.) */
+// NO ANDROID: troque false por true na linha abaixo
+var MODO_ANDROID = false;
 
 /* ===== IMAGEM DE FUNDO PADRÃO =====
    Cole entre as aspas o código base64 da imagem padrão.
@@ -480,7 +499,7 @@ $('alc').oninput = calcular;
 $('gas').oninput = calcular;
 
 /* ===== MENU: abrir, fechar e navegar ===== */
-var TITULOS = { lista:'Menu', perfil:'Perfil', carro:'Meu carro', fundo:'Imagem de fundo', uso:'Como usar', consumo:'Consumo mensal', backup:'Backup', enviar:'Enviar app', manutencao:'Manutenção' };
+var TITULOS = { lista:'Menu', perfil:'Perfil', carro:'Meu carro', fundo:'Imagem de fundo', uso:'Como usar', consumo:'Consumo mensal', backup:'Backup', enviar:'Indicar aos amigos', manutencao:'Manutenção' };
 var VISTAS = { lista:'vLista', perfil:'vPerfil', carro:'vCarro', fundo:'vFundo', uso:'vUso', consumo:'vConsumo', backup:'vBackup', enviar:'vEnviar', manutencao:'vManut' };
 function mostrar(v){
   Object.keys(VISTAS).forEach(function(k){ $(VISTAS[k]).classList.toggle('oculto', k !== v); });
@@ -586,7 +605,7 @@ $('btnPadrao').onclick = function(){ apagar(K_FUNDO); fundoUser = ''; aplicarFun
 
 /* ===== LOGO DO COMPARTILHAMENTO (opcional) =====
    Cole entre as aspas o base64 da logo: 'data:image/png;base64,...'
-   Vazio = símbolo padrão "MC". */
+   Vazio = símbolo padrão "DA". */
 var LOGO_BASE64 = '';
 
 /* ===== CONSUMO MENSAL ===== */
@@ -661,14 +680,16 @@ $('bApagar').onclick=function(){ carregar(function(){
 /* ===== COMPARTILHAR: imagens A4 (várias páginas se a lista for grande) ===== */
 function dataHora(){ var d=new Date(); return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
 function logo(x,cx,cy,r){ return new Promise(function(ok){
-  function pad(){ x.fillStyle='#1f7a43'; x.beginPath(); x.arc(cx,cy,r,0,7); x.fill(); x.fillStyle='#fff'; x.font='700 '+Math.round(r*.8)+'px Georgia,serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('MC',cx,cy+1); x.textAlign='left'; x.textBaseline='alphabetic'; ok(); }
+  // AJUSTAR NOME 5 de 16: iniciais do logo provisório (círculo com 2 letras). Troque DA na linha abaixo.
+  function pad(){ x.fillStyle='#1f7a43'; x.beginPath(); x.arc(cx,cy,r,0,7); x.fill(); x.fillStyle='#fff'; x.font='700 '+Math.round(r*.8)+'px Georgia,serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('DA',cx,cy+1); x.textAlign='left'; x.textBaseline='alphabetic'; ok(); }
   if(!LOGO_BASE64){ pad(); return; }
   var im=new Image(); im.onload=function(){ x.save(); x.beginPath(); x.arc(cx,cy,r,0,7); x.clip(); x.drawImage(im,cx-r,cy-r,2*r,2*r); x.restore(); ok(); }; im.onerror=pad; im.src=LOGO_BASE64;
 }); }
 function pagina(itens,o){ return new Promise(function(ok){
   var W=794,H=1123,M=40,cv=document.createElement('canvas'); cv.width=W; cv.height=H; var x=cv.getContext('2d');
   x.fillStyle='#fff'; x.fillRect(0,0,W,H);
-  x.fillStyle='#1f7a43'; x.font='700 28px system-ui,sans-serif'; x.fillText('Meu consumo',M,56);
+  // AJUSTAR NOME 6 de 16: título do A4 do Consumo mensal. Troque o nome na linha abaixo.
+  x.fillStyle='#1f7a43'; x.font='700 28px system-ui,sans-serif'; x.fillText('Diário do Auto',M,56);
   x.fillStyle='#5d7165'; x.font='14px system-ui,sans-serif';
   x.fillText((perfil.nome?perfil.nome+' · ID '+perfil.id+' · ':'')+dataHora(),M,80);
   x.fillStyle='#1c2b21'; x.font='600 18px system-ui,sans-serif';
@@ -693,18 +714,85 @@ function pagina(itens,o){ return new Promise(function(ok){
   if(o.p===1) logo(x,W-M-28,52,28).then(fim); else fim();
 }); }
 function baixar(f){ var u=URL.createObjectURL(f), a=document.createElement('a'); a.href=u; a.download=f.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); },1000); }
+
+/* ##################################################################
+   ########   INÍCIO DO BLOCO ANDROID — AJUSTAR DEPOIS   ########
+
+   O QUE É
+     Este trecho entrega os arquivos para o app Android quando
+     MODO_ANDROID = true (lá no topo do script). Ele serve para os 4 envios:
+       - banner (imagem .png)
+       - A4 do Consumo mensal (uma ou várias imagens .png)
+       - A4 da Manutenção (uma ou várias imagens .png)
+       - backup (arquivo .json)
+     A página converte cada arquivo em base64 e chama UMA função do app:
+       Android.shareFiles(texto)
+     O texto é um JSON assim:
+       {"arquivos":[{"nome":"arquivo.png","tipo":"image/png","base64":"..."}]}
+
+   O QUE FAZER QUANDO FOR TESTAR NO ANDROID
+     1) No app Android (MainActivity), colar o código do arquivo
+        shareFiles-android-v1.java (a função shareFiles).
+     2) Lá no topo do script, trocar
+            var MODO_ANDROID = false;
+        por
+            var MODO_ANDROID = true;
+     3) Testar no celular: Enviar banner, A4 do Consumo mensal,
+        A4 da Manutenção e Exportar backup.
+     4) Se algum botão não abrir o compartilhar no Android, confira se a
+        função shareFiles existe no app com esse nome. Se não existir,
+        a página volta sozinha para o compartilhar do navegador.
+   ################################################################## */
+
+/* Converte um arquivo em base64 (sem o começo "data:...") */
+function arquivoParaBase64(f){
+  return new Promise(function(ok, erro){
+    var leitor = new FileReader();
+    leitor.onload = function(){ ok(String(leitor.result).split(',')[1]); };
+    leitor.onerror = erro;
+    leitor.readAsDataURL(f);
+  });
+}
+
+/* Entrega os arquivos ao app Android. Devolve true se conseguiu e
+   false se não for para usar o Android (aí a página segue o caminho normal). */
+async function compartilharNoAndroid(arquivos){
+  if(!MODO_ANDROID) return false;
+  if(typeof Android === 'undefined' || typeof Android.shareFiles !== 'function') return false;
+  try{
+    var lista = [];
+    for(var i = 0; i < arquivos.length; i++){
+      lista.push({
+        nome: arquivos[i].name,
+        tipo: arquivos[i].type || 'application/octet-stream',
+        base64: await arquivoParaBase64(arquivos[i])
+      });
+    }
+    Android.shareFiles(JSON.stringify({ arquivos: lista }));
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+/* ########   FIM DO BLOCO ANDROID   ######## */
+
 $('bShare').onclick=async function(){
   await new Promise(function(r){ carregar(r); });
   var L=doMes().reverse(), tl=0, tv=0; L.forEach(function(c){ tl+=c.litros; tv+=c.valor; });
   var por=25, ult=22, pgs=[], r=L.slice();
   while(r.length>ult) pgs.push(r.splice(0,por));
   pgs.push(r);
-  var arqs=[], base='meu-consumo-'+abaC+'-'+MESES[mesC].toLowerCase()+'-'+anoC;
+  // AJUSTAR NOME 7 de 16: início do nome do arquivo do A4 do Consumo mensal. Troque diario-do-auto- na linha abaixo (sem acento, com hífens).
+  var arqs=[], base='diario-do-auto-'+abaC+'-'+MESES[mesC].toLowerCase()+'-'+anoC;
   for(var i=0;i<pgs.length;i++){
     var b=await pagina(pgs[i],{p:i+1,n:pgs.length,ult:i===pgs.length-1,tl:tl,tv:tv,q:L.length});
     arqs.push(new File([b],base+(pgs.length>1?'-pagina-'+(i+1):'')+'.png',{type:'image/png'}));
   }
-  if(navigator.canShare&&navigator.canShare({files:arqs})){ try{ await navigator.share({files:arqs,title:'Meu consumo'}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  // ANDROID: com MODO_ANDROID = true entrega os arquivos ao app; no navegador segue para o compartilhar abaixo.
+  if(await compartilharNoAndroid(arqs)) return;
+  // AJUSTAR NOME 8 de 16: título da janela de compartilhar (A4 do Consumo mensal). Troque o nome na linha abaixo.
+  if(navigator.canShare&&navigator.canShare({files:arqs})){ try{ await navigator.share({files:arqs,title:'Diário do Auto'}); return; }catch(e){ if(e.name==='AbortError') return; } }
   arqs.forEach(baixar); msg(arqs.length>1?'Imagens salvas':'Imagem salva');
 };
 
@@ -712,7 +800,10 @@ $('bShare').onclick=async function(){
 $('btnExportar').onclick=async function(){
   await new Promise(function(r){ carregar(r); }); await new Promise(function(r){ carregarM(r); });
   var d=new Date(), dd=String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear();
-  var f=new File([JSON.stringify({app:'meu-consumo',versao:2,perfil:perfil,carro:carro,consumos:consumos,manutencao:manut})],dd+'-meu-consumo-backup.json',{type:'application/json'});
+  // AJUSTAR NOME 9 de 16: nome do arquivo do backup. Troque SÓ -diario-do-auto-backup.json no fim da linha abaixo. NÃO TROQUE app:'meu-consumo' (marca interna do backup: trocar faz o app não reconhecer backups antigos).
+  var f=new File([JSON.stringify({app:'meu-consumo',versao:2,perfil:perfil,carro:carro,consumos:consumos,manutencao:manut})],dd+'-diario-do-auto-backup.json',{type:'application/json'});
+  // ANDROID: com MODO_ANDROID = true entrega o arquivo ao app; no navegador segue para o compartilhar abaixo.
+  if(await compartilharNoAndroid([f])) return;
   if(navigator.canShare&&navigator.canShare({files:[f]})){ try{ await navigator.share({files:[f]}); return; }catch(e){ if(e.name==='AbortError') return; } }
   baixar(f); msg('Backup exportado');
 };
@@ -720,6 +811,7 @@ $('btnImportar').onclick=function(){ $('inBackup').click(); };
 $('inBackup').onchange=function(e){
   var f=e.target.files[0]; e.target.value=''; if(!f) return;
   f.text().then(function(t){
+    // NÃO TROCAR: 'meu-consumo' é a marca interna do backup (igual à da linha do backup acima). Trocar faz o app não reconhecer backups antigos.
     var d=JSON.parse(t); if(d.app!=='meu-consumo') throw 0;
     if(d.perfil&&d.perfil.nome){ perfil=d.perfil; gravar(K_PERFIL,perfil); }
     if(d.carro){ carro=d.carro; gravar(K_CARRO,carro); }
@@ -770,7 +862,8 @@ $('mAdd').onclick=function(){ mForm(null); };
 function paginaM(itens,o){ return new Promise(function(ok){
   var W=794,H=1123,M=40,cv=document.createElement('canvas'); cv.width=W; cv.height=H; var x=cv.getContext('2d');
   x.fillStyle='#fff'; x.fillRect(0,0,W,H);
-  x.fillStyle='#1f7a43'; x.font='700 28px system-ui,sans-serif'; x.fillText('Meu consumo',M,56);
+  // AJUSTAR NOME 10 de 16: título do A4 da Manutenção. Troque o nome na linha abaixo.
+  x.fillStyle='#1f7a43'; x.font='700 28px system-ui,sans-serif'; x.fillText('Diário do Auto',M,56);
   x.fillStyle='#5d7165'; x.font='14px system-ui,sans-serif'; x.fillText((perfil.nome?perfil.nome+' · ID '+perfil.id+' · ':'')+dataHora(),M,80);
   x.fillStyle='#1c2b21'; x.font='600 18px system-ui,sans-serif'; x.fillText('Manutenção'+(o.n>1?' (página '+o.p+' de '+o.n+')':''),M,118);
   var y=160, cD=M+44, cS=M+150, cV=W-M;
@@ -797,13 +890,17 @@ $('mShare').onclick=async function(){
   var arqs=[];
   for(var i=0;i<pgs.length;i++){
     var b=await paginaM(pgs[i],{p:i+1,n:pgs.length,ult:i===pgs.length-1,tot:tot,q:L.length});
-    arqs.push(new File([b],'meu-consumo-manutencao'+(pgs.length>1?'-pagina-'+(i+1):'')+'.png',{type:'image/png'}));
+    // AJUSTAR NOME 11 de 16: nome do arquivo do A4 da Manutenção. Troque diario-do-auto na linha abaixo (sem acento, com hífens).
+    arqs.push(new File([b],'diario-do-auto-manutencao'+(pgs.length>1?'-pagina-'+(i+1):'')+'.png',{type:'image/png'}));
   }
-  if(navigator.canShare&&navigator.canShare({files:arqs})){ try{ await navigator.share({files:arqs,title:'Meu consumo'}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  // ANDROID: com MODO_ANDROID = true entrega os arquivos ao app; no navegador segue para o compartilhar abaixo.
+  if(await compartilharNoAndroid(arqs)) return;
+  // AJUSTAR NOME 12 de 16: título da janela de compartilhar (A4 da Manutenção). Troque o nome na linha abaixo.
+  if(navigator.canShare&&navigator.canShare({files:arqs})){ try{ await navigator.share({files:arqs,title:'Diário do Auto'}); return; }catch(e){ if(e.name==='AbortError') return; } }
   arqs.forEach(baixar); msg(arqs.length>1?'Imagens salvas':'Imagem salva');
 };
 
-/* ===== BANNER DO APP (aba Enviar app) =====
+/* ===== BANNER DO APP (aba Indicar aos amigos) =====
    Cole entre as aspas o base64 do banner real: 'data:image/png;base64,...'
    Vazio = o app usa um banner provisório verde. */
 var BANNER_BASE64 = '';
@@ -813,15 +910,21 @@ function bannerUrl(cb){
   var g=x.createLinearGradient(0,0,1080,1080); g.addColorStop(0,'#2A6B45'); g.addColorStop(1,'#1d4d32');
   x.fillStyle=g; x.fillRect(0,0,1080,1080);
   x.fillStyle='#fff'; x.textAlign='center';
-  x.font='700 120px system-ui,sans-serif'; x.fillText('Meu consumo',540,420);
+  // AJUSTAR NOME 13 de 16: nome grande do banner provisório. Troque o nome em nomeB na linha abaixo; o tamanho da letra se ajusta sozinho se o nome for longo.
+  var nomeB='Diário do Auto', fsB=120; x.font='700 '+fsB+'px system-ui,sans-serif'; while(x.measureText(nomeB).width>960&&fsB>40){ fsB-=4; x.font='700 '+fsB+'px system-ui,sans-serif'; } x.fillText(nomeB,540,420);
   x.font='500 48px system-ui,sans-serif'; x.fillText('Organize seus gastos com combustível',540,520); x.fillText('mês a mês',540,585);
-  x.font='600 44px system-ui,sans-serif'; x.fillText('Procure na loja: Meu consumo',540,940);
+  // AJUSTAR NOME 14 de 16: frase "Procure na loja" do banner provisório. Troque o nome na linha abaixo.
+  x.font='600 44px system-ui,sans-serif'; x.fillText('Procure na loja: Diário do Auto',540,940);
   cb(c.toDataURL('image/png'));
 }
 function dataParaBlob(u){ var p=u.split(','), m=p[0].match(/:(.*?);/)[1], b=atob(p[1]), n=b.length, a=new Uint8Array(n); while(n--) a[n]=b.charCodeAt(n); return new Blob([a],{type:m}); }
 $('btnBanner').onclick=function(){ bannerUrl(async function(u){
-  var f=new File([dataParaBlob(u)],'meu-consumo-banner.png',{type:'image/png'});
-  if(navigator.canShare&&navigator.canShare({files:[f]})){ try{ await navigator.share({files:[f],title:'Meu consumo'}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  // AJUSTAR NOME 15 de 16: nome do arquivo do banner. Troque diario-do-auto na linha abaixo (sem acento, com hífens).
+  var f=new File([dataParaBlob(u)],'diario-do-auto-banner.png',{type:'image/png'});
+  // ANDROID: com MODO_ANDROID = true entrega o arquivo ao app; no navegador segue para o compartilhar abaixo.
+  if(await compartilharNoAndroid([f])) return;
+  // AJUSTAR NOME 16 de 16: título da janela de compartilhar (banner). Troque o nome na linha abaixo.
+  if(navigator.canShare&&navigator.canShare({files:[f]})){ try{ await navigator.share({files:[f],title:'Diário do Auto'}); return; }catch(e){ if(e.name==='AbortError') return; } }
   baixar(f); msg('Banner salvo');
 }); };
 
@@ -829,6 +932,7 @@ $('btnBanner').onclick=function(){ bannerUrl(async function(u){
 aplicarFundo(); renderTopo(); calcular();
 
 /* abre o IndexedDB e carrega perfil, carro e fundo antes de mostrar os dados */
+// NÃO TROCAR: 'meu-consumo-db' é o nome interno do banco de dados. Trocar faz o app perder os dados já salvos no celular.
 var abre = indexedDB.open('meu-consumo-db', 2);
 abre.onupgradeneeded = function(e){ var d = e.target.result; if(!d.objectStoreNames.contains('kv')) d.createObjectStore('kv'); if(!d.objectStoreNames.contains('consumos')) d.createObjectStore('consumos', { keyPath:'id', autoIncrement:true }); if(!d.objectStoreNames.contains('manutencao')) d.createObjectStore('manutencao', { keyPath:'id', autoIncrement:true }); };
 abre.onsuccess = function(e){
